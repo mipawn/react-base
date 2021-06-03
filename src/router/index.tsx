@@ -1,14 +1,16 @@
 import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Suspense } from 'react'
+import Loading from '../components/Loading'
+
 import history from './history'
 import routes from './routes'
-import { Suspense } from 'react'
 
 import { isRedirect } from './type'
 
 const PagesRouter = () => {
   return (
     <Router history={history}>
-      <Suspense fallback={<div>loading</div>}>
+      <Suspense fallback={<Loading tip="加载中..." delay={300}></Loading>}>
         <Switch>
           { routes.map((item) => {
             item.exact = true

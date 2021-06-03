@@ -26,6 +26,61 @@
     -->
     <title>React App</title>
   </head>
+  <style>
+    @keyframes loading-rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes loading-dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -40px;
+      }
+      100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -120px;
+      }
+    }
+    
+    .app-loading {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 5000;
+    }
+    .loading-spinner{
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 42px;
+      height: 42px;
+      box-sizing: border-box;
+      margin: auto;
+      padding: 0;
+      font-size: 14px;
+      font-variant: tabular-nums;
+      line-height: 1.5715;
+      list-style: none;
+      font-feature-settings: "tnum";
+      position: absolute;
+      color: #1890ff;
+      text-align: center;
+      vertical-align: middle;
+      transition: transform .3s cubic-bezier(.78,.14,.15,.86);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: loading-rotate 1s linear infinite;
+    }
+  </style>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
@@ -39,5 +94,36 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <div class="app-loading" style="background:#fff;" id="app-loading">
+      <div class="loading-spinner">
+        <svg viewBox="0 0 1024 1024" focusable="false" data-icon="loading" width="2em" height="2em" fill="currentColor" aria-hidden="true"><path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"></path></svg>
+      </div>
+    </div>
+    <!-- <div class="Loading_loading-container__1szZS">
+      <div class="ant-spin ant-spin-spinning ant-spin-show-text">
+        <span
+          role="img"
+          aria-label="loading"
+          class="anticon anticon-loading anticon-spin ant-spin-dot"
+          style="font-size: 24px"
+          >
+          <svg
+            viewBox="0 0 1024 1024"
+            focusable="false"
+            data-icon="loading"
+            width="1em"
+            height="1em"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+              >
+            </path>
+          </svg>
+        </span>
+        <div class="ant-spin-text">加载中...</div>
+      </div>
+    </div> -->
   </body>
 </html>
