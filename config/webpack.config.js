@@ -507,13 +507,19 @@ module.exports = function (webpackEnv) {
               exclude: sassModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 3,
+                  importLoaders: 4,
                   sourceMap: isEnvProduction
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
                 },
-                'sass-loader'
-              ),
+                'sass-loader',
+              ).concat({
+                // 全局的 样式不需要每次 @import
+                loader: "sass-resources-loader",
+                options: {
+                  resources: [path.resolve(__dirname, "../src/assets/scss/var.scss")]
+                }
+              }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
@@ -526,7 +532,7 @@ module.exports = function (webpackEnv) {
               test: sassModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 3,
+                  importLoaders: 4,
                   sourceMap: isEnvProduction
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
@@ -534,8 +540,14 @@ module.exports = function (webpackEnv) {
                     getLocalIdent: getCSSModuleLocalIdent,
                   },
                 },
-                'sass-loader'
-              ),
+                'sass-loader',
+              ).concat({
+                // 全局的 样式不需要每次 @import
+                loader: "sass-resources-loader",
+                options: {
+                  resources: [path.resolve(__dirname, "../src/assets/scss/var.scss")]
+                }
+              }),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
