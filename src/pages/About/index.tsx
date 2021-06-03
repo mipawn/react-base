@@ -1,16 +1,21 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
+import { RouteComponent } from '../../type/index'
 
-function About() {
+const About: RouteComponent = (props) => {
+  const [id, setId] = useState(0)
+  console.log(props)
   const history = useHistory()
   function goIndex() {
-    history.push('/')
+    setId(id + 1)
+    history.push('/about/' + id)
   }
   return (
     <div onClick={goIndex}>
       {/* <Link className="App-link" to='/'>首页</Link> */}
       {/* <Link className="App-link" to='/about'>about</Link> */}
-      首页
+      {id}
     </div>
   )
 }

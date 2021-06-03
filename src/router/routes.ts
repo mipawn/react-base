@@ -1,33 +1,32 @@
 import { IRouteProps } from './type'
 
-
-import About from '../pages/About'
+import { lazy } from 'react'
 import Index from '../pages/Index'
-import NotFound from '../pages/404'
 
 
+const About = lazy(() => import(/* webpackChunkName: 'About' */ '../pages/About'))
+const NotFound = lazy(() => import(/* webpackChunkName: '404' */ '../pages/404'))
+
+/**
+ * exact 默认为 true
+ * to 默认为 redirect 组件
+ */
 
 export const routes:IRouteProps[] = [
   {
     path: '/',
     component: Index,
-    exact: true
   },
   {
-    path: '/about',
+    path: '/about/:id',
     component: About,
-    exact: true
   },
   {
     path: '/404',
     component: NotFound,
-    exact: true
   },
   {
-    from: '/ooo',
     to: '/404',
-    push: true,
-    path: '/cccc'
   }
 ]
 
