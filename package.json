@@ -76,10 +76,11 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint --cache --ext .js,*.jsx,.ts,.tsx ./",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "yarn run lint -- --fix",
     "commit": "git-cz",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "codelog": "conventional-changelog -i CODELOG.md -s"
+    "codelog": "conventional-changelog -i CODELOG.md -s",
+    "version": "yarn run codelog && yarn run changelog"
   },
   "config": {
     "commitizen": {
@@ -123,7 +124,8 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
-      "git add"
+      "git add",
+      "git commit -m 'style(app): eslint fix'"
     ]
   },
   "jest": {
