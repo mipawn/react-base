@@ -123,9 +123,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add",
-      "git commit -m 'style(app): eslint fix'"
+      "eslint --fix"
     ]
   },
   "jest": {
