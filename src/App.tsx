@@ -1,11 +1,12 @@
 import './App.scss'
 import Router from 'router/index'
 import { useEffect } from 'react'
+import type { RouteComponent } from './type/index'
 
-function App() {
+const App: RouteComponent = () => {
   useEffect(() => {
     const LoadingEl = document.getElementById('app-loading')
-    LoadingEl && document.body.removeChild(LoadingEl)
+    if (LoadingEl) document.body.removeChild(LoadingEl)
   }, [])
 
   return (

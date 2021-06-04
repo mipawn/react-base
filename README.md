@@ -101,6 +101,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 * react
 * ts 规范
 
+## commit
+commit 使用 angular 规范，使用git cz，推荐全局下载使用，[相关文章](https://juejin.cn/post/6844903606815064077)
+```sh
+npm install -g commitizen cz-conventional-changelog
+echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
+```
 #### 自定义
 请和团队其他成员协议通过后再修改
 

@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { IRouteProps } from './type'
+import type { IRouteProps } from './type'
 
 import Index from '../pages/Index'
 
@@ -11,7 +11,7 @@ const NotFound = lazy(() => import(/* webpackChunkName: '404' */ '../pages/404')
  * to 默认为 redirect 组件
  */
 
-export const routes:IRouteProps[] = [
+export const routes: IRouteProps[] = [
   {
     path: '/',
     component: Index,

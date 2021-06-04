@@ -746,7 +746,7 @@ module.exports = function (webpackEnv) {
         baseConfig: {
           extends: [
             require.resolve('eslint-config-react-app/base'),
-            require.resolve('eslint-config-airbnb')
+            require.resolve('@umijs/fabric/dist/eslint')
           ],
           rules: {
             ...(!hasJsxRuntime && {

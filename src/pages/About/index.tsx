@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import Loading from '@/components/Loading'
-import { RouteComponent } from '../../type/index'
+import type { RouteComponent } from '../../type/index'
 
 const About: RouteComponent = (props) => {
   const [id, setId] = useState(0)

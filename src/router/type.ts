@@ -1,4 +1,4 @@
-import { RouteProps, RedirectProps } from 'react-router-dom'
+import type { RouteProps, RedirectProps } from 'react-router-dom'
 
 export type IRouteProps = RouteProps | RedirectProps
 
