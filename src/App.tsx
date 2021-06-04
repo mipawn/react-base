@@ -1,4 +1,4 @@
-import './App.scss';
+import './App.scss'
 import Router from 'router/index'
 import { useEffect } from 'react'
 
@@ -9,8 +9,8 @@ function App() {
   }, [])
 
   return (
-    <Router></Router>
-  );
+    <Router />
+  )
 }
 
-export default App;
+export default App

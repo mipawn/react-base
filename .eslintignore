@@ -1,2 +1,5 @@
 config/*
 public/*
+scripts/*
+*.test.js
+.eslintcache

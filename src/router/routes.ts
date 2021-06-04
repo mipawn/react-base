@@ -1,8 +1,7 @@
+import { lazy } from 'react'
 import { IRouteProps } from './type'
 
-import { lazy } from 'react'
 import Index from '../pages/Index'
-
 
 const About = lazy(() => import(/* webpackChunkName: 'About' */ '../pages/About'))
 const NotFound = lazy(() => import(/* webpackChunkName: '404' */ '../pages/404'))
@@ -27,7 +26,7 @@ export const routes:IRouteProps[] = [
   },
   {
     to: '/404',
-  }
+  },
 ]
 
 export default routes
