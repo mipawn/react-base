@@ -1,6 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from '@/logo.svg';
+import styles from './App.module.scss';
+// import './App.scoped.scss'
+import { Button } from 'antd'
 
 function App() {
   return (
@@ -11,7 +13,8 @@ function App() {
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
-          className="App-link"
+          className={styles['App-link']}
+          // className='App-link'
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
@@ -19,6 +22,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <Button type="primary">ihshsfhj</Button>
     </div>
   );
 }
