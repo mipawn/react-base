@@ -19,6 +19,8 @@ const CracoScopedCssPlugin = require('craco-plugin-scoped-css')
 const sassResourcesLoader = require('craco-sass-resources-loader')
 const interpolateHtml = require('craco-interpolate-html-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const WebpackBar = require('webpackbar')
+const isProduction = process.env.NODE_ENV === 'production'
 
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 // const TerserPlugin = require('terser-webpack-plugin')
@@ -102,6 +104,12 @@ module.exports = {
       ]
 
       return webpackConfig
-    }
-  }
+    },
+    plugins: [
+      new WebpackBar({
+        name: isProduction ? '正在打包' : '正在编译',
+        color: '#fa8c16'
+      }),
+    ]
+  },
 }
