@@ -1,31 +1,15 @@
-import React from 'react'
-import { Button } from 'antd'
-import logo from '@/logo.svg'
-import styles from './App.module.scss'
-// import './App.scoped.scss'
+import Router from 'router/index'
+import { useEffect } from 'react'
+import type { FC } from 'type/index'
 
-function App() {
+const App:FC = () => {
+  useEffect(() => {
+    const LoadingEl = document.getElementById('app-loading')
+    if (LoadingEl) document.body.removeChild(LoadingEl)
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          <code> src/App.tsx </code>
-          and save to reload.
-        </p>
-        <a
-          className={styles['App-link']}
-          // className='App-link'
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Button type="primary">ihshsfhj</Button>
-    </div>
+    <Router />
   )
 }
 

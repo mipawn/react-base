@@ -58,6 +58,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/typescript-estree": "^4.26.0",
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
     "craco-interpolate-html-plugin": "^0.0.5",

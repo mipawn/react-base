@@ -31,8 +31,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 1,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/react-in-jsx-scope': 'off',
+    'react/jsx-props-no-spreading': 0,
+    'react/require-default-props': 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
     'import/no-named-as-default': 0,
     'no-param-reassign': 0,
-    'no-console': 0
+    'no-console': 0,
+    "import/no-extraneous-dependencies": 0,
   },
 }
