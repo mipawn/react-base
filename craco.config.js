@@ -1,12 +1,13 @@
 /* craco.config.js */
 
 /**
- * https://juejin.cn/post/6871148364919111688
+ * 参考： https://juejin.cn/post/6871148364919111688
  */
 
 /**
  * TODO:
  * 1. babel-plugin-react-css-modules 是否需要
+ * 2. Cssnao 是否需要
  */
 
 const path = require('path')
@@ -17,10 +18,11 @@ const CracoLessPlugin = require('craco-less')
 const CracoAntDesignPlugin = require('craco-antd')
 const CracoScopedCssPlugin = require('craco-plugin-scoped-css')
 const sassResourcesLoader = require('craco-sass-resources-loader')
-const interpolateHtml = require('craco-interpolate-html-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const WebpackBar = require('webpackbar')
+
 const isProduction = process.env.NODE_ENV === 'production'
+const primaryColor = '#1890ff' // 主题色
 
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 // const TerserPlugin = require('terser-webpack-plugin')
@@ -38,7 +40,7 @@ module.exports = {
       plugin: CracoAntDesignPlugin,
       options: {
         customizeTheme: {
-          '@primary-color': 'red',
+          '@primary-color': primaryColor,
         },
         lessLoaderOptions: {
           lessOptions: {
@@ -62,10 +64,8 @@ module.exports = {
         },
       },
     },
-    { // react scoped css (only scss/css) - https://github.com/gaoxiaoliangz/react-scoped-css
-      plugin: CracoScopedCssPlugin,
-      // incldes
-    },
+    // react scoped css (only scss/css) - https://github.com/gaoxiaoliangz/react-scoped-css
+    { plugin: CracoScopedCssPlugin },
     { // 全局scss
       plugin: sassResourcesLoader,
       options: {
@@ -73,14 +73,7 @@ module.exports = {
           './src/assets/scss/var.scss',
         ],
       },
-    },
-    { // html 注入变量
-      plugin: interpolateHtml,
-      // Enter the variable to be interpolated in the html file
-      options: {
-        preText: 'This is Interpolate Html Option',
-      }
-    },
+    }
   ],
   webpack: {
     /**
@@ -108,7 +101,8 @@ module.exports = {
     plugins: [
       new WebpackBar({
         name: isProduction ? '正在打包' : '正在编译',
-        color: '#fa8c16'
+        color: '#fa8c16',
+        profile: true
       }),
     ]
   },

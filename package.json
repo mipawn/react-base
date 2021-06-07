@@ -34,6 +34,7 @@
     "codelog": "conventional-changelog -i CODELOG.md -s",
     "version": "yarn run codelog && yarn run changelog"
   },
+  "license": "MIT",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -62,7 +63,6 @@
     "@typescript-eslint/typescript-estree": "^4.26.0",
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
-    "craco-interpolate-html-plugin": "^0.0.5",
     "craco-plugin-scoped-css": "^1.1.1",
     "craco-sass-resources-loader": "^1.1.0",
     "cz-conventional-changelog": "^3.3.0",

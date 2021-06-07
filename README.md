@@ -44,3 +44,15 @@ echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
 ```sh
 npm version [<newversion>]
 ```
+
+
+## UI
+> 使用antd
+TODO: 主题色设置一次, 全局生效
+
+* 版本 4.16.1
+* 主题色， 3个地方
+  1. .env > REACT_APP_PRIMARY_COLOR => 运行时的配置
+  2. craco.config.js > primaryColor => antd 主题色
+  3. index.html > .loading-spinner > color => 项目初始化 loading 颜色
+  
