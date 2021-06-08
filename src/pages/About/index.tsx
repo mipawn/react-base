@@ -1,23 +1,41 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
-import Loading from '@/components/Loading'
 import type { RouteComponent } from 'type/index'
 
-const About: RouteComponent = (props) => {
+const About = (props: any) => {
   const [id, setId] = useState(0)
   console.log(props)
+  const { num, loading } = useSelector<any, any>((state) => state.test)
+  const dispatch = useDispatch()
   const history = useHistory()
-  function goIndex() {
+
+  function goIndex(): void {
     setId(id + 1)
     history.push(`/about/${id}`)
   }
+
+  function add() {
+    console.log('add')
+    dispatch({
+      type: 'testAsync/plus',
+      num: 1,
+    })
+  }
+  function minus() {
+    console.log('minus')
+    dispatch({
+      type: 'minus',
+      num: 1,
+    })
+  }
   return (
-    <div onClick={goIndex}>
-      {/* <Link className="App-link" to='/'>首页</Link> */}
-      {/* <Link className="App-link" to='/about'>about</Link> */}
-      {id}
-      <Loading fontSize={24} tip="加载中..." />
+    <div>
+      <div>{num}</div>
+      <div>{loading}</div>
+      <div onClick={add}>add</div>
+      <div onClick={minus}>miuns</div>
     </div>
   )
 }

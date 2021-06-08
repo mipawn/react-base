@@ -1,15 +1,22 @@
 import Router from 'router/index'
 import { useEffect } from 'react'
 import type { FC } from 'type/index'
+import { Provider } from 'react-redux'
 
-const App:FC = () => {
+interface IAppProps {
+  store?: any
+}
+
+const App:FC<IAppProps> = (props) => {
   useEffect(() => {
     const LoadingEl = document.getElementById('app-loading')
     if (LoadingEl) document.body.removeChild(LoadingEl)
   }, [])
-
+  const { store } = props
   return (
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   )
 }
 
