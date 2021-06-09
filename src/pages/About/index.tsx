@@ -1,39 +1,35 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import type { State } from 'store/index'
+import type { State as CountState } from 'store/count/type'
+import { plusAction, minusAction } from 'store/count/action'
 
-// import type { RouteComponent } from 'type/index'
+import type { RouteComponent } from 'types/index'
 
-const About = (props: any) => {
+const About: RouteComponent = () => {
   const [id, setId] = useState(0)
-  console.log(props)
-  const { num, loading } = useSelector<any, any>((state) => state.test)
+
+  const { num } = useSelector<State, CountState>((state) => state.count)
   const dispatch = useDispatch()
   const history = useHistory()
 
   function goIndex(): void {
     setId(id + 1)
-    history.push(`/about/${id}`)
+    history.push(`/about/${num}`)
   }
 
   function add() {
     console.log('add')
-    dispatch({
-      type: 'testAsync/plus',
-      num: 1,
-    })
+    dispatch(plusAction(num + 1))
   }
   function minus() {
     console.log('minus')
-    dispatch({
-      type: 'minus',
-      num: 1,
-    })
+    dispatch(minusAction(num - 1))
   }
   return (
     <div>
-      <div>{num}</div>
-      <div>{loading}</div>
+      <div onClick={goIndex}>{num}</div>
       <div onClick={add}>add</div>
       <div onClick={minus}>miuns</div>
     </div>

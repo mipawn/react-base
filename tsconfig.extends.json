@@ -4,8 +4,10 @@
     "paths": {
       "@/*": ["./src/*"],
       "router/*": ["./src/router/*"],
-      "type/*": ["./src/type/*"],
-      "components/*": ["./src/components/*"]
+      "types/*": ["./src/types/*"],
+      "components/*": ["./src/components/*"],
+      "store/*": ["./src/store/*"],
+      "lib/*": ["./src/lib/*"]
     }
   }
 }

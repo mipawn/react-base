@@ -48,6 +48,7 @@ module.exports = {
       ts: 'never'
     }],
     'react/prop-types': 0,
-    'arrow-body-style': [2, "as-needed"]
+    'arrow-body-style': [2, "as-needed"],
+    "import/no-named-as-default-member": 0
   },
 }
