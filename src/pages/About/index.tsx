@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import type { RouteComponent } from 'type/index'
+// import type { RouteComponent } from 'type/index'
 
 const About = (props: any) => {
   const [id, setId] = useState(0)
