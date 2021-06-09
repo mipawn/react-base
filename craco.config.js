@@ -35,6 +35,17 @@ const primaryColor = '#1890ff' // 主题色
 // const localIdentName = '[local]-[hash:base64:5]';
 
 module.exports = {
+  devServer: {
+    proxy: {
+        '/loc': {
+            target: 'http://localhost:8000',
+            changeOrigin: true,
+            pathRewrite: {
+              // "^/loc": ''
+            }
+        }
+    },
+  },
   plugins: [
     { // antDesign 配置
       plugin: CracoAntDesignPlugin,

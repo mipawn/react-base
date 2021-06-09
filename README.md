@@ -55,4 +55,68 @@ TODO: 主题色设置一次, 全局生效
   1. .env > REACT_APP_PRIMARY_COLOR => 运行时的配置
   2. craco.config.js > primaryColor => antd 主题色
   3. index.html > .loading-spinner > color => 项目初始化 loading 颜色
-  
+
+
+## TODO
+
+框架
+
+1. 路由
+
+   - [x] 路由
+   - [x] 嵌套路由
+   - [x] 动态路由（菜单问题待验证）
+   - [x] 导航式路由
+   - [x] 懒加载
+
+2. scss
+
+   - [x] Module scss
+   - [x] 全局变量
+   - [x] Scoped scss
+   - [ ] 不需要module，根据babel做判断
+   - [ ] Cssnao
+
+3. 全局状态管理
+
+   - [x] redux + redux-sage
+   - [x] ts 支持
+
+4. 权限
+
+   - [ ] 页面级
+   - [ ] 按钮级
+   - [ ] 考虑别人实现的策略
+
+5. layout
+
+   - [ ] 使用pro 的样式实现基本的layout和基本逻辑
+   - [ ] pro 是不是懒加载
+   - [x] 引入antd 并做懒加载
+   - [x] 主题色
+
+6. eslint
+   - [x] eslint
+   - [x] Commit 校验
+   - [x] commit 规范
+   - [x] changelog
+
+7. http
+   - [ ] http请求
+   - [ ] mock
+
+8. 国际化
+   - [ ] i18
+
+9. 页面开始白屏
+   - [x] 页面加载初始loading
+
+10. 编译分析
+    - [ ] 打包分析
+    - [ ] webpack 优化
+
+11. 文档
+
+    - [ ] 目录结构
+    - [ ] 各部分说明
+
