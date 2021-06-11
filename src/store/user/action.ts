@@ -3,17 +3,17 @@ import actionType from './constant'
 
 export type { CountAction } from './type'
 
-export const plusAction = (num: number): CountAction => ({
+export const plusAction = (token: string): CountAction => ({
   type: actionType.COUNT_PLUS,
-  num,
+  token,
 })
 
-export const minusAction = (num: number): CountAction => ({
+export const minusAction = (token: string): CountAction => ({
   type: actionType.COUNT_MINUS,
-  num,
+  token,
 })
 
-export const saveAction = (num: number): CountAction => ({
+export const saveAction = (token: string): CountAction => ({
   type: actionType.COUNT_SAVE,
-  num,
+  token,
 })

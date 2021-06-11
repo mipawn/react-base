@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { message } from 'antd'
 import store from 'store/index'
+import { get } from 'lodash-es'
+import { clearSession } from 'lib/function'
+
+export type { AxiosPromise } from 'axios'
 
 /**
  * TODO:
@@ -11,6 +15,23 @@ const instance = axios.create({
   baseURL: process.env.BASE,
   timeout: 10000,
 })
+
+function onError(err: any) {
+  if (err.status) {
+    const errMessage = get(
+      err.response,
+      'body.message',
+      err.status.toString(),
+    )
+
+    const throwMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+    message.error(throwMessage)
+    Promise.reject(throwMessage)
+    return
+  }
+  clearSession()
+  // window.location.href = '/login'
+}
 
 instance.interceptors.request.use(
   // do something before request is sent
@@ -34,7 +55,14 @@ instance.interceptors.response.use(
   },
   error => {
     console.warn('http请求失败', error.response)
-    return Promise.reject(error.response || error)
+    if (error.status === 401) {
+      clearSession()
+      // Refresh the whole page to ensure cache is clear
+      // and we dont end on an infinite loop
+      // window.location.href = '/login'
+      return
+    }
+    onError(error)
   },
 )
 

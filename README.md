@@ -76,6 +76,7 @@ TODO: 主题色设置一次, 全局生效
    - [x] Scoped scss
    - [ ] 不需要module，根据babel做判断
    - [ ] Cssnao(暂时不需要)
+   - [ ] Module scss ts 提示
 
 3. 全局状态管理
 

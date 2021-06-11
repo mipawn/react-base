@@ -7,14 +7,14 @@ import actionType from './constant'
 
 function* plusReducer(action: CountAction) {
   try {
-    yield put(saveAction(action.num))
+    yield put(saveAction(action.token))
   } catch (error) {
     console.log(error)
   }
 }
 function* miunsReducer(action: CountAction) {
   try {
-    yield put(saveAction(action.num))
+    yield put(saveAction(action.token))
   } catch (error) {
     console.log(error)
   }

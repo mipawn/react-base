@@ -3,8 +3,8 @@ import type { IRouteProps } from './type'
 
 import Index from '../pages/Index'
 
-const About = lazy(() => import(/* webpackChunkName: 'About' */ '../pages/About'))
 const NotFound = lazy(() => import(/* webpackChunkName: '404' */ '../pages/404'))
+const Login = lazy(() => import(/* webpackChunkName: 'Login' */ '../pages/Login'))
 
 /**
  * exact 默认为 true
@@ -17,8 +17,8 @@ export const routes: IRouteProps[] = [
     component: Index,
   },
   {
-    path: '/about/:id',
-    component: About,
+    path: '/login',
+    component: Login,
   },
   {
     path: '/404',

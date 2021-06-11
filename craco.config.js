@@ -37,13 +37,11 @@ const primaryColor = '#1890ff' // 主题色
 module.exports = {
   devServer: {
     proxy: {
-        '/loc': {
-            target: 'http://localhost:8000',
-            changeOrigin: true,
-            pathRewrite: {
-              // "^/loc": ''
-            }
-        }
+      '/api': {
+        target: 'http://localhost:9090',
+        changeOrigin: true,
+        ws: true
+      }
     },
   },
   plugins: [
@@ -64,6 +62,11 @@ module.exports = {
     { // less module 支持 - https://github.com/DocSpring/craco-less#configuration
       plugin: CracoLessPlugin,
       options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            javascriptEnabled: true,
+          },
+        },
         modifyLessRule(lessRule, context) {
           return {
             ...lessRule,

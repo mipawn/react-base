@@ -5,11 +5,10 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import store from './store'
 
-console.log(process.env)
 ReactDOM.render(
-  <React.StrictMode>
-    <App store={store} />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <App store={store} />,
+  // </React.StrictMode>,
   document.getElementById('root'),
 )
 
