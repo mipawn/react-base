@@ -11,3 +11,8 @@ export const login = (data: LoginParams): AxiosPromise => http({
   method: 'POST',
   data,
 })
+
+export const getSession = (): AxiosPromise => http({
+  url: '/api/v1/session',
+  method: 'GET',
+})

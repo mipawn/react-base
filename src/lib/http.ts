@@ -16,23 +16,6 @@ const instance = axios.create({
   timeout: 10000,
 })
 
-function onError(err: any) {
-  if (err.status) {
-    const errMessage = get(
-      err.response,
-      'body.message',
-      err.status.toString(),
-    )
-
-    const throwMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
-    message.error(throwMessage)
-    Promise.reject(throwMessage)
-    return
-  }
-  clearSession()
-  // window.location.href = '/login'
-}
-
 instance.interceptors.request.use(
   // do something before request is sent
   request => {
@@ -43,7 +26,7 @@ instance.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    console.warn(error) // for debug
     return Promise.reject(error)
   },
 )
@@ -54,15 +37,17 @@ instance.interceptors.response.use(
     return response
   },
   error => {
+    const errorMessage = error.response?.data?.message
     console.warn('http请求失败', error.response)
     if (error.status === 401) {
       clearSession()
       // Refresh the whole page to ensure cache is clear
       // and we dont end on an infinite loop
-      // window.location.href = '/login'
-      return
+      window.location.href = '/login'
+      return Promise.reject(error.statusText)
     }
-    onError(error)
+    message.error(errorMessage)
+    return Promise.reject(error.response)
   },
 )
 

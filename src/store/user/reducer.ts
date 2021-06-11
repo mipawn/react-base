@@ -1,14 +1,16 @@
-import type { CountAction, State } from './type'
+import type { UserAction, UserState } from './type'
 
-export const CountState: State = {
+export const CountState: UserState = {
   token: '',
+  user: '',
+  isLogin: false,
 }
 
-function reducer(state = CountState, action: CountAction): State {
-  const { type, token } = action
+function reducer(state = CountState, action: UserAction): UserState {
+  const { type, ...newState } = action
   switch (type) {
-    case 'COUNT/COUNT_SAVE':
-      return { ...state, token }
+    case 'USER/USER_SAVE':
+      return { ...newState }
     default:
       return state
   }

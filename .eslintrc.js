@@ -51,6 +51,8 @@ module.exports = {
     'arrow-body-style': [2, "as-needed"],
     "import/no-named-as-default-member": 0,
     "arrow-parens": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "@typescript-eslint/no-unused-expressions": 0,
+    "consistent-return": 0
   },
 }

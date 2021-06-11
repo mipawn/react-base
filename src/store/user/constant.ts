@@ -1,21 +1,27 @@
 import { ActionModuleType, ActionType } from '../type'
 
-export interface State {
-  token: string,
+/**
+ * token 和 user 不一定有，因为权限目前由后端状态码
+ * 控制，后面根据需求或者安全考虑可以加强
+ */
+export interface UserState {
+  token?: string,
+  user?: string,
+  isLogin: boolean,
 }
 
-export const COUNT_PLUS: ActionType<'COUNT_PLUS', 'COUNT'> = 'COUNT/COUNT_PLUS'
-export const COUNT_MINUS: ActionType<'COUNT_MINUS', 'COUNT'> = 'COUNT/COUNT_MINUS'
-export const COUNT_SAVE: ActionType<'COUNT_SAVE', 'COUNT'> = 'COUNT/COUNT_SAVE'
+export const USER_SAVE: ActionType<'USER_SAVE', 'USER'> = 'USER/USER_SAVE'
+export const USER_LOGIN: ActionType<'USER_LOGIN', 'USER'> = 'USER/USER_LOGIN'
+export const USER_LOGOUT: ActionType<'USER_LOGOUT', 'USER'> = 'USER/USER_LOGOUT'
 
 const actionType = {
-  COUNT_PLUS,
-  COUNT_MINUS,
-  COUNT_SAVE,
+  USER_SAVE,
+  USER_LOGIN,
+  USER_LOGOUT,
 }
-export type IType = ActionModuleType<typeof actionType, 'COUNT'>
+export type IType = ActionModuleType<typeof actionType, 'USER'>
 
-export interface CountAction extends State {
+export interface UserAction extends UserState {
   type: IType,
 }
 

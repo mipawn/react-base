@@ -2,35 +2,27 @@ import {
   fork, put, takeEvery, all,
 } from 'redux-saga/effects'
 
-import { saveAction, CountAction } from './action'
+import {
+  userSaveAction,
+  UserAction,
+} from './action'
 import actionType from './constant'
 
-function* plusReducer(action: CountAction) {
+function* logoutReducer({ type, ...state } : UserAction) {
   try {
-    yield put(saveAction(action.token))
-  } catch (error) {
-    console.log(error)
-  }
-}
-function* miunsReducer(action: CountAction) {
-  try {
-    yield put(saveAction(action.token))
+    yield put(userSaveAction(state))
   } catch (error) {
     console.log(error)
   }
 }
 
-function* plus() {
-  yield takeEvery(actionType.COUNT_PLUS, plusReducer)
-}
-function* minus() {
-  yield takeEvery(actionType.COUNT_MINUS, miunsReducer)
+function* logout() {
+  yield takeEvery(actionType.USER_LOGOUT, logoutReducer)
 }
 
 function* countSaga(): Generator {
   yield all([
-    fork(plus),
-    minus(),
+    fork(logout),
   ])
 }
 

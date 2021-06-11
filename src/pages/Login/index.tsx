@@ -2,6 +2,8 @@ import { useState } from 'react'
 import history from 'router/history'
 import { getQueryByName } from 'lib/function'
 import { login, LoginParams } from 'api/user'
+import { useDispatch } from 'react-redux'
+import { userSaveAction } from 'store/user/action'
 
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
 import {
@@ -57,30 +59,38 @@ const Login: RouteComponent = () => {
   const [submitting, setSubmitting] = useState(false)
   const [type, setType] = useState<string>('account')
   const [loginRes, setLoginRes] = useState<LoginResult>({})
+  const dispatch = useDispatch()
 
   const { type: loginType, status } = loginRes
 
   const handleSubmit = (values: LoginParams): void => {
+    setLoginRes({
+      status: '',
+      type,
+    })
     setSubmitting(true)
-    // setTimeout(() => {
-    //   setSubmitting(false)
-    //   message.success('登录成功！')
-    //   goto()
-    // }, 1000)
     const { accessKey, secretKey, autoLogin } = values
-    if (!accessKey || !secretKey) return
     login({
       accessKey,
       secretKey,
       autoLogin,
     })
       .then(res => {
-        // const { error } = res.body
-        console.log('res => ', res)
-        window.localStorage.setItem('userLoggedIn', window.btoa(accessKey))
+        dispatch(
+          userSaveAction({
+            isLogin: true,
+            user: accessKey,
+            token: res.data.sessionId,
+          }),
+        )
+        message.success('登录成功！')
+        accessKey && window.localStorage.setItem('userLoggedIn', window.btoa(accessKey))
+        goto()
       })
-      .catch(err => {
-        console.log('res => ', err)
+      .catch(() => {
+        setLoginRes({
+          status: 'error',
+        })
       })
       .finally(() => {
         setSubmitting(false)
