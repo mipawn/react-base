@@ -10,7 +10,7 @@ function reducer(state = CountState, action: UserAction): UserState {
   const { type, ...newState } = action
   switch (type) {
     case 'USER/USER_SAVE':
-      return { ...newState }
+      return { ...state, ...newState }
     default:
       return state
   }

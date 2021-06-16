@@ -1,10 +1,9 @@
 import { lazy } from 'react'
 import type { IRouteProps } from './type'
 
-import Index from '../pages/Index'
-
 const NotFound = lazy(() => import(/* webpackChunkName: '404' */ '../pages/404'))
 const Login = lazy(() => import(/* webpackChunkName: 'Login' */ '../pages/Login'))
+const Layout = lazy(() => import(/* webpackChunkName: 'Layout' */ '../layout/BasicLayout'))
 
 /**
  * exact 默认为 true
@@ -14,7 +13,7 @@ const Login = lazy(() => import(/* webpackChunkName: 'Login' */ '../pages/Login'
 export const routes: IRouteProps[] = [
   {
     path: '/',
-    component: Index,
+    component: Layout,
   },
   {
     path: '/login',

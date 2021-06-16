@@ -10,7 +10,7 @@
 > 会加入到 changelog
 * feat:     增加新功能
 * fix:      修复bug
-
+ 
 #### 特殊type
 > 此种类型不会加入到 changelog
 * docs:     只改动了文档相关的内容
@@ -57,6 +57,9 @@ TODO: 主题色设置一次, 全局生效
   3. index.html > .loading-spinner > color => 项目初始化 loading 颜色
 
 
+## 全局状态管理
+> 采用 react-redux + reac-saga 
+
 ## TODO
 
 框架
@@ -102,7 +105,7 @@ TODO: 主题色设置一次, 全局生效
    - [x] changelog
 
 7. http
-   - [ ] http请求
+   - [x] http请求
    - [ ] mock
 
 8. 国际化

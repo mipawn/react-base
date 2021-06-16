@@ -1,5 +1,4 @@
 import { all } from 'redux-saga/effects'
-import countSaga from './count/saga'
 
 /**
  * redux-saga
@@ -8,7 +7,7 @@ import countSaga from './count/saga'
 
 function* rootSage(): Generator {
   yield all([
-    countSaga(),
+
   ])
 }
 

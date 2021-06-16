@@ -17,7 +17,7 @@ const { when, whenDev, whenProd } = require('@craco/craco')
 const CracoLessPlugin = require('craco-less')
 const CracoAntDesignPlugin = require('craco-antd')
 const CracoScopedCssPlugin = require('craco-plugin-scoped-css')
-const sassResourcesLoader = require('craco-sass-resources-loader')
+const SassResourcesLoader = require('craco-sass-resources-loader')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
@@ -26,9 +26,7 @@ const primaryColor = '#1890ff' // 主题色
 
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 // const TerserPlugin = require('terser-webpack-plugin')
-// const CracoScopedCssPlugin = require('craco-plugin-scoped-css')
 // const CircularDependencyPlugin = require('circular-dependency-plugin')
-// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 // const genericNames = require('generic-names')
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
@@ -81,7 +79,7 @@ module.exports = {
     // react scoped css (only scss/css) - https://github.com/gaoxiaoliangz/react-scoped-css
     { plugin: CracoScopedCssPlugin },
     { // 全局scss
-      plugin: sassResourcesLoader,
+      plugin: SassResourcesLoader,
       options: {
         resources: [
           './src/assets/scss/var.scss',
