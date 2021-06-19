@@ -1,7 +1,10 @@
-import type { RouteProps, RedirectProps } from 'react-router-dom'
+import type { RouteProps as RouteDefaultProps } from 'react-router-dom'
 
-export type IRouteProps = RouteProps | RedirectProps
-
-export function isRedirect(arg: IRouteProps): arg is RedirectProps {
-  return (arg as RedirectProps).to !== undefined
+export interface RouteProps extends RouteDefaultProps {
+  hide?: boolean,
+  name?: string,
+  title?: string,
+  route?: RouteProps,
+  icon?: string,
+  children?: RouteProps[]
 }

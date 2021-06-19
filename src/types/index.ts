@@ -4,4 +4,4 @@ import type { FC } from 'react'
 export type { FC } from 'react'
 export type { RouteComponentProps } from 'react-router-dom'
 
-export type RouteComponent = FC<RouteComponentProps>
+export type RouteComponent<T = RouteComponentProps> = FC<T>

@@ -16,3 +16,8 @@ export const getSession = (): AxiosPromise => http({
   url: '/api/v1/session',
   method: 'GET',
 })
+
+export const logout = (): AxiosPromise => http({
+  url: '/api/v1/logout',
+  method: 'POST',
+})

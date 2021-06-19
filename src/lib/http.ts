@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
 import store from 'store/index'
-import { get } from 'lodash-es'
-import { clearSession } from 'lib/function'
 
 export type { AxiosPromise } from 'axios'
 
@@ -34,17 +32,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     // 业务code处理
-    return response
+    return response.data
   },
   error => {
     const errorMessage = error.response?.data?.message
     console.warn('http请求失败', error.response)
-    if (error.status === 401) {
-      clearSession()
+    if (error.response.status === 401) {
       // Refresh the whole page to ensure cache is clear
       // and we dont end on an infinite loop
+      localStorage.removeItem('userLoggedIn')
       window.location.href = '/login'
-      return Promise.reject(error.statusText)
     }
     message.error(errorMessage)
     return Promise.reject(error.response)

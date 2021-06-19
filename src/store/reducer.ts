@@ -2,9 +2,9 @@ import {
   combineReducers,
 } from 'redux'
 
-import userReducer from './user/reducer'
+import userReducer from './user'
 
-import type { UserState } from './user/type'
+import type { UserState } from './user'
 
 const reducers = combineReducers({
   user: userReducer,

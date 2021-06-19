@@ -3,9 +3,9 @@ import history from 'router/history'
 import { getQueryByName } from 'lib/function'
 import { login, LoginParams } from 'api/user'
 import { useDispatch } from 'react-redux'
-import { userSaveAction } from 'store/user/action'
+import { UserAction } from 'store/user'
 
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
 import {
   Alert,
   Space,
@@ -75,16 +75,16 @@ const Login: RouteComponent = () => {
       secretKey,
       autoLogin,
     })
-      .then(res => {
-        dispatch(
-          userSaveAction({
-            isLogin: true,
-            user: accessKey,
-            token: res.data.sessionId,
-          }),
-        )
-        message.success('登录成功！')
+      .then((res: any) => {
+        const loginAction: UserAction = {
+          type: 'USER/USER_SAVE',
+          isLogin: true,
+          user: accessKey,
+          token: res.sessionId,
+        }
+        dispatch(loginAction)
         accessKey && window.localStorage.setItem('userLoggedIn', window.btoa(accessKey))
+        message.success('登录成功！')
         goto()
       })
       .catch(() => {
