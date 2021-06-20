@@ -79,15 +79,14 @@ TODO: 主题色设置一次, 全局生效
    - [x] Scoped scss
    - [ ] 不需要module，根据babel做判断
    - [ ] Cssnao(暂时不需要)
-   - [ ] Module scss ts 提示
 
 3. 全局状态管理
 
-   - [x] redux + redux-sage
+   - [x] redux + redux-thunk
    - [x] ts 支持
-   - [ ] 如何在使用全局状态后做操作
+   - [x] 如何在使用全局状态后做操作(redux-thunk 可以返回 promise)
 
-4. 权限
+4. 权限 （暂时不做）
 
    - [ ] 页面级
    - [ ] 按钮级
@@ -95,7 +94,6 @@ TODO: 主题色设置一次, 全局生效
 
 5. layout
 
-   - [ ] 使用pro 的样式实现基本的layout和基本逻辑
    - [x] 引入antd 并做懒加载
    - [x] 主题色
 

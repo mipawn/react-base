@@ -1,12 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import 'assets/scss/reset.scss'
 import 'normalize.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import store from './store'
 
-ReactDOM.render(
+render(
   // <React.StrictMode>
   <App store={store} />,
   // </React.StrictMode>,

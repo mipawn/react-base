@@ -3,6 +3,7 @@ import {
   Button, Layout, Menu, Dropdown, Avatar,
 } from 'antd'
 import Header from 'components/Header'
+import Icon from 'components/Icon'
 
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
@@ -12,6 +13,7 @@ import { logout } from 'lib/user'
 import { renderRoutes } from 'react-router-config'
 import menus from 'router/menu'
 import { RouteProps } from 'router/type'
+
 import MenuLogo from './logo'
 
 import './index.scss'
@@ -59,13 +61,13 @@ const BasicLayout: FC<BasicProps> = (props) => {
   const Menus = menus.map(menu => {
     return menu.children
       ? (
-        <SubMenu key={`${menu.path}`} icon={menu.icon} title={menu.title}>
+        <SubMenu key={`${menu.path}`} icon={<Icon type={menu.icon} />} title={menu.title}>
           {(menu.children as RouteProps[]).map(subMenu => {
-            return <Menu.Item key={`${subMenu.path}`} icon={subMenu.icon}>{subMenu.title}</Menu.Item>
+            return <Menu.Item key={`${subMenu.path}`} icon={<Icon type={subMenu.icon} />}>{subMenu.title}</Menu.Item>
           })}
         </SubMenu>
       )
-      : <Menu.Item key={`${menu.path}`} icon={menu.icon}>{menu.title}</Menu.Item>
+      : <Menu.Item key={`${menu.path}`} icon={<Icon type={menu.icon} />}>{menu.title}</Menu.Item>
   })
 
   const onSelect = (selected: any) => {
