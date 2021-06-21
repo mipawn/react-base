@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import history from 'router/history'
-import { getQueryByName } from 'lib/function'
+import { getQueryByName } from '@/lib/query'
 import { login, LoginParams } from 'api/user'
 import { useDispatch } from 'react-redux'
 import { UserAction } from 'store/user'
@@ -80,7 +80,7 @@ const Login: RouteComponent = () => {
           type: 'USER/USER_SAVE',
           isLogin: true,
           user: accessKey,
-          token: res.sessionId,
+          token: res.data.sessionId,
         }
         dispatch(loginAction)
         accessKey && window.localStorage.setItem('userLoggedIn', window.btoa(accessKey))

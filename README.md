@@ -77,6 +77,7 @@ TODO: 主题色设置一次, 全局生效
    - [x] Module scss
    - [x] 全局变量
    - [x] Scoped scss
+   - [x] module scss 提示
    - [ ] 不需要module，根据babel做判断
    - [ ] Cssnao(暂时不需要)
 
@@ -110,8 +111,9 @@ TODO: 主题色设置一次, 全局生效
 8. 国际化
    - [ ] i18
 
-9. 页面开始白屏
+9. 页面白屏
    - [x] 页面加载初始loading
+   - [ ] 页面懒加载闪屏
 
 10. 编译分析
    - [ ] 打包分析

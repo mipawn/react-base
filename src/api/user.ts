@@ -21,3 +21,13 @@ export const logout = (): AxiosPromise => http({
   url: '/api/v1/logout',
   method: 'POST',
 })
+
+export interface DashboardInfoType {
+  buckets: number,
+  objects: number,
+  usage: number
+}
+export const getDashboardInfo = (): AxiosPromise<DashboardInfoType> => http({
+  url: '/api/v1/admin/info',
+  method: 'GET',
+})

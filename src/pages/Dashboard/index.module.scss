@@ -1,0 +1,16 @@
+.container {
+  padding: 24px;
+  display: flex;
+}
+.card-desc {
+  overflow: hidden;
+  :global .ant-card-meta-description {
+    color: #000000;
+    font-size: 60px;
+    font-weight: bold;
+  }
+}
+.smallUnit {
+  font-size: 16px;
+}
+

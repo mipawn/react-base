@@ -7,5 +7,6 @@ export interface RouteProps extends RouteDefaultProps {
   title?: string,
   route?: RouteProps,
   icon?: IconType,
-  children?: RouteProps[]
+  children?: RouteProps[],
+  breadcrumbName?: string
 }

@@ -29,6 +29,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/semi': [ 2, 'never', { beforeStatementContinuationChars: 'always' }],
     '@typescript-eslint/no-unused-vars': 1,
+    '@typescript-eslint/explicit-module-boundary-types': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 0,
@@ -53,6 +54,7 @@ module.exports = {
     "arrow-parens": 0,
     "arrow-body-style": 0,
     "@typescript-eslint/no-unused-expressions": 0,
-    "consistent-return": 0
+    "consistent-return": 0,
+    'react/no-array-index-key': 0
   },
 }

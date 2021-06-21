@@ -10,7 +10,8 @@
       "lib/*": ["./src/lib/*"],
       "assets/*": ["./src/assets/*"],
       "img/*": ["./src/assets/img/*"],
-      "api/*": ["./src/api/*"]
+      "api/*": ["./src/api/*"],
+      "pages/*": ["./src/pages/*"]
     }
   }
 }

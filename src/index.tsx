@@ -3,11 +3,10 @@ import 'assets/scss/reset.scss'
 import 'normalize.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import store from './store'
 
 render(
   // <React.StrictMode>
-  <App store={store} />,
+  <App />,
   // </React.StrictMode>,
   document.getElementById('root'),
 )

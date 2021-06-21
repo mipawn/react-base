@@ -32,7 +32,8 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     // 业务code处理
-    return response.data
+    // 更好的ts 支持和业务处理，直接返回response，而不是返回 response.data
+    return response
   },
   error => {
     const errorMessage = error.response?.data?.message

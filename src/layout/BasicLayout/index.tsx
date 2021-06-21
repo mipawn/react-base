@@ -16,7 +16,7 @@ import { RouteProps } from 'router/type'
 
 import MenuLogo from './logo'
 
-import './index.scss'
+import styles from './index.module.scss'
 
 const {
   Header: LayoutHeader, Content, Sider,
@@ -39,6 +39,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
   const { route } = props
   const [allowedRoutes, setAllowedRoutes] = useState([]) // 后面更新权限的时候再制定方案
   const [collapsed, setCollapsed] = useState(false)
+
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -48,7 +49,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
     getSession()
       .then((res: any) => {
         // console.log(res)
-        setAllowedRoutes(res.pages)
+        setAllowedRoutes(res.data.pages)
       })
       .catch(err => {
         console.log(err)
@@ -76,7 +77,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
   }
 
   return (
-    <div className="layout">
+    <div className={styles.layout}>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -85,6 +86,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
         >
           <MenuLogo collapsed={collapsed} />
           <Menu
+            className={styles.menu}
             theme="dark"
             defaultSelectedKeys={defaultKeys}
             defaultOpenKeys={defaultKeys}
@@ -98,10 +100,10 @@ const BasicLayout: FC<BasicProps> = (props) => {
           </Menu>
         </Sider>
         <Layout>
-          <LayoutHeader className="page-header">
+          <LayoutHeader className={styles['page-header']}>
             {/* 预留 */}
-            <div className="header-start" />
-            <div className="header-end">
+            <div className={styles['header-start ']} />
+            <div className={styles['header-end']}>
               <Dropdown
                 key="dropdown"
                 overlay={(
@@ -110,7 +112,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
                   </Menu>
                 )}
               >
-                <div className="user">
+                <div className={styles.user}>
                   <Avatar />
                   <span style={{ marginLeft: '10px' }}>admin</span>
                 </div>
@@ -124,7 +126,7 @@ const BasicLayout: FC<BasicProps> = (props) => {
                 )}
                 placement="bottomRight"
               >
-                <span className="globalIconClassName">
+                <span className={styles.globalIconClassName}>
                   <i className="anticon" title="切换语言">
                     <svg
                       viewBox="0 0 24 24"

@@ -1,0 +1,10 @@
+.header {
+  :global {
+    a {
+      color: #333;
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
