@@ -1,25 +1,40 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import LayoutRoutes from './layout'
 
-const routes: Array<RouteRecordRaw> = [
+import Login from '@/pages/Login/index.vue'
+import Layout from '@/components/Layout/index.vue'
+import notFound from '@/pages/404/index.vue'
+
+export const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/',
+    name: 'layout',
+    component: Layout,
+    redirect: { name: 'index' },
+    meta: {
+      title: '首页'
+    },
+    children: LayoutRoutes
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: notFound
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404'
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+  history: createWebHistory(),
+  routes,
 })
 
 export default router
