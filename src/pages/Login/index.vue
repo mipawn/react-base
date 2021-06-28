@@ -122,7 +122,7 @@ export default defineComponent({
     ElButton,
     ElInput,
     ElLink,
-    Lang
+    // Lang
   },
   setup() {
     const passwordType = ref('password')

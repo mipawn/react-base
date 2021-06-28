@@ -52,7 +52,7 @@ const layout: RouteRecordRaw[] = [
       },
     ]
   },
-  {
+  /* {
     path: '/admin',
     name: 'admin',
     component: Admin,
@@ -80,7 +80,7 @@ const layout: RouteRecordRaw[] = [
         },
       },
     ]
-  },
+  }, */
   {
     path: '/utils',
     name: 'utils',
