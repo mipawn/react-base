@@ -14,10 +14,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+import {
+  defineComponent,
+  ref,
+  watchEffect,
+  computed
+} from 'vue'
 import { useRoute, RouteLocationNormalizedLoaded } from 'vue-router'
 import layoutList from '@/router/layout'
 import * as dynamicMenusModules from './menu'
+import { useStore } from 'vuex'
 
 import {
   ElMenu,
@@ -33,6 +39,8 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const fullPath = ref('/')
+    const store = useStore()
+    const user = computed(() => store.state.user.userInfo)
 
     const setFullPath = (route: RouteLocationNormalizedLoaded) => {
       const { meta, path, params } = route
@@ -40,7 +48,7 @@ export default defineComponent({
         ? params.path[0].split('.').slice(-1).join('')
         : path.split('.').slice(-1).join('')
       if (meta && meta.menus === 'fileChildren') {
-        const menus = dynamicMenusModules['fileChildren']
+        const menus = dynamicMenusModules['fileChildren'](user.value.account)
         const menu = menus.find(menu => menu.path.includes(type))
         fullPath.value = `/file/${menu?.path}`
         return 
@@ -63,7 +71,7 @@ export default defineComponent({
       .filter(route => filterObj(route, 'hidden', undefined))
       .map(route => {
         if (route.path === '/file') {
-          route.children = dynamicMenusModules['fileChildren'] as any
+          route.children = dynamicMenusModules['fileChildren'](user.value.account) as any
         }
         return route
       })

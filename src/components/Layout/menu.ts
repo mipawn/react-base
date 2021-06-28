@@ -3,11 +3,7 @@
  * 2. 针对需提前处理的 menu
  */
 
-import store from '@/store/index'
-const account = (store as any ).state.user.userInfo.account
-const filePre = `${account}.`
-
-export const fileChildren = [
+export const fileChildren = (account: string) => [
   {
     path: 'all',
     name: 'fileAll',
@@ -17,7 +13,7 @@ export const fileChildren = [
     },
   },
   {
-    path: `${filePre}hot`,
+    path: `${account}.hot`,
     name: 'fileHot',
     meta: {
       title: '常温区',
@@ -25,7 +21,7 @@ export const fileChildren = [
     },
   },
   {
-    path: `${filePre}freezer`,
+    path: `${account}.freezer`,
     name: 'fileFreezer',
     meta: {
       title: '冷冻区',
@@ -33,7 +29,7 @@ export const fileChildren = [
     }
   },
   {
-    path: `${filePre}shared`,
+    path: `${account}.shared`,
     name: 'fileShared',
     meta: {
       title: '共享区',
@@ -41,7 +37,7 @@ export const fileChildren = [
     }
   },
   {
-    path: `${filePre}recycle`,
+    path: `${account}.recycle`,
     name: 'fileRecycle',
     meta: {
       title: '回收区',

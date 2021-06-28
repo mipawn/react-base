@@ -17,9 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, ref } from 'vue'
+import { defineComponent, watchEffect, ref, onUnmounted } from 'vue'
 import { getSession } from '@/api/user'
 import { error } from '@/utils/error'
+import Bus from '@/lib/event-bus'
 
 import {
   ElContainer,
@@ -50,7 +51,13 @@ export default defineComponent({
         })
         .catch(error)
     })
-    
+    const setLoading = (status: any): void => {
+      loading.value = status
+    }
+    Bus.on('setPageLoading', setLoading)
+    onUnmounted(() => {
+      Bus.off('setPageLoading', setLoading)
+    })
     return {
       loading,
       headerHeight: '48px'

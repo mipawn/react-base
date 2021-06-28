@@ -6,9 +6,11 @@ const File = (): RouteComponent => import('@/pages/File/index.vue')
 const FileArea = (): RouteComponent => import('@/pages/File/Area.vue')
 const FileFolder = (): RouteComponent => import('@/pages/File/Folder.vue')
 
+const Admin = (): RouteComponent => import('@/pages/Admin/index.vue')
 const AdminUser = (): RouteComponent => import('@/pages/Admin/User.vue')
 const AdminUserGroup = (): RouteComponent => import('@/pages/Admin/UserGroup.vue')
 
+const Utils = (): RouteComponent => import('@/pages/Utils/index.vue')
 const Logs = (): RouteComponent => import('@/pages/Utils/Logger.vue')
 
 
@@ -51,24 +53,54 @@ const layout: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/admin/user',
-    name: 'adminUser',
-    component: AdminUser
-  },
-  {
-    path: '/admin/user-group',
-    name: 'adminUserGroup',
-    component: AdminUserGroup
-  },
-  {
-    path: '/logs',
-    name: 'logs',
-    component: Logs,
+    path: '/admin',
+    name: 'admin',
+    component: Admin,
     meta: {
-      title: '日志',
-      icon: 'el-icon-data-analysis'
-    }
-  }
+      title: '管理员',
+      icon: 'el-icon-user'
+    },
+    children: [
+      {
+        path: 'admin/user',
+        name: 'adminUser',
+        component: AdminUser,
+        meta: {
+          title: '用户',
+          icon: ''
+        },
+      },
+      {
+        path: 'admin/user-group',
+        name: 'adminUserGroup',
+        component: AdminUserGroup,
+        meta: {
+          title: '用户组',
+          icon: ''
+        },
+      },
+    ]
+  },
+  {
+    path: '/utils',
+    name: 'utils',
+    component: Utils,
+    redirect: '/utils/logs',
+    meta: {
+      title: '工具',
+      icon: 'el-icon-s-tools'
+    },
+    children: [
+      {
+        path: 'logs',
+        name: 'logs',
+        component: Logs,
+        meta: {
+          title: '日志'
+        }
+      }
+    ]
+  },
 ]
 
 export default layout

@@ -41,7 +41,7 @@ interface uploadObjectProps {
 export const uploadObject = ({ url, data, onProgress }: uploadObjectProps): AxiosPromise => http({
   url,
   headers: {
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
   },
   method: 'POST',
   data,

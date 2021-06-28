@@ -23,7 +23,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <Lang />
+      <!-- <Lang /> -->
     </div>
   </div>
 </template>
@@ -61,7 +61,7 @@ export default defineComponent({
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    Lang
+    // Lang
   },
   setup() {
     let breadcrumb = reactive({
@@ -80,7 +80,7 @@ export default defineComponent({
           const path = route.params.path[0]
           params = { path:route.params.path.slice(0, 1) }
           const type = path.split('.').slice(-1).join('')
-          const menus = dynamicMenusModules['fileChildren']
+          const menus = dynamicMenusModules['fileChildren'](user.value.account)
           const menu = menus.find(menu => menu.path.includes(type))
           meta = menu.meta
           if (route.params.path.length > 1) {

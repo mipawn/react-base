@@ -65,6 +65,7 @@ import { useStore } from 'vuex'
 import { getBucketsList } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes } from '@/utils/format'
+import Bus from '@/lib/event-bus'
 
 import {
   ElInput,
@@ -107,7 +108,7 @@ export default defineComponent({
 
     // 获取列表
     const setBucketsList = () => {
-      context.emit('update:loading', true)
+      Bus.emit('setPageLoading', true)
       getBucketsList()
         .then(res => {
           const bucketsObj = res.data.buckets.reduce(function (pre: any, current: any) {
@@ -131,7 +132,7 @@ export default defineComponent({
         })
         .catch(error)
         .finally(() => {
-          context.emit('update:loading', false)
+          Bus.emit('setPageLoading', false)
         })
     }
     watchEffect(() => {

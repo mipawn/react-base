@@ -3,7 +3,7 @@
     <div class="header">
       <div></div>
       <div class="menu">
-        <Lang />
+        <!-- <Lang /> -->
       </div>
     </div>
     <div class="body">

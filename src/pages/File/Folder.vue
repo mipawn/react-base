@@ -123,6 +123,9 @@ import { niceBytes, dateFormat } from '@/utils/format'
 import { downloadObject } from '@/utils/download'
 import { uploadObject } from '@/api/bucket'
 import { v4 as uuidv4 } from 'uuid'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 
 import { 
   ElTable,
@@ -169,18 +172,23 @@ export default defineComponent({
     })
     
     const upload = (uploadOptions: any) => {
+      NProgress.start()
+
       const { file } = uploadOptions
-      const formData = new FormData();
+      const formData = new FormData()
 
       const fileName = file.name
-      const blobFile = new Blob([file]);
-      formData.append(fileName, blobFile);
+      const blobFile = new Blob([file])
+      formData.append(fileName, blobFile)
+      
       uploadObject({
         url: uploadUrl.value,
         data: formData,
         onProgress: (progressEvent: ProgressEvent) => {
           const progress = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+          NProgress.set(progress / 100)
           if (progress >= 100) {
+            NProgress.done()
             message.success('文件上传成功')
             setObjectsList()
           }
@@ -361,4 +369,5 @@ export default defineComponent({
 :deep(.table-row) {
   cursor: pointer;
 }
+
 </style>

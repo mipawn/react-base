@@ -3,14 +3,14 @@
     <template v-for="item in menusList" :key="item.name">
       <el-submenu :index="formatPath(prePath, item.path)" v-if="item.children">
         <template #title>
-          <i :class="item.meta.icon"></i>
-          <span>{{item.meta.title}}</span>
+          <i :class="item.meta && item.meta.icon"></i>
+          <span>{{item.meta && item.meta.title}}</span>
         </template>
         <menu-tree :menusList="item.children" :prePath="formatPath(prePath, item.path)"></menu-tree>
       </el-submenu>
       <el-menu-item v-else :index="formatPath(prePath, item.path)">
-        <i :class="item.meta.icon || ''"></i>
-        <span>{{item.meta.title}}</span>
+        <i :class="(item.meta && item.meta.icon) || ''"></i>
+        <span>{{item.meta && item.meta.title}}</span>
       </el-menu-item>
     </template>
   </div>
