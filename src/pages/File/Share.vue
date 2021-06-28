@@ -2,20 +2,20 @@
   <div>
     <el-dialog
       v-model="isShow"
-      title="文件分享"
+      :title="t('file.share.title')"
       width="50%"
       @close="close"
       >
       <div>
         <div class="header">
-          <span>自定义有效期(默认7天)  </span>
+          <span>{{t('file.sahre.utils')}}  </span>
           <el-switch v-model="isCustomUtil" />
           <el-date-picker
             style="margin-left: 20px"
             v-model="customDate"
             v-if="isCustomUtil" 
             type="date"
-            placeholder="选择日期"
+            :placeholder="t('file.share.selectDate')"
             :disabledDate="disabledDate"
             @change="setDate"
           />
@@ -29,7 +29,7 @@
             v-clipboard:success="copySuccess"
             v-clipboard:error="copyError"
             >
-            复制
+            {{t('file.share.copy')}}
           </el-button>
         </div>
       </div>
@@ -45,6 +45,7 @@ import {
   watch
 } from 'vue'
 import { shareObject } from '@/api/bucket'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElDialog,
@@ -81,6 +82,7 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const { t } = useI18n()
     const isShow = ref(props.show)
     const isCustomUtil = ref(false)
     const customDate = ref('')
@@ -139,10 +141,10 @@ export default defineComponent({
     }
 
     const copySuccess = () => {
-      message.success('复制成功')
+      message.success(t('file.share.copySuccess'))
     }
     const copyError = () => {
-      message.warning('浏览器不支持')
+      message.warning(t('file.share.notSupport'))
     }
 
     return {
@@ -156,6 +158,7 @@ export default defineComponent({
       setDate,
       copySuccess,
       copyError,
+      t,
     }
   },
 })

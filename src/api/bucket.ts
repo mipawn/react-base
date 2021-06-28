@@ -46,6 +46,7 @@ export const uploadObject = ({ url, data, onProgress }: uploadObjectProps): Axio
   method: 'POST',
   data,
   onUploadProgress: onProgress,
+  timeout: 1000000,
 })
 
 interface ShareParams {

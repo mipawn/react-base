@@ -3,7 +3,7 @@
     <div class="header">
       <el-input
         v-model="searchKey"
-        placeholder="搜索区域"
+        :placeholder="t('file.searchBuckets')"
         prefix-icon="el-icon-search"
         @input="search"
       />
@@ -31,7 +31,7 @@
         >
         <el-table-column
           prop="name"
-          label="名称"
+          :label="t('file.name')"
           >
           <template #default="scope">
             <i class="el-icon-shopping-bag-2"></i>
@@ -42,7 +42,7 @@
         <el-table-column
           prop="size"
           width="200"
-          label="已用空间"
+          :label="t('file.size')"
           >
           <template #default="scope">
             <span>{{niceBytes(scope.row.size)}}</span>
@@ -66,6 +66,7 @@ import { getBucketsList } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes } from '@/utils/format'
 import Bus from '@/lib/event-bus'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElInput,
@@ -89,6 +90,7 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const { t } = useI18n()
     const route = useRoute()
     const store = useStore()
     const router = useRouter()
@@ -170,7 +172,8 @@ export default defineComponent({
       niceBytes,
       formatName,
       goFolder,
-      search
+      search,
+      t,
     }
   },
 })

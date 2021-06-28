@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="actions">
-      <div class="tips">操作：</div>
+      <div class="tips">{{t('file.options')}}：</div>
       <i class="el-icon-share" @click="openShare"></i>
       <i class="el-icon-download" @click="down"></i>
       <i class="el-icon-delete" @click="del"></i>
     </div>
     <div class="tags">
-      <div class="tips">标签：</div>
-      <el-button type="primary" size="small">添加标签</el-button>
+      <div class="tips">{{t('file.label')}}：</div>
+      <el-button type="primary" size="small">{{t('file.addLabel')}}</el-button>
     </div>
     <file-share
       v-model:show="isShowShare"
@@ -28,6 +28,7 @@ import { getObjectDetails, delObject } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { downloadObject } from '@/utils/download'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElButton,
@@ -47,6 +48,7 @@ export default defineComponent({
     FileShare
   },
   setup(props) {
+    const { t } = useI18n()
     const router = useRouter()
     const route = useRoute()
 
@@ -71,12 +73,12 @@ export default defineComponent({
     }
     const del = () => {
       messageBox({
-        title: '提示',
+        title: t('file.del.delTitle'),
         type: 'info',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+        confirmButtonText: t('file.delButton'),
+        cancelButtonText: t('file.cancel'),
         showCancelButton: true,
-        message: `确定删除${props.extraPath}`
+        message: `${t('file.del.delMessage')} ${props.extraPath}`
       })
       .then(action => {
         if (action === 'confirm') {
@@ -86,7 +88,7 @@ export default defineComponent({
             recursive: false
           })
             .then(() => {
-              message.success('删除成功')
+              message.success(t('file.del.delSuccess'))
               const backUrl = route.path.split('/').slice(0, -1).join('/')
               router.replace(backUrl)
             })
@@ -107,6 +109,7 @@ export default defineComponent({
       down,
       del,
       openShare,
+      t
     }
   },
 })

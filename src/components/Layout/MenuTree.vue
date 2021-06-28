@@ -4,13 +4,13 @@
       <el-submenu :index="formatPath(prePath, item.path)" v-if="item.children">
         <template #title>
           <i :class="item.meta && item.meta.icon"></i>
-          <span>{{item.meta && item.meta.title}}</span>
+          <span>{{item.meta && t(`menu.${item.meta.title}`)}}</span>
         </template>
         <menu-tree :menusList="item.children" :prePath="formatPath(prePath, item.path)"></menu-tree>
       </el-submenu>
       <el-menu-item v-else :index="formatPath(prePath, item.path)">
         <i :class="(item.meta && item.meta.icon) || ''"></i>
-        <span>{{item.meta && item.meta.title}}</span>
+        <span>{{item.meta && t(`menu.${item.meta.title}`)}}</span>
       </el-menu-item>
     </template>
   </div>
@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElMenuItem,
@@ -42,13 +43,16 @@ export default defineComponent({
     ElSubmenu,
   },
   setup() {
+    const { t } = useI18n()
+
     const formatPath = (prePath: string, path: string) => {
       if (!prePath) return path
       return `${prePath}/${path}`
     }
 
     return {
-      formatPath
+      formatPath,
+      t
     }
   },
 })

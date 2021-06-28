@@ -1,25 +1,25 @@
 <template>
   <div>
     <el-dialog
-      title="创建文件夹"
+      :title="t('file.createFolder')"
       v-model="isShow"
       width="30%"
       @close="close"
       >
       <div>
-        <div>当前位置：{{path}}</div>
+        <div>{{t('file.currentPath')}}：{{path}}</div>
         <div class="input">
           <el-input
             type="text"
             v-model="newPath"
-            placeholder="输入文件夹名字"
+            :placeholder="t('file.createFolderPlaceholder')"
           />
         </div>
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="close">取 消</el-button>
-          <el-button type="primary" @click="create">创 建</el-button>
+          <el-button @click="close">{{t('file.cancel')}}</el-button>
+          <el-button type="primary" @click="create">{{t('file.create')}}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -33,6 +33,7 @@ import {
   watch
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElDialog,
@@ -59,6 +60,7 @@ export default defineComponent({
   },
   emits: ['update:show'],
   setup(props, context) {
+    const { t }= useI18n()
     const router = useRouter()
     const route = useRoute()
 
@@ -84,6 +86,7 @@ export default defineComponent({
 
       close,
       create,
+      t,
     }
   },
 })

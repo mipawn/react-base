@@ -6,9 +6,9 @@ const File = (): RouteComponent => import('@/pages/File/index.vue')
 const FileArea = (): RouteComponent => import('@/pages/File/Area.vue')
 const FileFolder = (): RouteComponent => import('@/pages/File/Folder.vue')
 
-const Admin = (): RouteComponent => import('@/pages/Admin/index.vue')
-const AdminUser = (): RouteComponent => import('@/pages/Admin/User.vue')
-const AdminUserGroup = (): RouteComponent => import('@/pages/Admin/UserGroup.vue')
+// const Admin = (): RouteComponent => import('@/pages/Admin/index.vue')
+// const AdminUser = (): RouteComponent => import('@/pages/Admin/User.vue')
+// const AdminUserGroup = (): RouteComponent => import('@/pages/Admin/UserGroup.vue')
 
 const Utils = (): RouteComponent => import('@/pages/Utils/index.vue')
 const Logs = (): RouteComponent => import('@/pages/Utils/Logger.vue')
@@ -20,7 +20,7 @@ const layout: RouteRecordRaw[] = [
     name: 'index',
     component: DashBoard,
     meta: {
-      title: '仪表盘',
+      title: 'dashboard',
       icon: 'el-icon-menu'
     }
   },
@@ -29,7 +29,7 @@ const layout: RouteRecordRaw[] = [
     name: 'file',
     component: File,
     meta: {
-      title: '文件柜',
+      title: 'fileCabinet',
       icon: 'el-icon-folder-opened'
     },
     redirect: '/file/all',
@@ -39,7 +39,7 @@ const layout: RouteRecordRaw[] = [
         name: 'fileFolder',
         props: true,
         meta: {
-          title: '文件柜',
+          title: 'fileCabinet',
           icon: 'el-icon-folder-opened',
           menus: 'fileChildren'
         },
@@ -87,7 +87,7 @@ const layout: RouteRecordRaw[] = [
     component: Utils,
     redirect: '/utils/logs',
     meta: {
-      title: '工具',
+      title: 'utils',
       icon: 'el-icon-s-tools'
     },
     children: [
@@ -96,7 +96,7 @@ const layout: RouteRecordRaw[] = [
         name: 'logs',
         component: Logs,
         meta: {
-          title: '日志'
+          title: 'log'
         }
       }
     ]

@@ -3,12 +3,13 @@
  * 2. 针对需提前处理的 menu
  */
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const fileChildren = (account: string) => [
   {
     path: 'all',
     name: 'fileAll',
     meta: {
-      title: '全部',
+      title: 'All Zone',
       type: 'all'
     },
   },
@@ -16,7 +17,7 @@ export const fileChildren = (account: string) => [
     path: `${account}.hot`,
     name: 'fileHot',
     meta: {
-      title: '常温区',
+      title: 'Hot Zone',
       type: 'hot'
     },
   },
@@ -24,7 +25,7 @@ export const fileChildren = (account: string) => [
     path: `${account}.freezer`,
     name: 'fileFreezer',
     meta: {
-      title: '冷冻区',
+      title: 'Freezer Zone',
       type: 'freezer'
     }
   },
@@ -32,7 +33,7 @@ export const fileChildren = (account: string) => [
     path: `${account}.shared`,
     name: 'fileShared',
     meta: {
-      title: '共享区',
+      title: 'Shared Zone',
       type: 'shared'
     }
   },
@@ -40,7 +41,7 @@ export const fileChildren = (account: string) => [
     path: `${account}.recycle`,
     name: 'fileRecycle',
     meta: {
-      title: '回收区',
+      title: 'Recycle Bin',
       type: 'recycle'
     }
   },

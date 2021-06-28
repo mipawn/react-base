@@ -4,7 +4,7 @@
       <div class="header">
         <el-input
           v-model="searchKey"
-          placeholder="搜索区域"
+          :placeholder="t('file.searchObjects')"
           prefix-icon="el-icon-search"
           @input="search"
         />
@@ -19,7 +19,7 @@
           type="primary"
           @click="toggleFolderCeateModel"
           >
-          创建文件夹
+          {{t('file.createFolder')}}
         </el-button>
         <el-upload
           :http-request="upload"
@@ -33,7 +33,7 @@
             icon="el-icon-plus"
             type="primary"
             >
-            文件
+            {{t('file.File')}}
           </el-button>
         </el-upload>
       </div>
@@ -47,7 +47,7 @@
           >
           <el-table-column
             prop="name"
-            label="名称"
+            :label="t('file.name')"
             >
             <template #default="scope">
               <i v-if="scope.row.type === 'folder'" class="icon-type el-icon-folder"></i>
@@ -57,7 +57,7 @@
           </el-table-column>
           <el-table-column
             prop="last_modified"
-            label="最后修改时间"
+            :label="t('file.lastModified')"
             >
             <template #default="scope">
               <span v-if="scope.row.type === 'file'">{{dateFormat(scope.row.last_modified)}}</span>
@@ -66,7 +66,7 @@
           <el-table-column
             prop="size"
             width="200"
-            label="大小"
+            :label="t('file.size')"
             >
             <template #default="scope">
               <span v-if="scope.row.type === 'file'">{{niceBytes(scope.row.size)}}</span>
@@ -74,7 +74,7 @@
           </el-table-column>
           <el-table-column
             width="200"
-            label="操作"
+            :label="t('file.options')"
             >
             <template #default="scope">
               <el-button
@@ -82,13 +82,13 @@
                 type="text"
                 @click="(e) => down(scope.row, e)"
                 >
-                下载
+                {{t('file.download')}}
               </el-button>
               <el-button
                 type="text"
                 @click="(e) => del(scope.row, e)"
                 >
-                删除
+                {{t('file.delButton')}}
               </el-button>
             </template>
           </el-table-column>
@@ -124,7 +124,9 @@ import { downloadObject } from '@/utils/download'
 import { uploadObject } from '@/api/bucket'
 import { v4 as uuidv4 } from 'uuid'
 import NProgress from 'nprogress'
+import Bus from '@/lib/event-bus'
 import 'nprogress/nprogress.css'
+import { useI18n } from 'vue-i18n'
 
 
 import { 
@@ -137,7 +139,7 @@ import {
   ElUpload,
 } from 'element-plus'
 import FolderCreate from './CreateFolder.vue'
-import FileDetails from './details.vue'
+import FileDetails from './Details.vue'
 
 export default defineComponent({
   name: 'file-folder',
@@ -157,6 +159,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = useI18n()
     const router = useRouter()
     const store = useStore()
     const uniqurKey = ref('')
@@ -172,6 +175,7 @@ export default defineComponent({
     })
     
     const upload = (uploadOptions: any) => {
+      Bus.emit('setPageLoading', true)
       NProgress.start()
 
       const { file } = uploadOptions
@@ -189,11 +193,24 @@ export default defineComponent({
           NProgress.set(progress / 100)
           if (progress >= 100) {
             NProgress.done()
-            message.success('文件上传成功')
+            message.success(t('file.upload.uploadSuccess'))
             setObjectsList()
           }
         }
       })
+        .catch((err) => {
+          console.log(err)
+          Bus.emit('setPageLoading', false)
+          NProgress.done()
+          message({
+            message: t('file.upload.uploadFail'),
+            type: 'error'
+          })
+        })
+        .finally(() => {
+          Bus.emit('setPageLoading', false)
+          NProgress.done()
+        })
     }
 
     const objectsList = ref([])
@@ -278,12 +295,12 @@ export default defineComponent({
     const del = async (object: any, e: Event) => {
       e.stopPropagation()
       const action = await messageBox({
-        title: '提示',
+        title: t('file.del.delTitle'),
         type: 'warning',
-        message: `确认删除 ${object.name}`,
+        message: `${t('file.del.delMessage')} ${object.name}`,
         showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '确定'
+        cancelButtonText: t('file.cancel'),
+        confirmButtonText: t('file.delButton')
       }).catch(error)
       if (action !== 'confirm') return
       delObject({
@@ -292,7 +309,7 @@ export default defineComponent({
         recursive: object.type === 'folder'
       })
         .then(() => {
-          message.success('删除成功')
+          message.success(t('file.del.delSuccess'))
           setObjectsList()
         })
         .catch(error)
@@ -338,6 +355,7 @@ export default defineComponent({
       uploadUrl,
       currentType,
       bucketName,
+      uniqurKey,
       
       setObjectsList,
       niceBytes,
@@ -350,8 +368,8 @@ export default defineComponent({
       formatName,
       toggleFolderCeateModel,
       uuid: uuidv4,
-      uniqurKey,
-      rowClick
+      rowClick,
+      t,
     }
   },
 })

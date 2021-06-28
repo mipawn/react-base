@@ -7,7 +7,7 @@
           :key="item.name"
           :to="{ name: item.name, params: item.params }"
           >
-         {{item.meta.title}}
+         {{te(`menu.${item.meta.title}`) ? t(`menu.${item.meta.title}`) : item.meta.title}}
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -19,11 +19,11 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item command="logout">{{t('global.logout')}}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <!-- <Lang /> -->
+      <Lang />
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ import {
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import * as dynamicMenusModules from './menu'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElBreadcrumb,
@@ -61,9 +62,11 @@ export default defineComponent({
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    // Lang
+    Lang
   },
   setup() {
+    const { t, te } = useI18n()
+
     let breadcrumb = reactive({
       list: []
     })
@@ -123,8 +126,11 @@ export default defineComponent({
     return {
       breadcrumb,
       avatarDefault,
+      user,
+
+      t,
+      te,
       handleUserCommand,
-      user
     }
   },
 })

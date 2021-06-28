@@ -3,26 +3,26 @@
     <div class="header">
       <div></div>
       <div class="menu">
-        <!-- <Lang /> -->
+        <Lang />
       </div>
     </div>
     <div class="body">
       <div class="cover">
         <div class="logo">
-          <img src="@/assets/img/common/logo.png" alt="字节方舟">
+          <img src="@/assets/img/common/logo.png" :alt="t('global.name')">
           <span>Console</span>
         </div>
         <div class="desc">
           <p>
             <img src="@/assets/img/login/login-box-bg.svg" alt="">
           </p>
-          <p>欢迎访问Console 系统</p>
-          <p class="info">输入您的账户信息开始使用！</p>
+          <p>{{t('login.desc.title')}}</p>
+          <p class="info">{{t('login.desc.info')}}</p>
         </div>
       </div>
       <div class="main">
 
-        <div class="form-title">登录</div>
+        <div class="form-title">{{t('login.loginForm.title')}}</div>
         <el-form
           :model="loginForm"
           :rules="loginRules"
@@ -32,7 +32,7 @@
           <el-form-item prop="username">
             <el-input
               v-model="loginForm.username"
-              placeholder="输入账户"
+              :placeholder="t('login.loginForm.accountPlaceholder')"
               name="username"
               type="text"
               tabindex="1"
@@ -46,7 +46,7 @@
               :type="passwordType"
               ref="passwordEl"
               v-model="loginForm.password"
-              placeholder="输入密码"
+              :placeholder="t('login.loginForm.passwordPlaceholder')"
               name="password"
               tabindex="2"
               autocomplete="on"
@@ -72,7 +72,7 @@
               style="width: 100%; margin-bottom: 30px"
               @click.prevent="handleLogin"
             >
-              登录
+              {{t('login.loginForm.loginButton')}}
             </el-button>
           </el-form-item>
         </el-form>
@@ -103,6 +103,7 @@ import {
 } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElForm,
@@ -122,9 +123,11 @@ export default defineComponent({
     ElButton,
     ElInput,
     ElLink,
-    // Lang
+    Lang,
   },
   setup() {
+    const { t } = useI18n()
+
     const passwordType = ref('password')
     const passwordEl = ref<HTMLInputElement | null>(null)
     const loading = ref(false)
@@ -144,7 +147,7 @@ export default defineComponent({
       })
       loading.value = false
       if (isLogin.value) {
-        message.success('登录成功')
+        message.success(t('login.loginForm.loginSuccessTips'))
         router.push({ path: '/' })
       }
     }
@@ -163,14 +166,15 @@ export default defineComponent({
     return {
       loginForm,
       loginRules: {
-        username: [{ required: true, trigger: 'blur', message: '请输入账户' }],
-        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+        username: [{ required: true, trigger: 'blur', message: t('login.loginForm.accountPlaceholder') }],
+        password: [{ required: true, trigger: 'blur', message: t('login.loginForm.passwordPlaceholder') }]
       },
       passwordType,
       loading,
+      isCanLogin,
       handleLogin,
       showPwd,
-      isCanLogin
+      t,
     }
   },
 })

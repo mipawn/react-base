@@ -4,7 +4,7 @@
       <template #header>
         <div class="card-header">
           <i class="el-icon-pie-chart"></i>
-          <span>总计容量</span>
+          <span>{{t('dashboard.Usage')}}</span>
         </div>
       </template>
       <span v-if="typeof info.usage === 'string'" class="card-desc">{{info.usage}}</span>
@@ -17,7 +17,7 @@
       <template #header>
         <div class="card-header">
           <i class="el-icon-money"></i>
-          <span>总计对象</span>
+          <span>{{t('dashboard.Total Objects')}}</span>
         </div>
       </template>
       <span class="card-desc">{{info.objects}}</span>
@@ -29,12 +29,12 @@
 import {
   defineComponent,
   watchEffect,
-  reactive,
-  SetupContext
+  reactive
 } from 'vue'
 import { getDashboardInfo } from '@/api/user'
 import { error } from '@/utils/error'
 import { niceBytes } from '@/utils/format'
+import { useI18n } from 'vue-i18n'
 
 import {
   ElCard
@@ -54,6 +54,8 @@ export default defineComponent({
   },
   emits: ['update:loading'],
   setup(_, context) {
+    const { t } = useI18n()
+
     const info = reactive<DashBaoardType>({
       usage: '0',
       objects: 0
@@ -92,7 +94,9 @@ export default defineComponent({
         })
     })
     return {
-      info
+      info,
+      
+      t,
     }
   },
 })

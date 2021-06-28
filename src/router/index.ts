@@ -17,7 +17,7 @@ export const routes: RouteRecordRaw[] = [
     component: Layout,
     redirect: { name: 'index' },
     meta: {
-      title: '首页'
+      title: 'index'
     },
     children: LayoutRoutes
   },
