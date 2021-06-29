@@ -17,13 +17,13 @@ export default {
     delTitle: '删除',
     delMessage: '确认删除',
     delSuccess: '删除成功',
-    delFail: '删除失败'
+    delFail: '删除失败',
   },
   label: '标签',
   addLabel: '添加标签',
   upload: {
     uploadSuccess: '文件上传成功',
-    uploadFail: '文件上传失败'
+    uploadFail: '文件上传失败',
   },
   share: {
     title: '文件分享',
@@ -31,6 +31,6 @@ export default {
     selectDate: '选择日期',
     copy: '复制',
     copySuccess: '复制成功',
-    notSupport: '浏览器不支持'
-  }
+    notSupport: '浏览器不支持',
+  },
 }

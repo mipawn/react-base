@@ -2,7 +2,7 @@ import http, { AxiosPromise } from '@/utils/http'
 
 export const getBucketsList = (): AxiosPromise<any> => http({
   url: 'buckets',
-  method: 'GET'
+  method: 'GET',
 })
 
 interface ObjectsParams {
@@ -18,7 +18,6 @@ export const getObjectDetails = ({ bucketName, extraPath }: ObjectsParams): Axio
   method: 'GET',
 })
 
-
 interface delObjectParams {
   selectedBucket: string,
   selectedObject: string,
@@ -26,12 +25,10 @@ interface delObjectParams {
 }
 export const delObject = ({ selectedBucket, selectedObject, recursive }: delObjectParams): AxiosPromise<any> => http({
   url: `buckets/${selectedBucket}/objects?path=${selectedObject}&recursive=${recursive}`,
-  method: 'DELETE'
+  method: 'DELETE',
 })
 
-export const downObjectPath = (bucketName: string, objectPath: string): string => {
-  return `${process.env.VUE_APP_BASE_API}/buckets/${bucketName}/objects/download?prefix=${objectPath}`
-}
+export const downObjectPath = (bucketName: string, objectPath: string): string => `${process.env.VUE_APP_BASE_API}/buckets/${bucketName}/objects/download?prefix=${objectPath}`
 
 interface uploadObjectProps {
   url: string;
@@ -58,7 +55,7 @@ export const shareObject = ({ bucketName, file, diffDate }: ShareParams): AxiosP
   url: `/buckets/${bucketName}/objects/share?prefix=${
     file.name
   }&version_id=${file.version_id}${
-    diffDate !== "" ? `&expires=${diffDate}ms` : ""
+    diffDate !== '' ? `&expires=${diffDate}ms` : ''
   }`,
-  method: 'GET'
+  method: 'GET',
 })

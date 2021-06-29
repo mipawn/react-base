@@ -8,7 +8,7 @@
 import {
   defineComponent,
   onMounted,
-  ref
+  ref,
 } from 'vue'
 // import { hasPermission } from '@/api/user'
 // import { error } from '@/utils/error'
@@ -33,7 +33,7 @@ export default defineComponent({
     })
 
     return {
-      permissionList
+      permissionList,
     }
   },
 })

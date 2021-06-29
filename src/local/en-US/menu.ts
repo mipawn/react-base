@@ -8,5 +8,5 @@ export default {
   'Hot Zone': 'Hot Zone',
   'Freezer Zone': 'Freezer Zone',
   'Shared Zone': 'Shared Zone',
-  'Recycle Bin': 'Recycle Bin'
+  'Recycle Bin': 'Recycle Bin',
 }

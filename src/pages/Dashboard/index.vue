@@ -10,7 +10,7 @@
       <span v-if="typeof info.usage === 'string'" class="card-desc">{{info.usage}}</span>
       <template v-else>
         <span class="card-desc">{{info.usage[0]}}</span>
-        <span class="smallUnit">{{info.usage[1]}}</span>
+        <span class="small-unit">{{info.usage[1]}}</span>
       </template>
     </el-card>
     <el-card class="card-container">
@@ -29,7 +29,7 @@
 import {
   defineComponent,
   watchEffect,
-  reactive
+  reactive,
 } from 'vue'
 import { getDashboardInfo } from '@/api/user'
 import { error } from '@/utils/error'
@@ -37,7 +37,7 @@ import { niceBytes } from '@/utils/format'
 import { useI18n } from 'vue-i18n'
 
 import {
-  ElCard
+  ElCard,
 } from 'element-plus'
 
 interface DashBaoardType {
@@ -47,10 +47,10 @@ interface DashBaoardType {
 export default defineComponent({
   name: 'Dashboard',
   components: {
-    ElCard
+    ElCard,
   },
   props: {
-    loading: Boolean
+    loading: Boolean,
   },
   emits: ['update:loading'],
   setup(_, context) {
@@ -58,17 +58,17 @@ export default defineComponent({
 
     const info = reactive<DashBaoardType>({
       usage: '0',
-      objects: 0
+      objects: 0,
     })
     const prettyUsage = (usage: string | undefined) => {
       if (usage === undefined) {
         return '0'
       }
 
-      const niceBytesUsage = niceBytes(usage).split(" ");
+      const niceBytesUsage = niceBytes(usage).split(' ')
 
       if (niceBytesUsage.length !== 2) {
-        return niceBytesUsage.join(" ")
+        return niceBytesUsage.join(' ')
       }
 
       return niceBytesUsage
@@ -83,7 +83,7 @@ export default defineComponent({
     watchEffect(() => {
       context.emit('update:loading', true)
       getDashboardInfo()
-        .then(res => {
+        .then((res) => {
           const { usage, objects } = res.data
           info.usage = prettyUsage(`${usage}`)
           info.objects = prettyNumber(objects)
@@ -95,7 +95,7 @@ export default defineComponent({
     })
     return {
       info,
-      
+
       t,
     }
   },
@@ -104,8 +104,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .dashboard {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .card-container {
@@ -118,21 +118,21 @@ export default defineComponent({
 }
 
 .card-header {
-  color: #777777;
+  color: #777;
 
   span {
-    margin-left: 8px;
     font-size: 14px;
+    margin-left: 8px;
   }
 }
 
 .card-desc {
-  color: #000000;
+  color: #000;
   font-size: 60px;
   font-weight: bold;
 }
 
-.smallUnit {
+.small-unit {
   font-size: 16px;
   font-weight: 500;
   margin-left: 4px;

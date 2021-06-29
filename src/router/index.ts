@@ -1,15 +1,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import LayoutRoutes from './layout'
 
 import Login from '@/pages/Login/index.vue'
 import Layout from '@/components/Layout/index.vue'
 import notFound from '@/pages/404/index.vue'
+import LayoutRoutes from './layout'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
   },
   {
     path: '/',
@@ -17,19 +17,19 @@ export const routes: RouteRecordRaw[] = [
     component: Layout,
     redirect: { name: 'index' },
     meta: {
-      title: 'index'
+      title: 'index',
     },
-    children: LayoutRoutes
+    children: LayoutRoutes,
   },
   {
     path: '/404',
     name: '404',
-    component: notFound
+    component: notFound,
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/404'
-  }
+    redirect: '/404',
+  },
 ]
 
 const router = createRouter({

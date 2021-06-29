@@ -1,9 +1,9 @@
 import {
-  ElLoading
+  ElLoading,
 } from 'element-plus'
 
 const plugins = [
-  ElLoading
+  ElLoading,
 ]
 
 export default plugins

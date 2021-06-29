@@ -10,11 +10,10 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Utils',
   setup() {
-    
+
   },
 })
 </script>
-
 
 <style lang="scss" scoped>
 

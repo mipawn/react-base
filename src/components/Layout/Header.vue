@@ -32,13 +32,11 @@
 import {
   defineComponent,
   watchEffect,
-  ref,
   computed,
-  reactive
+  reactive,
 } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import * as dynamicMenusModules from './menu'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -47,11 +45,12 @@ import {
   ElAvatar,
   ElDropdown,
   ElDropdownItem,
-  ElDropdownMenu
+  ElDropdownMenu,
 } from 'element-plus'
+import avatarDefault from '@/assets/img/common/user-default.png'
 import Lang from '../Lang.vue'
 
-import avatarDefault from '@/assets/img/common/user-default.png'
+import * as dynamicMenusModules from './menu'
 
 export default defineComponent({
   name: 'Header',
@@ -62,13 +61,13 @@ export default defineComponent({
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    Lang
+    Lang,
   },
   setup() {
     const { t, te } = useI18n()
 
-    let breadcrumb = reactive({
-      list: []
+    const breadcrumb = reactive({
+      list: [],
     })
     const route = useRoute()
     const store = useStore()
@@ -76,24 +75,25 @@ export default defineComponent({
 
     watchEffect(() => {
       const ExtraPath = []
-      breadcrumb.list = route.matched.map(routeItem => {
-        let { name, meta } = routeItem
-        let params = route.params
+      breadcrumb.list = route.matched.map((routeItem) => {
+        let { meta } = routeItem
+        const { name } = routeItem
+        let { params } = route
         if (name === 'fileFolder' && route.params.path) {
           const path = route.params.path[0]
-          params = { path:route.params.path.slice(0, 1) }
+          params = { path: route.params.path.slice(0, 1) }
           const type = path.split('.').slice(-1).join('')
-          const menus = dynamicMenusModules['fileChildren'](user.value.account)
-          const menu = menus.find(menu => menu.path.includes(type))
+          const menus = dynamicMenusModules.fileChildren(user.value.account)
+          const menu = menus.find((menuItem) => menuItem.path.includes(type))
           meta = menu.meta
           if (route.params.path.length > 1) {
-            route.params.path.slice(1).forEach((item , index) => {
+            route.params.path.slice(1).forEach((item, index) => {
               ExtraPath.push({
                 name: 'fileFolder',
                 meta: {
-                  title: item
+                  title: item,
                 },
-                params: { path:route.params.path.slice(0, index + 2) }
+                params: { path: route.params.path.slice(0, index + 2) },
               })
             })
           }
@@ -101,7 +101,7 @@ export default defineComponent({
         return {
           name,
           meta,
-          params
+          params,
         }
       })
 
@@ -119,10 +119,9 @@ export default defineComponent({
           store.dispatch('user/logout')
           break
         default:
-          return
       }
     }
-    
+
     return {
       breadcrumb,
       avatarDefault,
@@ -138,21 +137,21 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  height: 100%;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: space-between;
 }
 
 .menus {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .user {
-  display: flex;
   align-items: center;
   color: #333;
+  display: flex;
 
   span {
     margin-left: 10px;

@@ -17,7 +17,9 @@
       "path": "node_modules/cz-conventional-changelog"
     }
   },
-
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
   "lint-staged": {
     "*.{js,vue}": [
       "vue-cli-service lint",
@@ -70,7 +72,7 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "stylelint": "^13.13.1",
-    "stylelint-config-airbnb": "^0.0.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
     "typescript": "~4.1.5",

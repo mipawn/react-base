@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-container>
-      <el-aside style="width: auto;display: flex;">
+      <el-aside style="display: flex;
+  width: auto;">
         <Menu></Menu>
       </el-aside>
       <el-container>
@@ -17,7 +18,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, ref, onUnmounted } from 'vue'
+import {
+  defineComponent, watchEffect, ref, onUnmounted,
+} from 'vue'
 import { getSession } from '@/api/user'
 import { error } from '@/utils/error'
 import Bus from '@/lib/event-bus'
@@ -26,11 +29,10 @@ import {
   ElContainer,
   ElHeader,
   ElMain,
-  ElAside
- } from 'element-plus'
+  ElAside,
+} from 'element-plus'
 import Menu from './Menu.vue'
 import Header from './Header.vue'
-
 
 export default defineComponent({
   name: 'layout',
@@ -40,13 +42,13 @@ export default defineComponent({
     ElMain,
     ElAside,
     Menu,
-    Header
+    Header,
   },
   setup() {
     const loading = ref(false)
     watchEffect(() => {
       getSession()
-        .then(res => {
+        .then(() => {
 
         })
         .catch(error)
@@ -60,18 +62,18 @@ export default defineComponent({
     })
     return {
       loading,
-      headerHeight: '48px'
+      headerHeight: '48px',
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-$header-height: v-bind("headerHeight");
+$header-height: v-bind('headerHeight');
 
 .header {
-  height: $header-height;
   border-bottom: 1px solid #EEE;
+  height: $header-height;
 }
 
 .main {

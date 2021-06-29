@@ -8,5 +8,5 @@ export default {
   'Hot Zone': '常温区',
   'Freezer Zone': '冷冻区',
   'Shared Zone': '分享区',
-  'Recycle Bin': '回收区'
+  'Recycle Bin': '回收区',
 }

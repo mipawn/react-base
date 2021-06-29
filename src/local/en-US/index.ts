@@ -9,5 +9,5 @@ export default {
   global: globalMessage,
   menu: menumessage,
   dashboard: dashboardMessage,
-  file: fileMessage
+  file: fileMessage,
 }

@@ -33,5 +33,5 @@ export const getDashboardInfo = (): AxiosPromise<DashboardInfoType> => http({
 export const hasPermission = (data: unknown): AxiosPromise<any> => http({
   url: 'has-permission',
   method: 'POST',
-  data
+  data,
 })

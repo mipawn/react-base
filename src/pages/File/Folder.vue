@@ -11,7 +11,8 @@
         <el-button
           circle
           icon="el-icon-refresh-right"
-          style="border: none;font-size: 24px"
+          style="border-style: none;
+  font-size: 24px;"
           @click="setObjectsList"
         />
         <el-button
@@ -29,7 +30,7 @@
           multiple
         >
           <el-button
-            style="margin-left: 15px"
+            style="margin-left: 15px;"
             icon="el-icon-plus"
             type="primary"
             >
@@ -41,7 +42,8 @@
         <el-table
           :data="objectsList"
           stripe
-          style="width: 100%;margin-top: 30px;"
+          style="margin-top: 30px;
+  width: 100%;"
           row-class-name="table-row"
           @row-click="rowClick"
           >
@@ -117,19 +119,18 @@ import {
 } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { getObjectsList, delObject } from '@/api/bucket'
+import { getObjectsList, delObject, uploadObject } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes, dateFormat } from '@/utils/format'
 import { downloadObject } from '@/utils/download'
-import { uploadObject } from '@/api/bucket'
+
 import { v4 as uuidv4 } from 'uuid'
 import NProgress from 'nprogress'
 import Bus from '@/lib/event-bus'
 import 'nprogress/nprogress.css'
 import { useI18n } from 'vue-i18n'
 
-
-import { 
+import {
   ElTable,
   ElTableColumn,
   ElButton,
@@ -139,7 +140,7 @@ import {
   ElUpload,
 } from 'element-plus'
 import FolderCreate from './CreateFolder.vue'
-import FileDetails from './Details.vue'
+import FileDetails from './details.vue'
 
 export default defineComponent({
   name: 'file-folder',
@@ -155,7 +156,7 @@ export default defineComponent({
   props: {
     path: {
       type: Array,
-      default: () => ['']
+      default: () => [''],
     },
   },
   setup(props) {
@@ -167,51 +168,12 @@ export default defineComponent({
     const currentPath = computed(() => props.path && props.path.slice(1).join('/'))
     const bucketName = computed(() => props.path[0])
     const uploadUrl = computed(() => {
-      let uploadUrl = `buckets/${bucketName.value}/objects/upload`
+      let url = `buckets/${bucketName.value}/objects/upload`
       if (currentPath.value !== '') {
-        uploadUrl = `${uploadUrl}?prefix=${currentPath.value}/`;
+        url = `${url}?prefix=${currentPath.value}/`
       }
-      return uploadUrl
+      return url
     })
-    
-    const upload = (uploadOptions: any) => {
-      Bus.emit('setPageLoading', true)
-      NProgress.start()
-
-      const { file } = uploadOptions
-      const formData = new FormData()
-
-      const fileName = file.name
-      const blobFile = new Blob([file])
-      formData.append(fileName, blobFile)
-      
-      uploadObject({
-        url: uploadUrl.value,
-        data: formData,
-        onProgress: (progressEvent: ProgressEvent) => {
-          const progress = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
-          NProgress.set(progress / 100)
-          if (progress >= 100) {
-            NProgress.done()
-            message.success(t('file.upload.uploadSuccess'))
-            setObjectsList()
-          }
-        }
-      })
-        .catch((err) => {
-          console.log(err)
-          Bus.emit('setPageLoading', false)
-          NProgress.done()
-          message({
-            message: t('file.upload.uploadFail'),
-            type: 'error'
-          })
-        })
-        .finally(() => {
-          Bus.emit('setPageLoading', false)
-          NProgress.done()
-        })
-    }
 
     const objectsList = ref([])
     const objectsListRaw = ref([])
@@ -226,17 +188,17 @@ export default defineComponent({
         : ''
       getObjectsList({
         bucketName: bucketName.value as string,
-        extraPath
+        extraPath,
       })
-      .then(res => {
-        if (res.data.objects !== null ) {
-          currentType.value = 'file'
-        } else {
-          objectsList.value = []
-          objectsListRaw.value = []
-        }
-      })
-      .catch(error)
+        .then((res) => {
+          if (res.data.objects !== null) {
+            currentType.value = 'file'
+          } else {
+            objectsList.value = []
+            objectsListRaw.value = []
+          }
+        })
+        .catch(error)
     }
     const setObjectsList = () => {
       const extraPath = currentPath.value
@@ -245,18 +207,18 @@ export default defineComponent({
       currentType.value = 'folder'
       getObjectsList({
         bucketName: bucketName.value as string,
-        extraPath
+        extraPath,
       })
-        .then(res => {
-          if (res.data.objects == null ) {
+        .then((res) => {
+          if (res.data.objects == null) {
             verifyIfIsFile()
             return
-          } 
-          let list =  res.data.objects || []
+          }
+          let list = res.data.objects || []
           list = list.map((item : any) => {
-            item.name.endsWith('/')
-              ? item.type = 'folder'
-              : item.type = 'file'
+            item.type = item.name.endsWith('/')
+              ? 'folder'
+              : 'file'
             return item
           })
           objectsList.value = list
@@ -270,8 +232,8 @@ export default defineComponent({
         setObjectsList()
       },
       {
-        immediate: true
-      }
+        immediate: true,
+      },
     )
 
     const searchKey = ref('')
@@ -280,9 +242,9 @@ export default defineComponent({
         objectsList.value = objectsListRaw.value
         return
       }
-      objectsList.value = objectsListRaw.value.filter((item: any) => {
-        return item.name.includes(searchKey.value)
-      })
+      objectsList.value = objectsListRaw
+        .value
+        .filter((item: any) => item.name.includes(searchKey.value))
     }
 
     const goFolder = (object: any) => {
@@ -300,13 +262,13 @@ export default defineComponent({
         message: `${t('file.del.delMessage')} ${object.name}`,
         showCancelButton: true,
         cancelButtonText: t('file.cancel'),
-        confirmButtonText: t('file.delButton')
+        confirmButtonText: t('file.delButton'),
       }).catch(error)
       if (action !== 'confirm') return
       delObject({
         selectedBucket: bucketName.value as string,
         selectedObject: object.name,
-        recursive: object.type === 'folder'
+        recursive: object.type === 'folder',
       })
         .then(() => {
           message.success(t('file.del.delSuccess'))
@@ -324,7 +286,7 @@ export default defineComponent({
         bucketName.value as string,
         object.name,
         object.version_id,
-        
+
       )
     }
 
@@ -345,6 +307,45 @@ export default defineComponent({
       goFolder(row)
     }
 
+    const upload = (uploadOptions: any) => {
+      Bus.emit('setPageLoading', true)
+      NProgress.start()
+
+      const { file } = uploadOptions
+      const formData = new FormData()
+
+      const fileName = file.name
+      const blobFile = new Blob([file])
+      formData.append(fileName, blobFile)
+
+      uploadObject({
+        url: uploadUrl.value,
+        data: formData,
+        onProgress: (progressEvent: ProgressEvent) => {
+          const progress = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+          NProgress.set(progress / 100)
+          if (progress >= 100) {
+            NProgress.done()
+            message.success(t('file.upload.uploadSuccess'))
+            setObjectsList()
+          }
+        },
+      })
+        .catch((err) => {
+          console.log(err)
+          Bus.emit('setPageLoading', false)
+          NProgress.done()
+          message({
+            message: t('file.upload.uploadFail'),
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          Bus.emit('setPageLoading', false)
+          NProgress.done()
+        })
+    }
+
     return {
       objectsList,
       account,
@@ -356,7 +357,7 @@ export default defineComponent({
       currentType,
       bucketName,
       uniqurKey,
-      
+
       setObjectsList,
       niceBytes,
       goFolder,
@@ -375,11 +376,10 @@ export default defineComponent({
 })
 </script>
 
-
 <style lang="scss" scoped>
 .header {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .icon-type {

@@ -23,7 +23,7 @@
         :data="userList"
         ref="multipleTable"
         tooltip-effect="dark"
-        style="width: 100%"
+        style="width: 100%;"
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
@@ -57,7 +57,7 @@
 import {
   defineComponent,
   ref,
-  onMounted
+  onMounted,
 } from 'vue'
 import { getUserList } from '@/api/admin'
 
@@ -84,7 +84,7 @@ export default defineComponent({
 
     const setUserList = () => {
       getUserList()
-        .then(res => {
+        .then((res) => {
           userList.value = res.data.users
         })
         .catch(error)
@@ -102,14 +102,14 @@ export default defineComponent({
         title: `删除 ${user.accessKey}`,
         message: `是否确认删除用户 ${user.accessKey}`,
         showCancelButton: true,
-        confirmButtonText: '删除'
+        confirmButtonText: '删除',
       })
-      .then(action => {
-        if (action === 'confirm') {
-          console.log(111)
-        }
-      })
-      .catch(() => {})
+        .then((action) => {
+          if (action === 'confirm') {
+            console.log(111)
+          }
+        })
+        .catch(() => {})
     }
 
     return {
@@ -118,17 +118,16 @@ export default defineComponent({
 
       setUserList,
       handleSelectionChange,
-      del
+      del,
     }
   },
 })
 </script>
 
-
 <style lang="scss" scoped>
 .header {
-  display: flex;
   align-items: center;
+  display: flex;
 
   button {
     margin-left: 15px;

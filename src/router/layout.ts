@@ -13,7 +13,6 @@ const FileFolder = (): RouteComponent => import('@/pages/File/Folder.vue')
 const Utils = (): RouteComponent => import('@/pages/Utils/index.vue')
 const Logs = (): RouteComponent => import('@/pages/Utils/Logger.vue')
 
-
 const layout: RouteRecordRaw[] = [
   {
     path: '/',
@@ -21,8 +20,8 @@ const layout: RouteRecordRaw[] = [
     component: DashBoard,
     meta: {
       title: 'dashboard',
-      icon: 'el-icon-menu'
-    }
+      icon: 'el-icon-menu',
+    },
   },
   {
     path: '/file',
@@ -30,7 +29,7 @@ const layout: RouteRecordRaw[] = [
     component: File,
     meta: {
       title: 'fileCabinet',
-      icon: 'el-icon-folder-opened'
+      icon: 'el-icon-folder-opened',
     },
     redirect: '/file/all',
     children: [
@@ -41,16 +40,16 @@ const layout: RouteRecordRaw[] = [
         meta: {
           title: 'fileCabinet',
           icon: 'el-icon-folder-opened',
-          menus: 'fileChildren'
+          menus: 'fileChildren',
         },
         component: FileFolder,
       },
       {
         path: 'all',
         name: 'fileAll',
-        component: FileArea
+        component: FileArea,
       },
-    ]
+    ],
   },
   /* {
     path: '/admin',
@@ -88,7 +87,7 @@ const layout: RouteRecordRaw[] = [
     redirect: '/utils/logs',
     meta: {
       title: 'utils',
-      icon: 'el-icon-s-tools'
+      icon: 'el-icon-s-tools',
     },
     children: [
       {
@@ -96,10 +95,10 @@ const layout: RouteRecordRaw[] = [
         name: 'logs',
         component: Logs,
         meta: {
-          title: 'log'
-        }
-      }
-    ]
+          title: 'log',
+        },
+      },
+    ],
   },
 ]
 

@@ -19,10 +19,10 @@
 </template>
 
 <script lang="ts">
-import { 
+import {
   defineComponent,
   onMounted,
-  ref
+  ref,
 } from 'vue'
 import { getObjectDetails, delObject } from '@/api/bucket'
 import { error } from '@/utils/error'
@@ -41,11 +41,11 @@ export default defineComponent({
   name: 'fileDetails',
   props: {
     type: String,
-    extraPath: String
+    extraPath: String,
   },
   components: {
     ElButton,
-    FileShare
+    FileShare,
   },
   setup(props) {
     const { t } = useI18n()
@@ -56,10 +56,11 @@ export default defineComponent({
     onMounted(() => {
       getObjectDetails({
         extraPath: props.extraPath ? `?prefix=${props.extraPath}` : '',
-        bucketName: props.type
+        bucketName: props.type,
       })
-        .then(res => {
-          details.value = res.data.objects[0]
+        .then((res) => {
+          const [detailsInfo] = res.data.objects
+          details.value = detailsInfo
         })
         .catch(error)
     })
@@ -68,7 +69,7 @@ export default defineComponent({
       downloadObject(
         props.type || '',
         props.extraPath || '',
-        details.value.version_id
+        details.value.version_id,
       )
     }
     const del = () => {
@@ -78,23 +79,23 @@ export default defineComponent({
         confirmButtonText: t('file.delButton'),
         cancelButtonText: t('file.cancel'),
         showCancelButton: true,
-        message: `${t('file.del.delMessage')} ${props.extraPath}`
+        message: `${t('file.del.delMessage')} ${props.extraPath}`,
       })
-      .then(action => {
-        if (action === 'confirm') {
-          delObject({
-            selectedBucket: props.type || '',
-            selectedObject: props.extraPath || '',
-            recursive: false
-          })
-            .then(() => {
-              message.success(t('file.del.delSuccess'))
-              const backUrl = route.path.split('/').slice(0, -1).join('/')
-              router.replace(backUrl)
+        .then((action) => {
+          if (action === 'confirm') {
+            delObject({
+              selectedBucket: props.type || '',
+              selectedObject: props.extraPath || '',
+              recursive: false,
             })
-            .catch(error)
-        }
-      }).catch(() => {}) 
+              .then(() => {
+                message.success(t('file.del.delSuccess'))
+                const backUrl = route.path.split('/').slice(0, -1).join('/')
+                router.replace(backUrl)
+              })
+              .catch(error)
+          }
+        }).catch(() => {})
     }
 
     const isShowShare = ref(false)
@@ -109,7 +110,7 @@ export default defineComponent({
       down,
       del,
       openShare,
-      t
+      t,
     }
   },
 })
@@ -117,23 +118,23 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .actions {
-  display: flex;
   align-items: center;
+  display: flex;
 
   .tips {
     margin-right: 10px;
   }
 
   i {
+    cursor: pointer;
     font-size: 18px;
     margin: 0 4px;
-    cursor: pointer;
   }
 }
 
 .tags {
-  display: flex;
   align-items: center;
+  display: flex;
   margin-top: 10px;
 }
 </style>

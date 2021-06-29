@@ -11,9 +11,9 @@
           <span>{{t('file.sahre.utils')}}  </span>
           <el-switch v-model="isCustomUtil" />
           <el-date-picker
-            style="margin-left: 20px"
+            style="margin-left: 20px;"
             v-model="customDate"
-            v-if="isCustomUtil" 
+            v-if="isCustomUtil"
             type="date"
             :placeholder="t('file.share.selectDate')"
             :disabledDate="disabledDate"
@@ -40,9 +40,8 @@
 <script lang="ts">
 import {
   defineComponent,
-  onMounted,
   ref,
-  watch
+  watch,
 } from 'vue'
 import { shareObject } from '@/api/bucket'
 import { useI18n } from 'vue-i18n'
@@ -53,7 +52,7 @@ import {
   ElButton,
   ElSwitch,
   ElDatePicker,
-  ElMessage as message
+  ElMessage as message,
 } from 'element-plus'
 import { error } from '@/utils/error'
 
@@ -70,16 +69,16 @@ export default defineComponent({
   props: {
     show: {
       type: Boolean,
-      default: false
+      default: false,
     },
     bucketName: {
       type: String,
-      default: ''
+      default: '',
     },
     file: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   setup(props, context) {
     const { t } = useI18n()
@@ -96,14 +95,14 @@ export default defineComponent({
           shareObject({
             bucketName: props.bucketName,
             diffDate: '',
-            file: props.file
+            file: props.file,
           })
-          .then(res => {
-            url.value = res.data
-          })
-          .catch(error)
+            .then((res) => {
+              url.value = res.data
+            })
+            .catch(error)
         }
-      }
+      },
     )
 
     const close = () => {
@@ -132,12 +131,12 @@ export default defineComponent({
       shareObject({
         bucketName: props.bucketName,
         diffDate: time,
-        file: props.file
+        file: props.file,
       })
-      .then(res => {
-        url.value = res.data
-      })
-      .catch(error)
+        .then((res) => {
+          url.value = res.data
+        })
+        .catch(error)
     }
 
     const copySuccess = () => {
@@ -166,9 +165,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .body {
-  margin-top: 10px;
-  display: flex;
   align-items: center;
+  display: flex;
+  margin-top: 10px;
 
   button {
     margin-left: 20px;

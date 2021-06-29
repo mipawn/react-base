@@ -10,7 +10,8 @@
       <el-button
         circle
         icon="el-icon-refresh-right"
-        style="border: none;font-size: 24px"
+        style="border-style: none;
+  font-size: 24px;"
         @click="setBucketsList"
       />
       <el-button
@@ -25,7 +26,8 @@
       <el-table
         :data="bucketList"
         stripe
-        style="width: 100%;margin-top: 30px;"
+        style="margin-top: 30px;
+  width: 100%;"
         row-class-name="table-row"
         @row-click="goFolder"
         >
@@ -58,7 +60,7 @@ import {
   defineComponent,
   watchEffect,
   ref,
-  computed
+  computed,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -72,7 +74,7 @@ import {
   ElInput,
   ElButton,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
 } from 'element-plus'
 
 export default defineComponent({
@@ -81,15 +83,15 @@ export default defineComponent({
     ElInput,
     ElButton,
     ElTable,
-    ElTableColumn
+    ElTableColumn,
   },
   props: {
     permissionList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  setup(props, context) {
+  setup(props) {
     const { t } = useI18n()
     const route = useRoute()
     const store = useStore()
@@ -112,8 +114,8 @@ export default defineComponent({
     const setBucketsList = () => {
       Bus.emit('setPageLoading', true)
       getBucketsList()
-        .then(res => {
-          const bucketsObj = res.data.buckets.reduce(function (pre: any, current: any) {
+        .then((res) => {
+          const bucketsObj = res.data.buckets.reduce((pre: any, current: any) => {
             const splitName = current.name.split('.')
             current.type = splitName[splitName.length - 1]
             const name = splitName[0]
@@ -121,12 +123,11 @@ export default defineComponent({
             pre[name].push(current)
             return pre
           }, {})
-         
+
           Object.values(bucketsObj).forEach((item: any) => {
             const order: string[] = ['hot', 'freezer', 'shared', 'recycle'];
-            (item as any[] ).sort((start, next) => {
-              return order.indexOf(start.type) - order.indexOf(next.type)
-            })
+            (item as any[])
+              .sort((start, next) => order.indexOf(start.type) - order.indexOf(next.type))
           })
           const buckets: any = Object.values(bucketsObj).flat(2)
           bucketList.value = buckets
@@ -139,13 +140,11 @@ export default defineComponent({
     }
     watchEffect(() => {
       type.value = `${route.meta.type}`
-      route.name === 'fileAll' && setBucketsList()
+      if (route.name === 'fileAll') setBucketsList()
     })
 
     // format
-    const formatName = (name: string) => {
-      return name.split('.').slice(1).join('')
-    }
+    const formatName = (name: string) => name.split('.').slice(1).join('')
 
     const goFolder = (area: any) => {
       router.push({ path: `/file/${area.name}` })
@@ -157,9 +156,9 @@ export default defineComponent({
         bucketList.value = bucketListRaw.value
         return
       }
-      bucketList.value = bucketListRaw.value.filter((item: any) => {
-        return item.name.includes(searchKey.value)
-      })
+      bucketList.value = bucketListRaw
+        .value
+        .filter((item: any) => item.name.includes(searchKey.value))
     }
 
     return {
@@ -181,8 +180,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .el-icon-shopping-bag-2 {

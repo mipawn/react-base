@@ -5,10 +5,10 @@ export default {
     passwordPlaceholder: 'Enter Secret Key',
     loginButton: 'login',
     loginSuccessTips: 'login success',
-    loginErrorTips: 'login fail'
+    loginErrorTips: 'login fail',
   },
   desc: {
     title: 'Welcome to the console system',
-    info: 'Enter your account information to start using！'
-  }
+    info: 'Enter your account information to start using！',
+  },
 }

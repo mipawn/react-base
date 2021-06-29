@@ -31,12 +31,12 @@ export default defineComponent({
     menusList: {
       type: Array,
       default: () => [],
-      required: true
+      required: true,
     },
     prePath: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
     ElMenuItem,
@@ -52,7 +52,7 @@ export default defineComponent({
 
     return {
       formatPath,
-      t
+      t,
     }
   },
 })

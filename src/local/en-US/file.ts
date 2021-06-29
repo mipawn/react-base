@@ -17,13 +17,13 @@ export default {
     delTitle: 'Delete',
     delMessage: 'Are you sure delete',
     delSuccess: 'Delete Success',
-    delFail: 'Delete Fail'
+    delFail: 'Delete Fail',
   },
   label: 'Label',
   addLabel: 'Add Label',
   upload: {
     uploadSuccess: 'Upload Success',
-    uploadFail: 'Upload Fail'
+    uploadFail: 'Upload Fail',
   },
   share: {
     title: 'File Share',
@@ -31,6 +31,6 @@ export default {
     selectDate: 'Select a date',
     copy: 'Copy',
     copySuccess: 'Copy Success',
-    notSupport: 'Browser does not support'
-  }
+    notSupport: 'Browser does not support',
+  },
 }

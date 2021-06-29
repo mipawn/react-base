@@ -9,6 +9,6 @@ export default defineComponent({
   name: 'App',
   components: {
 
-  }
+  },
 })
 </script>

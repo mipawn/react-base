@@ -22,39 +22,39 @@ const userStore: Module<UserState, unknown> = {
     return {
       isLogin: false,
       userInfo: {
-        account: initAccount()
-      }
+        account: initAccount(),
+      },
     }
   },
   getters: {
-    isLogin: (state) => state.isLogin
+    isLogin: (state) => state.isLogin,
   },
   mutations: {
     saveUser(state, payload) {
       const { isLogin, userInfo } = payload
       state.isLogin = isLogin
       state.userInfo = userInfo
-    }
+    },
   },
   actions: {
     async login(context: ActionContext<UserState, unknown>, data): Promise<any> {
       return loginApi(data)
-        .then(res => {
+        .then((res) => {
           window.localStorage.setItem('userLoggedIn', window.btoa(data.accessKey))
-          context.commit('saveUser', { isLogin: true, userInfo: {account: data.accessKey} })
+          context.commit('saveUser', { isLogin: true, userInfo: { account: data.accessKey } })
         })
         .catch(error)
     },
     async logout(context: ActionContext<UserState, unknown>) {
       return logoutApi()
-        .then(res => {
+        .then((res) => {
           context.commit('saveUser', { isLogin: false, userInfo: { account: '' } })
           window.localStorage.removeItem('userLoggedIn')
           router.push({ name: 'login' })
         })
         .catch(error)
-    }
-  }
+    },
+  },
 }
 
 export default userStore

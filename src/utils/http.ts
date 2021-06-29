@@ -14,10 +14,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   // do something before request is sent
-  request => {
-    return request
-  },
-  error => {
+  (request) => request,
+  (error) => {
     // do something with request error
     console.warn(error) // for debug
     return Promise.reject(error)
@@ -25,12 +23,11 @@ instance.interceptors.request.use(
 )
 
 instance.interceptors.response.use(
-  response => {
+  (response) =>
     // 业务code处理
     // 更好的ts 支持和业务处理，直接返回response，而不是返回 response.data
-    return response
-  },
-  error => {
+    response,
+  (error) => {
     const errorMessage = error.response?.data?.message || error.response.statusText
     console.warn('http请求失败', error.response)
     if (error.response.status === 401) {

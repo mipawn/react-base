@@ -1,7 +1,7 @@
 import userStore from './user'
 
 const modules = {
-  user: userStore
+  user: userStore,
 }
 
 export default modules

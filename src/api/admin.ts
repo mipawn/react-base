@@ -6,5 +6,5 @@ import http, { AxiosPromise } from '@/utils/http'
 
 export const getUserList = (): AxiosPromise => http({
   url: 'users',
-  method: 'GET'
+  method: 'GET',
 })

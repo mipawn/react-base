@@ -10,7 +10,7 @@ export const fileChildren = (account: string) => [
     name: 'fileAll',
     meta: {
       title: 'All Zone',
-      type: 'all'
+      type: 'all',
     },
   },
   {
@@ -18,7 +18,7 @@ export const fileChildren = (account: string) => [
     name: 'fileHot',
     meta: {
       title: 'Hot Zone',
-      type: 'hot'
+      type: 'hot',
     },
   },
   {
@@ -26,23 +26,23 @@ export const fileChildren = (account: string) => [
     name: 'fileFreezer',
     meta: {
       title: 'Freezer Zone',
-      type: 'freezer'
-    }
+      type: 'freezer',
+    },
   },
   {
     path: `${account}.shared`,
     name: 'fileShared',
     meta: {
       title: 'Shared Zone',
-      type: 'shared'
-    }
+      type: 'shared',
+    },
   },
   {
     path: `${account}.recycle`,
     name: 'fileRecycle',
     meta: {
       title: 'Recycle Bin',
-      type: 'recycle'
-    }
+      type: 'recycle',
+    },
   },
 ]

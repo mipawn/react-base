@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-empty :description="t('global.No data')" style="margin-top: 15vh"></el-empty>
+    <el-empty :description="t('global.No data')" style="margin-top: 15vh;"></el-empty>
   </div>
 </template>
 
@@ -13,13 +13,13 @@ import { ElEmpty } from 'element-plus'
 export default defineComponent({
   name: 'Logger',
   components: {
-    ElEmpty
+    ElEmpty,
   },
   setup() {
     const { t } = useI18n()
 
     return {
-      t
+      t,
     }
   },
 })

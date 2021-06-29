@@ -30,7 +30,7 @@
 import {
   defineComponent,
   ref,
-  watch
+  watch,
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -51,16 +51,16 @@ export default defineComponent({
   props: {
     show: {
       type: Boolean,
-      default: false
+      default: false,
     },
     path: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['update:show'],
   setup(props, context) {
-    const { t }= useI18n()
+    const { t } = useI18n()
     const router = useRouter()
     const route = useRoute()
 
@@ -69,7 +69,7 @@ export default defineComponent({
       () => props.show,
       (show) => {
         isShow.value = show
-      }
+      },
     )
     const newPath = ref('')
     const close = () => {

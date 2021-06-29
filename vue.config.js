@@ -7,9 +7,9 @@ module.exports = {
       '/api': {
         target: 'http://localhost:9090',
         changeOrigin: true,
-        ws: false
-      }
-    }
+        ws: false,
+      },
+    },
   },
   chainWebpack: (config) => {
     config.resolve.alias
