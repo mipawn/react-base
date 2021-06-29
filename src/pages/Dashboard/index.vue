@@ -7,7 +7,12 @@
           <span>{{t('dashboard.Usage')}}</span>
         </div>
       </template>
-      <span v-if="typeof info.usage === 'string'" class="card-desc">{{info.usage}}</span>
+      <span
+        v-if="typeof info.usage === 'string'"
+        class="card-desc"
+        >
+        {{info.usage}}
+      </span>
       <template v-else>
         <span class="card-desc">{{info.usage[0]}}</span>
         <span class="small-unit">{{info.usage[1]}}</span>

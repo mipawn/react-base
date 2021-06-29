@@ -29,5 +29,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     'no-param-reassign': 0,
     semi: ['warn', 'never', { beforeStatementContinuationChars: 'always' }],
+    'import/prefer-default-export': 0,
+    'max-len': ['error', { ignorePattern: 'd="([\\s\\S]*?)"' }],
   },
 }

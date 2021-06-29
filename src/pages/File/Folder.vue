@@ -11,8 +11,10 @@
         <el-button
           circle
           icon="el-icon-refresh-right"
-          style="border-style: none;
-  font-size: 24px;"
+          style="
+            border-style: none;
+            font-size: 24px;
+          "
           @click="setObjectsList"
         />
         <el-button
@@ -25,9 +27,9 @@
         <el-upload
           :http-request="upload"
           :show-file-list="false"
+          multiple
           action=""
           class="upload-demo"
-          multiple
         >
           <el-button
             style="margin-left: 15px;"
@@ -52,8 +54,16 @@
             :label="t('file.name')"
             >
             <template #default="scope">
-              <i v-if="scope.row.type === 'folder'" class="icon-type el-icon-folder"></i>
-              <i v-else-if="scope.row.type === 'file'" class="icon-type el-icon-tickets"></i>
+              <i
+                v-if="scope.row.type === 'folder'"
+                class="icon-type el-icon-folder"
+                >
+              </i>
+              <i
+                v-else-if="scope.row.type === 'file'"
+                class="icon-type el-icon-tickets"
+                >
+              </i>
               <span>{{formatName(scope.row.name, scope.row.type )}}</span>
             </template>
           </el-table-column>
@@ -62,7 +72,11 @@
             :label="t('file.lastModified')"
             >
             <template #default="scope">
-              <span v-if="scope.row.type === 'file'">{{dateFormat(scope.row.last_modified)}}</span>
+              <span
+                v-if="scope.row.type === 'file'"
+                >
+                {{dateFormat(scope.row.last_modified)}}
+              </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -71,7 +85,11 @@
             :label="t('file.size')"
             >
             <template #default="scope">
-              <span v-if="scope.row.type === 'file'">{{niceBytes(scope.row.size)}}</span>
+              <span
+                v-if="scope.row.type === 'file'"
+                >
+                {{niceBytes(scope.row.size)}}
+              </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -165,7 +183,9 @@ export default defineComponent({
     const store = useStore()
     const uniqurKey = ref('')
     const account = computed(() => store.state.user.userInfo.account)
-    const currentPath = computed(() => props.path && props.path.slice(1).join('/'))
+    const currentPath = computed(
+      () => props.path && props.path.slice(1).join('/'),
+    )
     const bucketName = computed(() => props.path[0])
     const uploadUrl = computed(() => {
       let url = `buckets/${bucketName.value}/objects/upload`
@@ -322,15 +342,16 @@ export default defineComponent({
         url: uploadUrl.value,
         data: formData,
         onProgress: (progressEvent: ProgressEvent) => {
-          const progress = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+          const progress = Math.floor(
+            progressEvent.loaded / progressEvent.total,
+          )
           NProgress.set(progress / 100)
-          if (progress >= 100) {
-            NProgress.done()
-            message.success(t('file.upload.uploadSuccess'))
-            setObjectsList()
-          }
         },
       })
+        .then(() => {
+          message.success(t('file.upload.uploadSuccess'))
+          setObjectsList()
+        })
         .catch((err) => {
           console.log(err)
           Bus.emit('setPageLoading', false)

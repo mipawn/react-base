@@ -62,17 +62,20 @@ export default defineComponent({
     const filterObj = (item: any, key: keyof any, val: unknown) => {
       if (item.meta && item.meta[key] === val) return true
       if (item.children) {
-        item.children = item.children.filter((child: any) => filterObj(child, key, val))
+        item.children = item
+          .children
+          .filter((child: any) => filterObj(child, key, val))
       }
       return false
     }
     const menusList = layoutList
       .filter((routeItem) => filterObj(routeItem, 'hidden', undefined))
       .map((routeItem) => {
-        if (route.path === '/file') {
-          routeItem.children = dynamicMenusModules.fileChildren(user.value.account) as any
+        if (routeItem.path === '/file') {
+          routeItem.children = dynamicMenusModules
+            .fileChildren(user.value.account) as any
         }
-        return route
+        return routeItem
       })
     return {
       menusList,
