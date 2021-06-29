@@ -107,25 +107,31 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .card-container {
   margin-left: 20px;
   width: 280px;
+
   &:first-child {
     margin-left: 0;
   }
 }
+
 .card-header {
   color: #777777;
+
   span {
     margin-left: 8px;
     font-size: 14px;
   }
 }
+
 .card-desc {
   color: #000000;
   font-size: 60px;
   font-weight: bold;
 }
+
 .smallUnit {
   font-size: 16px;
   font-weight: 500;

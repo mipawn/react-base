@@ -67,11 +67,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$header-height: v-bind('headerHeight');
+$header-height: v-bind("headerHeight");
+
 .header {
   height: $header-height;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #EEE;
 }
+
 .main {
   max-height: calc(100vh - #{$header-height});
   overflow: auto;

@@ -81,17 +81,16 @@
           <div class="footer-item">
             <span>Copyright © 2020 BA Inc. All rights reserved.</span>
           </div>
-          <div class="footer-item">
+          <div class="footer-item" v-if="locale === 'zh-CN'">
             <el-link href="http://beian.miit.gov.cn">浙ICP备19025601号</el-link>
             <el-link href="http://www.beian.gov.cn/portal/registerSystemInfo">浙公网安备 33011002014295号</el-link>
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
 </template>
-
 
 <script lang="ts">
 import {
@@ -111,7 +110,7 @@ import {
   ElButton,
   ElInput,
   ElLink,
-  ElMessage as message
+  ElMessage as message,
 } from 'element-plus'
 import Lang from '@/components/Lang.vue'
 
@@ -126,24 +125,24 @@ export default defineComponent({
     Lang,
   },
   setup() {
-    const { t } = useI18n()
+    const { t, locale } = useI18n()
 
     const passwordType = ref('password')
     const passwordEl = ref<HTMLInputElement | null>(null)
     const loading = ref(false)
     const loginForm = reactive({
       username: '',
-      password: ''
+      password: '',
     })
     const store = useStore()
     const router = useRouter()
     const isLogin = computed(() => store.state.user.isLogin)
     const handleLogin = async () => {
-      if(loading.value) return
+      if (loading.value) return
       loading.value = true
       await store.dispatch('user/login', {
         accessKey: loginForm.username,
-        secretKey: loginForm.password
+        secretKey: loginForm.password,
       })
       loading.value = false
       if (isLogin.value) {
@@ -167,11 +166,13 @@ export default defineComponent({
       loginForm,
       loginRules: {
         username: [{ required: true, trigger: 'blur', message: t('login.loginForm.accountPlaceholder') }],
-        password: [{ required: true, trigger: 'blur', message: t('login.loginForm.passwordPlaceholder') }]
+        password: [{ required: true, trigger: 'blur', message: t('login.loginForm.passwordPlaceholder') }],
       },
       passwordType,
       loading,
       isCanLogin,
+      locale,
+
       handleLogin,
       showPwd,
       t,
@@ -189,6 +190,7 @@ export default defineComponent({
   background: #FFFFFF;
   position: relative;
   box-sizing: border-box;
+
   &::before {
     position: absolute;
     top: 0;
@@ -196,13 +198,14 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     margin-left: -48%;
-    background-image: url('~@/assets/img/login/login-bg.svg');
+    background-image: url("~@/assets/img/login/login-bg.svg");
     background-position: 100%;
     background-repeat: no-repeat;
     background-size: auto 100%;
-    content: '';
+    content: "";
   }
 }
+
 .header {
   position: relative;
   z-index: 2;
@@ -211,85 +214,103 @@ export default defineComponent({
   align-items: center;
   padding-top: 10px;
 }
+
 .body {
   position: relative;
   display: flex;
   justify-content: space-between;
   width: 90%;
 
-  padding: 0.5rem 2.5rem;
+  padding: .5rem 2.5rem;
   height: calc(100% - 30px - 1rem);
   z-index: 4;
   margin: 0 auto;
 }
+
 .cover {
   width: 50%;
   height: 100%;
   box-sizing: border-box;
 }
+
 .logo {
   color: #FFFFFF;
   display: flex;
   align-items: center;
   margin-top: 20px;
+
   img {
     width: 40px;
   }
+
   span {
     margin-left: 20px;
     font-size: 30px;
   }
 }
+
 .desc {
   margin: 18vh auto 0;
   font-size: 30px;
   color: #FFFFFF;
   font-weight: 500;
+
   img {
     width: 80%;
   }
+
   .info {
     margin-top: 1.25rem;
     font-weight: 400;
     font-size: 14px;
   }
 }
+
 .main {
   width: 40%;
   position: relative;
 }
+
 .form {
   margin-top: 24px;
   width: 80%;
   max-width: 300px;
 }
+
 .form-title {
   font-size: 30px;
   color: #333;
   font-weight: 500;
   margin-top: 32vh;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
 }
+
 .footer-item {
   padding: 5px 0;
   font-weight: normal;
+
   :deep(.el-link) {
     margin-left: 30px;
   }
+
   :deep(.el-link:first-child) {
     margin-left: 0px;
   }
 }
+
 .icon-view {
   cursor: pointer;
   color: #C0C4CC;
+
   &:hover {
     color: #409EFF;
   }
+
   &.active {
     color: #409EFF;
   }

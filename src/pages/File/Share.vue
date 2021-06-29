@@ -169,12 +169,15 @@ export default defineComponent({
   margin-top: 10px;
   display: flex;
   align-items: center;
+
   button {
     margin-left: 20px;
   }
 }
+
 .header {
   line-height: 40px;
+
   span {
     margin-right: 10px;
   }

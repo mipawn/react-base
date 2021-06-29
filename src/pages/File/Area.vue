@@ -184,9 +184,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .el-icon-shopping-bag-2 {
   margin-right: 8px;
 }
+
 :deep(.table-row) {
   cursor: pointer;
 }

@@ -56,6 +56,7 @@ export default defineComponent({
   margin-left: 10px;
   cursor: pointer;
 }
+
 .anticon {
   font-size: 16px;
   display: flex;

@@ -119,15 +119,18 @@ export default defineComponent({
 .actions {
   display: flex;
   align-items: center;
+
   .tips {
     margin-right: 10px;
   }
+
   i {
     font-size: 18px;
     margin: 0 4px;
     cursor: pointer;
   }
 }
+
 .tags {
   display: flex;
   align-items: center;

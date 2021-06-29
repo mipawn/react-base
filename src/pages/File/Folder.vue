@@ -381,9 +381,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .icon-type {
   margin-right: 8px;
 }
+
 :deep(.table-row) {
   cursor: pointer;
 }

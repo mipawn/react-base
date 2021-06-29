@@ -129,6 +129,7 @@ export default defineComponent({
 .header {
   display: flex;
   align-items: center;
+
   button {
     margin-left: 15px;
     width: 140px;

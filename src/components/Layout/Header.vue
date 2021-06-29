@@ -143,14 +143,17 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
 }
+
 .menus {
   display: flex;
   align-items: center;
 }
+
 .user {
   display: flex;
   align-items: center;
   color: #333;
+
   span {
     margin-left: 10px;
   }

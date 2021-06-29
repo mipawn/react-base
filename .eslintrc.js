@@ -4,18 +4,12 @@ module.exports = {
     node: true
   },
   'extends': [
-    'eslint:recommended',
-    '@vue/typescript/recommended',
     'plugin:vue/vue3-essential',
+    '@vue/airbnb',
+    '@vue/typescript/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020
-  },
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    '@typescript-eslint/no-empty-function': 0,
-    '@typescript-eslint/no-explicit-any': 0
   },
   overrides: [
     {
@@ -27,5 +21,13 @@ module.exports = {
         jest: true
       }
     }
-  ]
+  ],
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    'no-param-reassign': 0,
+    'semi': ['warn', 'never', { 'beforeStatementContinuationChars': 'always'}]
+  },
 }
