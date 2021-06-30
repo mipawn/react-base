@@ -1,34 +1,41 @@
-# console-admin
+# console
 
-## Project setup
-```
-yarn install
-```
+## 技术栈
+ts + vue 3 + vue-router 4 + vuex 4 + vue-cli
+## 部分脚本
 
-### Compiles and hot-reloads for development
-```
+本地开发
+```sh
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
+项目打包
+```sh
 yarn build
 ```
 
-### Run your unit tests
-```
-yarn test:unit
+## lint
+
+commit 时有检验，error 不通过
+### eslint
+airbnb 规范
+### stylelint
+使用 stylelint-config-sass-guidelines
+
+### commit
+采用angular 规范，使用git cz
+
+feat: 新特性
+fix: 修改问题
+refactor: 代码重构
+docs: 文档修改
+style: 代码格式修改, 注意不是 css 修改
+test: 测试用例修改
+chore: 其他修改, 比如构建流程, 依赖管理.
+
+> 推荐全局安装
+```sh
+git cz
 ```
 
-### Run your end-to-end tests
-```
-yarn test:e2e
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 目录结构
