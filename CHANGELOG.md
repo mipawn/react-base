@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/byteark-project/s.console-frontend/compare/v1.0.0...v1.0.1) (2021-06-30)
+
+
+### Features
+
+* **app:** 添加 自动化 log ([4ff1703](https://github.com/byteark-project/s.console-frontend/commit/4ff17037ede49f046b24be984861a59aa9c67d1f))
+
+
+
 # 1.0.0 (2021-06-30)
 
 

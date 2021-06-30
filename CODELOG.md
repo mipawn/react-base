@@ -1,3 +1,9 @@
+## <small>1.0.1 (2021-06-30)</small>
+
+* feat(app): 添加 自动化 log ([4ff1703](https://github.com/byteark-project/s.console-frontend/commit/4ff1703))
+
+
+
 ## 1.0.0 (2021-06-30)
 
 * docs(readme): 编写文档，进度30% ([bcb8017](https://github.com/byteark-project/s.console-frontend/commit/bcb8017))
