@@ -8,5 +8,5 @@ PACKAGE_VERSION=$(cat package.json \
 echo $PACKAGE_VERSION
 
 git add .
-git commit -m "build(app): $PACKAGE_VERSION"
+git commit -m --no-verify "build(app): $PACKAGE_VERSION"
 git push

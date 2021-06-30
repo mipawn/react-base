@@ -26,12 +26,10 @@
   },
   "lint-staged": {
     "*.{js,vue}": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ],
     "*.{html,vue,css,sass,scss}": [
-      "stylelint --fix",
-      "git add"
+      "stylelint --fix"
     ]
   },
   "dependencies": {
