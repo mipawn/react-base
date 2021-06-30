@@ -10,7 +10,10 @@
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint src/* --fix && stylelint --fix",
     "lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "codelog": "conventional-changelog -i CODELOG.md -s",
+    "version": "yarn run codelog && yarn run changelog"
   },
   "config": {
     "commitizen": {
@@ -64,6 +67,7 @@
     "@vue/test-utils": "^2.0.0-0",
     "babel-plugin-import": "^1.13.3",
     "commitizen": "^4.2.4",
+    "conventional-changelog-cli": "^2.1.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.23.4",
