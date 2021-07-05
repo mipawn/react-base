@@ -1,11 +1,14 @@
 <template>
   <div>
     <el-container>
-      <el-aside style="display: flex;
-  width: auto;">
+      <el-aside
+        style="
+          display: flex;
+          width: auto;
+        ">
         <Menu></Menu>
       </el-aside>
-      <el-container>
+      <el-container class="page-container">
         <el-header :height="headerHeight">
           <Header></Header>
         </el-header>
@@ -14,12 +17,16 @@
         </el-main>
       </el-container>
     </el-container>
+    <Upload></Upload>
   </div>
 </template>
 
 <script lang="ts">
 import {
-  defineComponent, watchEffect, ref, onUnmounted,
+  defineComponent,
+  watchEffect,
+  ref,
+  onUnmounted,
 } from 'vue'
 import { getSession } from '@/api/user'
 import { error } from '@/utils/error'
@@ -33,6 +40,7 @@ import {
 } from 'element-plus'
 import Menu from './Menu.vue'
 import Header from './Header.vue'
+import Upload from '../Upload.vue'
 
 export default defineComponent({
   name: 'layout',
@@ -43,6 +51,7 @@ export default defineComponent({
     ElAside,
     Menu,
     Header,
+    Upload,
   },
   setup() {
     const loading = ref(false)
@@ -60,6 +69,7 @@ export default defineComponent({
     onUnmounted(() => {
       Bus.off('setPageLoading', setLoading)
     })
+
     return {
       loading,
       headerHeight: '48px',
@@ -69,7 +79,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$header-height: v-bind('headerHeight');
+$header-height: v-bind("headerHeight");
 
 .header {
   border-bottom: 1px solid #EEE;
@@ -79,5 +89,9 @@ $header-height: v-bind('headerHeight');
 .main {
   max-height: calc(100vh - #{$header-height});
   overflow: auto;
+}
+
+.page-container {
+  min-width: 1000px;
 }
 </style>

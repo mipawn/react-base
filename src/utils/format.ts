@@ -46,7 +46,7 @@ export function dateFormat(dateString: string, fmt = 'YYYY-mm-dd HH:MM'): string
   Object.keys(opt).forEach((k: any) => {
     ret = new RegExp(`(${k})`).exec(fmt)
     if (ret) {
-      fmt = fmt.replace(ret[1], (ret[1].length == 1)
+      fmt = fmt.replace(ret[1], (ret[1].length === 1)
         ? opt[k as keyof typeof opt]
         : opt[k as keyof typeof opt].padStart(ret[1].length, '0'))
     }

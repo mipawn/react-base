@@ -3,16 +3,19 @@ export default {
   searchObjects: '搜索对象',
   size: '已用空间',
   name: '名称',
-  createFolder: '创建文件夹',
+  sign: '签名',
+  fileType: '文件类型',
+  storageType: '存储类型',
   File: '文件',
   lastModified: '最后修改时间',
   options: '操作',
   download: '下载',
   delButton: '删除',
   currentPath: '当前位置',
-  cancel: '取 消',
-  create: '创 建',
-  createFolderPlaceholder: '输入文件夹名字',
+  dialog: {
+    cancel: '取 消',
+    create: '创 建',
+  },
   del: {
     delTitle: '删除',
     delMessage: '确认删除',
@@ -21,9 +24,18 @@ export default {
   },
   label: '标签',
   addLabel: '添加标签',
-  upload: {
+  upload: { // 上传
     uploadSuccess: '文件上传成功',
     uploadFail: '文件上传失败',
+    uploadButton: '上传',
+    uploadFile: '上传文件',
+    uploadFolder: '上传文件夹',
+  },
+  new: { // 新建
+    newButton: '新建',
+    newFolder: '新建文件夹',
+    newFolderPlaceholder: '输入文件夹名字',
+
   },
   share: {
     title: '文件分享',
@@ -32,5 +44,8 @@ export default {
     copy: '复制',
     copySuccess: '复制成功',
     notSupport: '浏览器不支持',
+  },
+  down: {
+    downBigTips: '下载过程已开始，可能需要几分钟才能完成',
   },
 }

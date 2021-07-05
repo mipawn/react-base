@@ -35,7 +35,7 @@ import {
   ElMessageBox as messageBox,
   ElMessage as message,
 } from 'element-plus'
-import FileShare from './Share.vue'
+import FileShare from './components/Share.vue'
 
 export default defineComponent({
   name: 'fileDetails',

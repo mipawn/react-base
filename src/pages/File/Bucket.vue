@@ -10,26 +10,21 @@
       <el-button
         circle
         icon="el-icon-refresh-right"
-        style="border-style: none;
-  font-size: 24px;"
+        style="
+          border-style: none;
+          font-size: 24px;
+        "
         @click="setBucketsList"
       />
-      <el-button
-        v-if="createBucketPermission && createBucketPermission.can"
-        icon="el-icon-plus"
-        type="primary"
-        >
-        创建文件夹
-      </el-button>
     </div>
     <div class="body">
       <el-table
         :data="bucketList"
-        stripe
-        style="margin-top: 30px;
-  width: 100%;"
+        style="
+          margin-top: 30px;
+          width: 100%;
+        "
         row-class-name="table-row"
-        @row-click="goFolder"
         >
         <el-table-column
           prop="name"
@@ -37,8 +32,28 @@
           >
           <template #default="scope">
             <i class="el-icon-shopping-bag-2"></i>
-            <span v-if="account === 'admin'">{{scope.row.name}}</span>
-            <span v-else>{{formatName(scope.row.name)}}</span>
+            <span
+              v-if="account === 'admin'"
+              class="table-name"
+              >
+              <el-link
+                :underline="false"
+                @click.prevent="goFolder(scope.row)"
+                >
+                {{scope.row.name}}
+              </el-link>
+            </span>
+            <span
+              v-else
+              class="table-name"
+              >
+              <el-link
+                :underline="false"
+                @click.prevent="goFolder(scope.row)"
+                >
+                {{formatName(scope.row.name)}}
+              </el-link>
+            </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -75,15 +90,17 @@ import {
   ElButton,
   ElTable,
   ElTableColumn,
+  ElLink,
 } from 'element-plus'
 
 export default defineComponent({
-  name: 'fileArea',
+  name: 'Buckets',
   components: {
     ElInput,
     ElButton,
     ElTable,
     ElTableColumn,
+    ElLink,
   },
   props: {
     permissionList: {
@@ -115,6 +132,7 @@ export default defineComponent({
       Bus.emit('setPageLoading', true)
       getBucketsList()
         .then((res) => {
+          // eslint-disable-next-line max-len
           const bucketsObj = res.data.buckets.reduce((pre: any, current: any) => {
             const splitName = current.name.split('.')
             current.type = splitName[splitName.length - 1]
@@ -127,6 +145,7 @@ export default defineComponent({
           Object.values(bucketsObj).forEach((item: any) => {
             const order: string[] = ['hot', 'freezer', 'shared', 'recycle'];
             (item as any[])
+              // eslint-disable-next-line max-len
               .sort((start, next) => order.indexOf(start.type) - order.indexOf(next.type))
           })
           const buckets: any = Object.values(bucketsObj).flat(2)
@@ -144,10 +163,13 @@ export default defineComponent({
     })
 
     // format
-    const formatName = (name: string) => name.split('.').slice(1).join('')
+    const formatName = (name: string) => {
+      if (!name) return ''
+      return name.split('.').slice(1).join('')
+    }
 
-    const goFolder = (area: any) => {
-      router.push({ path: `/file/${area.name}` })
+    const goFolder = (bucket: any) => {
+      router.push({ path: `/file/${bucket.name}` })
     }
 
     const searchKey = ref('')
@@ -189,6 +211,6 @@ export default defineComponent({
 }
 
 :deep(.table-row) {
-  cursor: pointer;
+  // cursor: pointer;
 }
 </style>

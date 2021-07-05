@@ -17,5 +17,6 @@ module.exports = {
 
     },
     'selector-max-id': 2,
+    'string-quotes': 'double',
   },
 }

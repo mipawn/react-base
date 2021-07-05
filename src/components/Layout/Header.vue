@@ -7,7 +7,11 @@
           :key="item.name"
           :to="{ name: item.name, params: item.params }"
           >
-         {{te(`menu.${item.meta.title}`) ? t(`menu.${item.meta.title}`) : item.meta.title}}
+         {{
+           te(`menu.${item.meta.title}`)
+              ? t(`menu.${item.meta.title}`)
+              : item.meta.title
+          }}
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -145,6 +149,7 @@ export default defineComponent({
 
 .menus {
   align-items: center;
+  cursor: pointer;
   display: flex;
 }
 

@@ -23,12 +23,12 @@ instance.interceptors.request.use(
 )
 
 instance.interceptors.response.use(
-  (response) =>
-    // 业务code处理
-    // 更好的ts 支持和业务处理，直接返回response，而不是返回 response.data
-    response,
+  // 业务code处理
+  // 更好的ts 支持和业务处理，直接返回response，而不是返回 response.data
+  (response) => response,
   (error) => {
-    const errorMessage = error.response?.data?.message || error.response.statusText
+    const errorMessage = error.response?.data?.message
+      || error.response.statusText
     console.warn('http请求失败', error.response)
     if (error.response.status === 401) {
       // Refresh the whole page to ensure cache is clear

@@ -2,52 +2,70 @@
   <div class="folder" :key="uniqurKey">
     <template v-if="currentType === 'folder'">
       <div class="header">
-        <el-input
-          v-model="searchKey"
-          :placeholder="t('file.searchObjects')"
-          prefix-icon="el-icon-search"
-          @input="search"
-        />
-        <el-button
-          circle
-          icon="el-icon-refresh-right"
-          style="
-            border-style: none;
-            font-size: 24px;
-          "
-          @click="setObjectsList"
-        />
-        <el-button
-          icon="el-icon-plus"
-          type="primary"
-          @click="toggleFolderCeateModel"
-          >
-          {{t('file.createFolder')}}
-        </el-button>
-        <el-upload
-          :http-request="upload"
-          :show-file-list="false"
-          multiple
-          action=""
-          class="upload-demo"
-        >
-          <el-button
-            style="margin-left: 15px;"
-            icon="el-icon-plus"
-            type="primary"
-            >
-            {{t('file.File')}}
-          </el-button>
-        </el-upload>
+        <div class="actions">
+          <el-dropdown>
+            <el-button type="primary">
+              <i class="el-icon-upload2"></i>
+              {{t('file.upload.uploadButton')}}
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <Upload
+                    type="file"
+                    :uploadUrl="uploadUrl"
+                    :pathName="pathName"
+                    @success="uploadSuccess"
+                    >
+                  {{t('file.upload.uploadFile')}}
+                  </Upload>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <Upload
+                    type="dir"
+                    :uploadUrl="uploadUrl"
+                    :pathName="pathName"
+                    @success="uploadSuccess"
+                    >
+                  {{t('file.upload.uploadFolder')}}
+                  </Upload>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <el-dropdown>
+            <el-button plain>
+              <i class="el-icon-folder-add"></i>
+              {{ t('file.new.newButton') }}
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  @click="toggleFolderCeateModel"
+                  >
+                  {{ t('file.new.newFolder') }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div class="search">
+          <el-input
+            v-model="searchKey"
+            :placeholder="t('file.searchObjects')"
+            prefix-icon="el-icon-search"
+            @input="search"
+          />
+        </div>
       </div>
       <div class="body">
         <el-table
           :data="objectsList"
-          stripe
-          style="margin-top: 30px;
-  width: 100%;"
+          style="
+            margin-top: 30px;
+            width: 100%;
+          "
           row-class-name="table-row"
-          @row-click="rowClick"
           >
           <el-table-column
             prop="name"
@@ -64,10 +82,60 @@
                 class="icon-type el-icon-tickets"
                 >
               </i>
-              <span>{{formatName(scope.row.name, scope.row.type )}}</span>
+              <el-link
+                :underline="false"
+                @click.prevent="rowClick(scope.row)"
+                >
+                <span>{{formatName(scope.row.name, scope.row.type )}}</span>
+              </el-link>
             </template>
           </el-table-column>
           <el-table-column
+            :label="t('file.sign')"
+            >
+            <template #default="scope">
+              <el-tooltip
+                v-if="scope.row.type === 'file'"
+                class="item"
+                effect="dark"
+                :content="scope.row.etag"
+                placement="top"
+                >
+                <span
+                  class="text-ellipsis-oneline"
+                  >
+                  {{scope.row.etag}}
+                </span>
+              </el-tooltip>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            width="150"
+            :label="t('file.fileType')"
+            >
+            <template #default="scope">
+              <span v-if="scope.row.type === 'file'">{{scope.row.suffix}}</span>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            width="150"
+            :label="t('file.storageType')"
+            >
+            <!-- eslint-disable-next-line vue/no-unused-vars -->
+            <template #default="scope">
+              <span>-</span>
+              <!-- <span
+                v-if="scope.row.type === 'file'"
+                >
+                {{scope.row.suffix}}
+              </span>
+              <span v-else>-</span> -->
+            </template>
+          </el-table-column>
+          <el-table-column
+            width="150"
             prop="last_modified"
             :label="t('file.lastModified')"
             >
@@ -77,11 +145,12 @@
                 >
                 {{dateFormat(scope.row.last_modified)}}
               </span>
+              <span v-else>-</span>
             </template>
           </el-table-column>
           <el-table-column
+            width="150"
             prop="size"
-            width="200"
             :label="t('file.size')"
             >
             <template #default="scope">
@@ -90,6 +159,7 @@
                 >
                 {{niceBytes(scope.row.size)}}
               </span>
+              <span v-else>-</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -98,17 +168,23 @@
             >
             <template #default="scope">
               <el-button
-                v-if="scope.row.type === 'file'"
                 type="text"
                 @click="(e) => down(scope.row, e)"
                 >
-                {{t('file.download')}}
+                <i
+                  v-if="scope.row.downLoading"
+                  class="icon-action el-icon-loading"
+                />
+                <i
+                  v-else
+                  class="icon-action el-icon-download"
+                />
               </el-button>
               <el-button
                 type="text"
                 @click="(e) => del(scope.row, e)"
                 >
-                {{t('file.delButton')}}
+                <i class="icon-action el-icon-delete"></i>
               </el-button>
             </template>
           </el-table-column>
@@ -135,17 +211,15 @@ import {
   ref,
   watch,
 } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { getObjectsList, delObject, uploadObject } from '@/api/bucket'
+import { getObjectsList, delObject } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes, dateFormat } from '@/utils/format'
 import { downloadObject } from '@/utils/download'
+import { fileChildren } from '@/components/Layout/menu' // file menus
 
 import { v4 as uuidv4 } from 'uuid'
-import NProgress from 'nprogress'
-import Bus from '@/lib/event-bus'
-import 'nprogress/nprogress.css'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -155,10 +229,15 @@ import {
   ElInput,
   ElMessage as message,
   ElMessageBox as messageBox,
-  ElUpload,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElTooltip,
+  ElLink,
 } from 'element-plus'
-import FolderCreate from './CreateFolder.vue'
-import FileDetails from './details.vue'
+import FolderCreate from './components/CreateFolder.vue'
+import FileDetails from './Details.vue'
+import Upload from './components/Upload.vue'
 
 export default defineComponent({
   name: 'file-folder',
@@ -167,9 +246,15 @@ export default defineComponent({
     ElTableColumn,
     ElButton,
     ElInput,
-    ElUpload,
+    ElDropdown,
+    ElDropdownItem,
+    ElDropdownMenu,
+    ElTooltip,
+    ElLink,
+
     FolderCreate,
     FileDetails,
+    Upload,
   },
   props: {
     path: {
@@ -180,9 +265,23 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n()
     const router = useRouter()
+    const route = useRoute()
     const store = useStore()
-    const uniqurKey = ref('')
+
     const account = computed(() => store.state.user.userInfo.account)
+    const pathName = computed(() => {
+      if (props.path.length === 1) {
+        const menus = fileChildren(account.value)
+        const splitPath = (props.path[0] as string).split('.')
+        const truePath = splitPath[splitPath.length - 1]
+        return menus.find((menu) => menu.path.includes(truePath))?.meta.title
+      }
+      return props.path[props.path.length - 1]
+    })
+
+    const uploadTimer = ref<undefined | number>(undefined)
+
+    const uniqurKey = ref('')
     const currentPath = computed(
       () => props.path && props.path.slice(1).join('/'),
     )
@@ -230,7 +329,7 @@ export default defineComponent({
         extraPath,
       })
         .then((res) => {
-          if (res.data.objects == null) {
+          if (res.data.objects == null && props.path.length >= 2) {
             verifyIfIsFile()
             return
           }
@@ -239,6 +338,9 @@ export default defineComponent({
             item.type = item.name.endsWith('/')
               ? 'folder'
               : 'file'
+
+            // 设置 下载loading
+            item.downLoading = false
             return item
           })
           objectsList.value = list
@@ -247,7 +349,7 @@ export default defineComponent({
         .catch(error)
     }
     watch(
-      () => currentPath.value,
+      () => bucketName.value + currentPath.value,
       () => {
         setObjectsList()
       },
@@ -296,17 +398,25 @@ export default defineComponent({
         })
         .catch(error)
     }
+
     const down = (object: any, e: Event) => {
       e.stopPropagation()
-      if (object.size > 104857600) {
-        // If file is bigger than 100MB we show a notification
+      object.downLoading = true
+      if (object.type === 'folder') {
+        console.log('文件夹下载')
+        return
       }
-
+      if (object.size > 104857600) {
+        message.info(t('file.down.downBigTips'))
+      }
+      // 文件下载
       downloadObject(
         bucketName.value as string,
         object.name,
         object.version_id,
-
+        () => {
+          object.downLoading = false
+        },
       )
     }
 
@@ -327,44 +437,14 @@ export default defineComponent({
       goFolder(row)
     }
 
-    const upload = (uploadOptions: any) => {
-      Bus.emit('setPageLoading', true)
-      NProgress.start()
-
-      const { file } = uploadOptions
-      const formData = new FormData()
-
-      const fileName = file.name
-      const blobFile = new Blob([file])
-      formData.append(fileName, blobFile)
-
-      uploadObject({
-        url: uploadUrl.value,
-        data: formData,
-        onProgress: (progressEvent: ProgressEvent) => {
-          const progress = Math.floor(
-            progressEvent.loaded / progressEvent.total,
-          )
-          NProgress.set(progress / 100)
-        },
-      })
-        .then(() => {
-          message.success(t('file.upload.uploadSuccess'))
-          setObjectsList()
-        })
-        .catch((err) => {
-          console.log(err)
-          Bus.emit('setPageLoading', false)
-          NProgress.done()
-          message({
-            message: t('file.upload.uploadFail'),
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          Bus.emit('setPageLoading', false)
-          NProgress.done()
-        })
+    const uploadSuccess = () => {
+      if (uploadTimer.value !== undefined) {
+        window.clearTimeout(uploadTimer.value)
+        uploadTimer.value = undefined
+      }
+      uploadTimer.value = window.setTimeout(() => {
+        setObjectsList()
+      }, 300)
     }
 
     return {
@@ -378,6 +458,7 @@ export default defineComponent({
       currentType,
       bucketName,
       uniqurKey,
+      pathName,
 
       setObjectsList,
       niceBytes,
@@ -386,12 +467,12 @@ export default defineComponent({
       dateFormat,
       del,
       down,
-      upload,
       formatName,
       toggleFolderCeateModel,
       uuid: uuidv4,
       rowClick,
       t,
+      uploadSuccess,
     }
   },
 })
@@ -401,6 +482,15 @@ export default defineComponent({
 .header {
   align-items: center;
   display: flex;
+  justify-content: space-between;
+
+  :deep(.el-dropdown) {
+    margin-left: 15px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
 }
 
 .icon-type {
@@ -408,7 +498,11 @@ export default defineComponent({
 }
 
 :deep(.table-row) {
-  cursor: pointer;
+  // cursor: pointer;
+}
+
+.icon-action {
+  font-size: 18px;
 }
 
 </style>

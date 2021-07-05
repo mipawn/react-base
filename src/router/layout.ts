@@ -3,12 +3,11 @@ import { RouteRecordRaw, RouteComponent } from 'vue-router'
 const DashBoard = (): RouteComponent => import('@/pages/Dashboard/index.vue')
 
 const File = (): RouteComponent => import('@/pages/File/index.vue')
-const FileArea = (): RouteComponent => import('@/pages/File/Area.vue')
+const FileABucket = (): RouteComponent => import('@/pages/File/Bucket.vue')
 const FileFolder = (): RouteComponent => import('@/pages/File/Folder.vue')
 
 // const Admin = (): RouteComponent => import('@/pages/Admin/index.vue')
 // const AdminUser = (): RouteComponent => import('@/pages/Admin/User.vue')
-// const AdminUserGroup = (): RouteComponent => import('@/pages/Admin/UserGroup.vue')
 
 const Utils = (): RouteComponent => import('@/pages/Utils/index.vue')
 const Logs = (): RouteComponent => import('@/pages/Utils/Logger.vue')
@@ -47,7 +46,7 @@ const layout: RouteRecordRaw[] = [
       {
         path: 'all',
         name: 'fileAll',
-        component: FileArea,
+        component: FileABucket,
       },
     ],
   },

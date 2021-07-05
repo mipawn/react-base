@@ -12,7 +12,7 @@ interface UserState {
 
 function initAccount(): string {
   let account = window.localStorage.getItem('userLoggedIn') || ''
-  account && (account = window.atob(account))
+  account = window.atob(account)
   return account
 }
 
@@ -37,9 +37,11 @@ const userStore: Module<UserState, unknown> = {
     },
   },
   actions: {
-    async login(context: ActionContext<UserState, unknown>, data): Promise<any> {
+    async login(
+      context: ActionContext<UserState, unknown>, data,
+    ): Promise<any> {
       return loginApi(data)
-        .then((res) => {
+        .then(() => {
           window.localStorage.setItem('userLoggedIn', window.btoa(data.accessKey))
           context.commit('saveUser', { isLogin: true, userInfo: { account: data.accessKey } })
         })
@@ -47,7 +49,7 @@ const userStore: Module<UserState, unknown> = {
     },
     async logout(context: ActionContext<UserState, unknown>) {
       return logoutApi()
-        .then((res) => {
+        .then(() => {
           context.commit('saveUser', { isLogin: false, userInfo: { account: '' } })
           window.localStorage.removeItem('userLoggedIn')
           router.push({ name: 'login' })

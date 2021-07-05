@@ -3,16 +3,19 @@ export default {
   searchObjects: 'Search Objects',
   name: 'Name',
   size: 'Size',
-  createFolder: 'Create Folder',
   File: 'File',
-  lastModified: 'last Modified',
+  sign: 'Sign',
+  fileType: 'File Type',
+  storageType: 'Storage Type',
+  lastModified: 'Last Modified',
   options: 'Options',
   download: 'Download',
   delButton: 'Delete',
   currentPath: 'CurrentPath',
-  cancel: 'Cancel',
-  create: 'Create',
-  createFolderPlaceholder: 'Enter the folder name',
+  dialog: {
+    cancel: 'Cancel',
+    create: 'Create',
+  },
   del: {
     delTitle: 'Delete',
     delMessage: 'Are you sure delete',
@@ -22,8 +25,17 @@ export default {
   label: 'Label',
   addLabel: 'Add Label',
   upload: {
-    uploadSuccess: 'Upload Success',
-    uploadFail: 'Upload Fail',
+    uploadSuccess: 'Upload success',
+    uploadFail: 'Upload fail',
+    uploadButton: 'Upload',
+    uploadFile: 'Upload file',
+    uploadFolder: 'Upload folder',
+  },
+  new: { // 新建
+    newButton: 'New',
+    newFolder: 'New Folder',
+    newFolderPlaceholder: 'Enter the folder name',
+
   },
   share: {
     title: 'File Share',
@@ -32,5 +44,8 @@ export default {
     copy: 'Copy',
     copySuccess: 'Copy Success',
     notSupport: 'Browser does not support',
+  },
+  down: {
+    downBigTips: 'Download process started, it may take a few moments to complete',
   },
 }

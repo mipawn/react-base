@@ -30,6 +30,15 @@ module.exports = {
     'no-param-reassign': 0,
     semi: ['warn', 'never', { beforeStatementContinuationChars: 'always' }],
     'import/prefer-default-export': 0,
-    'max-len': ['error', { ignorePattern: 'd="([\\s\\S]*?)"' }],
+    'max-len': ['warn', {
+      ignorePattern: 'd="([\\s\\S]*?)"',
+      ignoreStrings: true,
+      ignoreUrls: true,
+      ignoreTemplateLiterals: true,
+      ignoreRegExpLiterals: true,
+      ignoreTrailingComments: true,
+    }],
+    'no-unreachable': 1,
+    'arrow-body-style': 0,
   },
 }

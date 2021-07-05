@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="t('file.createFolder')"
+      :title="t('file.new.newFolder')"
       v-model="isShow"
       width="30%"
       @close="close"
@@ -12,14 +12,19 @@
           <el-input
             type="text"
             v-model="newPath"
-            :placeholder="t('file.createFolderPlaceholder')"
+            :placeholder="t('file.new.newFolderPlaceholder')"
           />
         </div>
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="close">{{t('file.cancel')}}</el-button>
-          <el-button type="primary" @click="create">{{t('file.create')}}</el-button>
+          <el-button @click="close">{{t('file.dialog.cancel')}}</el-button>
+          <el-button
+            type="primary"
+            @click="create"
+            >
+            {{t('file.dialog.create')}}
+          </el-button>
         </span>
       </template>
     </el-dialog>

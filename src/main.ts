@@ -13,9 +13,10 @@ import { getLang } from './utils/init'
 
 import 'element-plus/packages/theme-chalk/src/base.scss'
 import 'normalize.css'
-import './assets/style/reset.scss'
+import './assets/style/index.scss'
 
 // element-plus 设置语言
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'dayjs/locale/zh-cn'
 
 locale.use(lang)
@@ -29,7 +30,12 @@ const i18n = createI18n({
 
 const app = createApp(App)
 
-window.addEventListener('unhandledrejection', () => {
+window.addEventListener('unhandledrejection', (err) => {
+  console.log('unhandledrejection', err)
+})
+
+window.addEventListener('error', (err) => {
+  console.log(err)
 })
 
 plugins.forEach((plugin) => {
