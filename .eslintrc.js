@@ -22,6 +22,13 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+  },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -40,5 +47,6 @@ module.exports = {
     }],
     'no-unreachable': 1,
     'arrow-body-style': 0,
+    'import/no-extraneous-dependencies': 0,
   },
 }

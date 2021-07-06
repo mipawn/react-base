@@ -5,6 +5,9 @@ import Layout from '@/components/Layout/index.vue'
 import notFound from '@/pages/404/index.vue'
 import LayoutRoutes from './layout'
 
+const isDev = process.env.NODE_ENV === 'development'
+const base = isDev ? '' : '/console'
+
 export const routes: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -33,7 +36,7 @@ export const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(base),
   routes,
 })
 
