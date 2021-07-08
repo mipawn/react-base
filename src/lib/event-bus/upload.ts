@@ -5,3 +5,5 @@ export type UPLOAD_STATUS = 'on' | 'success' | 'fail' | 'pause'
 
 export const UPLOAD_ADD_FILE = 'UPLOAD_ADD_FILE'
 export const UPDATE_UPLOAD_URL = 'UPDATE_UPLOAD_URL'
+
+export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS'

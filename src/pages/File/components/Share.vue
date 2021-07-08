@@ -8,7 +8,7 @@
       >
       <div>
         <div class="header">
-          <span>{{t('file.sahre.utils')}}  </span>
+          <span>{{t('file.share.utils')}}  </span>
           <el-switch v-model="isCustomUtil" />
           <el-date-picker
             style="margin-left: 20px;"

@@ -10,7 +10,6 @@ export default {
   lastModified: '最后修改时间',
   options: '操作',
   download: '下载',
-  delButton: '删除',
   currentPath: '当前位置',
   dialog: {
     cancel: '取 消',
@@ -21,6 +20,8 @@ export default {
     delMessage: '确认删除',
     delSuccess: '删除成功',
     delFail: '删除失败',
+    confirm: '删 除',
+    cancel: '取 消',
   },
   label: '标签',
   addLabel: '添加标签',

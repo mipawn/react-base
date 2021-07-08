@@ -25,6 +25,7 @@
           width: 100%;
         "
         row-class-name="table-row"
+        cell-class-name="table-cell"
         >
         <el-table-column
           prop="name"
@@ -212,5 +213,16 @@ export default defineComponent({
 
 :deep(.table-row) {
   // cursor: pointer;
+}
+
+:deep(.table-cell) {
+  .cell {
+    align-items: center;
+    display: inline-flex;
+
+    i {
+      font-size: 18px;
+    }
+  }
 }
 </style>

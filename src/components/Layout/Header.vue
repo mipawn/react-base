@@ -27,7 +27,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <Lang />
+      <!-- <Lang /> -->
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default defineComponent({
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    Lang,
+    // Lang,
   },
   setup() {
     const { t, te } = useI18n()

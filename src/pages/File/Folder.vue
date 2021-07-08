@@ -3,6 +3,8 @@
     <template v-if="currentType === 'folder'">
       <div class="header">
         <div class="actions">
+
+          <!-- 上传 -->
           <el-dropdown>
             <el-button type="primary">
               <i class="el-icon-upload2"></i>
@@ -15,7 +17,6 @@
                     type="file"
                     :uploadUrl="uploadUrl"
                     :pathName="pathName"
-                    @success="uploadSuccess"
                     >
                   {{t('file.upload.uploadFile')}}
                   </Upload>
@@ -25,7 +26,6 @@
                     type="dir"
                     :uploadUrl="uploadUrl"
                     :pathName="pathName"
-                    @success="uploadSuccess"
                     >
                   {{t('file.upload.uploadFolder')}}
                   </Upload>
@@ -33,6 +33,8 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
+
+          <!-- 新建 -->
           <el-dropdown>
             <el-button plain>
               <i class="el-icon-folder-add"></i>
@@ -48,6 +50,25 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
+
+          <!-- 其他操作 -->
+          <div class="actions-other">
+            <div class="is-link">
+              <i class="el-icon-share"></i>
+              <span>分享</span>
+            </div>
+            <div class="is-link">
+              <i class="el-icon-download"></i>
+              <span>下载</span>
+            </div>
+            <div class="is-link">
+              <i class="el-icon-delete"></i>
+              <span>删除</span>
+            </div>
+            <div class="is-link" :class="{ disabled: !isCanRename }">重命名</div>
+            <div class="is-link">复制到</div>
+            <div class="is-link">移动到</div>
+          </div>
         </div>
         <div class="search">
           <el-input
@@ -66,32 +87,87 @@
             width: 100%;
           "
           row-class-name="table-row"
+          cell-class-name="table-cell"
+          @selection-change="handleSelectionChange"
           >
+          <!-- 多选框 -->
           <el-table-column
-            prop="name"
+            type="selection"
+            width="55">
+          </el-table-column>
+
+          <el-table-column
             :label="t('file.name')"
+            prop="name"
+            class-name="table-name"
             >
             <template #default="scope">
-              <i
-                v-if="scope.row.type === 'folder'"
-                class="icon-type el-icon-folder"
-                >
-              </i>
-              <i
-                v-else-if="scope.row.type === 'file'"
-                class="icon-type el-icon-tickets"
-                >
-              </i>
-              <el-link
-                :underline="false"
-                @click.prevent="rowClick(scope.row)"
-                >
-                <span>{{formatName(scope.row.name, scope.row.type )}}</span>
-              </el-link>
+              <div class="table-name-info">
+                <i
+                  v-if="scope.row.type === 'folder'"
+                  class="icon-type el-icon-folder"
+                  >
+                </i>
+                <i
+                  v-else-if="scope.row.type === 'file'"
+                  class="icon-type el-icon-tickets"
+                  >
+                </i>
+                <span
+                  class="is-link text-ellipsis-oneline"
+                  style="width: auto"
+                  @click.prevent="goFolder(scope.row)"
+                  >
+                  {{formatName(scope.row.name, scope.row.type )}}
+                </span>
+              </div>
+
+              <div class="row-actions">
+                <i
+                  class="el-icon-share is-link primary"
+                  :class="{ disabled: scope.row.type === 'folder' }"
+                  @click="showShare(scope.row.name)"
+                />
+                <i
+                  v-if="scope.row.downLoading"
+                  class="el-icon-loading is-link primary"
+                />
+                <i
+                  v-if="!scope.row.downLoading"
+                  class="el-icon-download is-link primary"
+                  @click="(e) => down(scope.row, e)"
+                />
+                <i
+                  class="el-icon-more is-link primary"
+                />
+                <!-- <el-dropdown trigger="hover">
+                  <i
+                    class="el-icon-more is-link primary"
+                  />
+                  <template #dropdown>
+                    <el-dropdown-menu
+                      @mouseenter="dropdownEnter(scope.row)"
+                      @mouseleave="dropdownLeave(scope.row)"
+                      >
+                      <el-dropdown-item>移动到</el-dropdown-item>
+                      <el-dropdown-item>复制到</el-dropdown-item>
+                      <el-dropdown-item>重命名</el-dropdown-item>
+                      <el-dropdown-item
+                        @click="(e) => del(scope.row, e)"
+                        >
+                        删除
+                      </el-dropdown-item>
+                      <el-dropdown-item>冷冻</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown> -->
+              </div>
             </template>
           </el-table-column>
+
           <el-table-column
             :label="t('file.sign')"
+            width="200"
             >
             <template #default="scope">
               <el-tooltip
@@ -110,6 +186,7 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
+
           <el-table-column
             width="150"
             :label="t('file.fileType')"
@@ -119,7 +196,8 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
-           <el-table-column
+
+          <el-table-column
             width="150"
             :label="t('file.storageType')"
             >
@@ -134,6 +212,7 @@
               <span v-else>-</span> -->
             </template>
           </el-table-column>
+
           <el-table-column
             width="150"
             prop="last_modified"
@@ -148,6 +227,7 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
+
           <el-table-column
             width="150"
             prop="size"
@@ -162,7 +242,8 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column
+
+          <!-- <el-table-column
             width="200"
             :label="t('file.options')"
             >
@@ -187,7 +268,7 @@
                 <i class="icon-action el-icon-delete"></i>
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
 
@@ -201,6 +282,11 @@
       :extraPath="currentPath"
       :type="bucketName"
     />
+    <file-share
+      v-model:show="isShowShare"
+      :bucketName="bucketName"
+      :file="fileDetails"
+    />
   </div>
 </template>
 
@@ -208,12 +294,13 @@
 import {
   computed,
   defineComponent,
+  onUnmounted,
   ref,
   watch,
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { getObjectsList, delObject } from '@/api/bucket'
+import { getObjectsList, delObject, getObjectDetails } from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes, dateFormat } from '@/utils/format'
 import { downloadObject } from '@/utils/download'
@@ -221,6 +308,8 @@ import { fileChildren } from '@/components/Layout/menu' // file menus
 
 import { v4 as uuidv4 } from 'uuid'
 import { useI18n } from 'vue-i18n'
+import Bus from '@/lib/event-bus'
+import { UPLOAD_SUCCESS } from '@/lib/event-bus/upload'
 
 import {
   ElTable,
@@ -233,11 +322,11 @@ import {
   ElDropdownItem,
   ElDropdownMenu,
   ElTooltip,
-  ElLink,
 } from 'element-plus'
 import FolderCreate from './components/CreateFolder.vue'
 import FileDetails from './Details.vue'
 import Upload from './components/Upload.vue'
+import FileShare from './components/Share.vue'
 
 export default defineComponent({
   name: 'file-folder',
@@ -250,11 +339,11 @@ export default defineComponent({
     ElDropdownItem,
     ElDropdownMenu,
     ElTooltip,
-    ElLink,
 
     FolderCreate,
     FileDetails,
     Upload,
+    FileShare,
   },
   props: {
     path: {
@@ -334,7 +423,7 @@ export default defineComponent({
             return
           }
           let list = res.data.objects || []
-          list = list.map((item : any) => {
+          list = list.map((item: any, index: number) => {
             item.type = item.name.endsWith('/')
               ? 'folder'
               : 'file'
@@ -383,8 +472,8 @@ export default defineComponent({
         type: 'warning',
         message: `${t('file.del.delMessage')} ${object.name}`,
         showCancelButton: true,
-        cancelButtonText: t('file.cancel'),
-        confirmButtonText: t('file.delButton'),
+        cancelButtonText: t('file.del,cancel'),
+        confirmButtonText: t('file.del.confirm'),
       }).catch(error)
       if (action !== 'confirm') return
       delObject({
@@ -421,6 +510,7 @@ export default defineComponent({
     }
 
     const formatName = (name: string, type: string) => {
+      if (!name) return ''
       if (type === 'folder') {
         return name.replaceAll('/', '')
       }
@@ -433,19 +523,43 @@ export default defineComponent({
       isShowFolderCeate.value = !isShowFolderCeate.value
     }
 
-    const rowClick = (row: any) => {
-      goFolder(row)
+    Bus.on(UPLOAD_SUCCESS, setObjectsList)
+    onUnmounted(() => {
+      Bus.off(UPLOAD_SUCCESS, setObjectsList)
+    })
+    // 选中行
+    const rowSelected = ref([])
+    const handleSelectionChange = (val: any) => {
+      rowSelected.value = val
     }
 
-    const uploadSuccess = () => {
-      if (uploadTimer.value !== undefined) {
-        window.clearTimeout(uploadTimer.value)
-        uploadTimer.value = undefined
-      }
-      uploadTimer.value = window.setTimeout(() => {
-        setObjectsList()
-      }, 300)
+    // 分享
+    const isShowShare = ref(false)
+    const fileDetails = ref({})
+    const setFileDetails = async (name: string) => {
+      const path = currentPath.value + name
+      getObjectDetails({
+        extraPath: `?prefix=${path}`,
+        bucketName: `${bucketName.value}`,
+      })
+        .then((res) => {
+          const [detailsInfo] = res.data.objects
+          fileDetails.value = detailsInfo
+        })
+        .catch(error)
     }
+    const showShare = async (name: string) => {
+      await setFileDetails(name)
+      isShowShare.value = !isShowShare.value
+    }
+
+    const isCanRename = computed(() => {
+      return !rowSelected
+        .value
+        .find((item: any) => {
+          return item.type === 'folder'
+        })
+    })
 
     return {
       objectsList,
@@ -459,6 +573,10 @@ export default defineComponent({
       bucketName,
       uniqurKey,
       pathName,
+      isShowShare,
+      fileDetails,
+      isCanRename,
+      rowSelected,
 
       setObjectsList,
       niceBytes,
@@ -470,9 +588,9 @@ export default defineComponent({
       formatName,
       toggleFolderCeateModel,
       uuid: uuidv4,
-      rowClick,
       t,
-      uploadSuccess,
+      handleSelectionChange,
+      showShare,
     }
   },
 })
@@ -497,12 +615,82 @@ export default defineComponent({
   margin-right: 8px;
 }
 
-:deep(.table-row) {
-  // cursor: pointer;
-}
-
 .icon-action {
   font-size: 18px;
 }
 
+:deep(.table-cell) {
+  .cell {
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  i {
+    font-size: 18px;
+  }
+}
+
+:deep(.table-name) {
+  .cell {
+    align-items: center;
+    display: flex;
+    flex-wrap: no-wrap;
+    justify-content: space-between;
+    max-width: 100%;
+    overflow: unset;
+  }
+}
+
+.row-actions {
+  align-items: center;
+  display: flex;
+  width: 100px;
+
+  i {
+    margin-left: 10px;
+  }
+}
+
+.table-name-info {
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 100px);
+}
+
+.table-row {
+  .row-actions {
+    display: none;
+  }
+  &:hover, &.is-link {
+    .row-actions {
+      display: flex;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+.actions-other {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  height: 40px;
+  box-sizing: border-box;
+  i {
+    margin-right: 5px;
+  }
+  div {
+    padding: 12px 20px;
+    font-size: 14px;
+    border-right: 1px solid #DCDFE6;
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
 </style>

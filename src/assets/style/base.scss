@@ -5,3 +5,38 @@
   white-space: nowrap;
   width: 100%;
 }
+
+a,
+.is-link {
+  color: $--color-text-primary;
+  cursor: pointer;
+  text-decoration: none;
+
+  &.light {
+    color: #fff;
+  }
+
+  &.info {
+    color: #acb3bd;
+  }
+
+  &:hover {
+    color: $--link-hover-color;
+  }
+
+  &.primary {
+    color: $--color-primary;
+  }
+
+  &.primary:hover {
+    color: $--color-primary-light-2;
+  }
+
+  &.mini {
+    font-size: 12px;
+  }
+  &.disabled {
+    pointer-events: none;
+    color: $--color-text-placeholder;
+  }
+}

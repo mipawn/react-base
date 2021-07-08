@@ -76,8 +76,8 @@ export default defineComponent({
       messageBox({
         title: t('file.del.delTitle'),
         type: 'info',
-        confirmButtonText: t('file.delButton'),
-        cancelButtonText: t('file.cancel'),
+        confirmButtonText: t('file.del.confirm'),
+        cancelButtonText: t('file.del.cancel'),
         showCancelButton: true,
         message: `${t('file.del.delMessage')} ${props.extraPath}`,
       })

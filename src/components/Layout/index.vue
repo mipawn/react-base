@@ -79,7 +79,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$header-height: v-bind("headerHeight");
+$header-height: 48px;
 
 .header {
   border-bottom: 1px solid #EEE;

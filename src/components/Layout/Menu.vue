@@ -2,14 +2,17 @@
   <div>
     <el-menu
       :default-active="fullPath"
-      style="height: 100vh;
-  width: 200px;"
+      style="
+        height: 100vh;
+        width: 200px;
+      "
       background-color="#001529"
       text-color="#fff"
       active-text-color="#ffd04b"
       router
       >
       <menu-tree :menusList="menusList"></menu-tree>
+      <remain-space></remain-space>
     </el-menu>
   </div>
 </template>
@@ -30,12 +33,14 @@ import {
 } from 'element-plus'
 import * as dynamicMenusModules from './menu'
 import MenuTree from './MenuTree.vue'
+import RemainSpace from './Remain.vue'
 
 export default defineComponent({
   name: 'Menu',
   components: {
     ElMenu,
     MenuTree,
+    RemainSpace,
   },
   setup() {
     const route = useRoute()

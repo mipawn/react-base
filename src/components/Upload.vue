@@ -2,7 +2,10 @@
   <div>
     <section class="dialog-upload" :class="dialogStatus">
       <header class="upload-header">
-        <div class="title">上传成功</div>
+        <div class="title">
+          <span>{{uploadStatusText}}</span>
+          <span>（{{uploadSuccessLength}}/{{fileList.length}}）</span>
+        </div>
         <div class="actions">
           <i
             v-if="dialogStatus === 'show'"
@@ -48,13 +51,13 @@
                 <i class="el-icon-success" v-if="item.status === 'success'"></i>
                 <i class="el-icon-error" v-else-if="item.status === 'fail'"></i>
                 <span v-else-if="item.status === 'on'">
-                  <span>2.85%</span>
-                  <span>8.3MB/s</span>
+                  <span style="margin-right: 8px">{{item.percentage}}%</span>
+                  <span v-if="item.status === 'on'">{{item.speed}}</span>
                 </span>
-                <span v-else>已暂停</span>
+                <span v-else-if="item.status === 'pause'">已暂停</span>
               </span>
             </div>
-            <div class="file-actions">
+            <div class="file-actions" v-if="item.size > 16777216">
               <i
                 v-if="item.status === 'on'"
                 class="el-icon-video-pause"
@@ -85,6 +88,7 @@ import {
   ref,
   onUnmounted,
   reactive,
+  computed,
 } from 'vue'
 import {
   UPLOAD_STATUS,
@@ -92,6 +96,7 @@ import {
   CHANGE_DIALOG_STATUS,
   UPLOAD_ADD_FILE,
   UPDATE_UPLOAD_URL,
+  UPLOAD_SUCCESS,
 } from '@/lib/event-bus/upload'
 import Bus from '@/lib/event-bus'
 import { useRouter } from 'vue-router'
@@ -100,6 +105,7 @@ import { niceBytes } from '@/utils/format'
 
 import {
   ElLink,
+  ElMessageBox as messageBox,
 } from 'element-plus'
 
 export default defineComponent({
@@ -119,6 +125,14 @@ export default defineComponent({
     const dialogStatus = ref<DIALOG_STATUS>(props.status as DIALOG_STATUS)
     const fileList = reactive<any[]>([])
 
+    const uploadStatusTextMap: Record<UPLOAD_STATUS, string> = {
+      on: '上传中',
+      success: '上传成功',
+      pause: '已暂停',
+      fail: '上传失败',
+    }
+    const uploadStatusText = ref(uploadStatusTextMap.on)
+
     // uploadurl
     const uploadUrl = ref('')
     const setUploadUrl = (url: any) => {
@@ -133,49 +147,99 @@ export default defineComponent({
     Bus.on(CHANGE_DIALOG_STATUS, changeDialogStatus)
 
     const close = () => {
-      changeDialogStatus('close')
-      fileList.length = 0
+      if (!fileList.find((file: any) => ['on', 'pause'].includes(file.status))) {
+        changeDialogStatus('close')
+        fileList.length = 0
+        return
+      }
+
+      messageBox({
+        title: '提示',
+        message: '还有文件正在上传，是否确认关闭',
+        showCancelButton: true,
+        cancelButtonText: '取 消',
+        confirmButtonText: '确 认',
+      })
+        .then((action) => {
+          if (action === 'confirm') {
+            changeDialogStatus('close')
+            fileList.length = 0
+          }
+        })
     }
 
-    // 添加文件
-    const addFile = (file: any) => {
-      fileList.push(file)
+    // 更新文件列表
+    const upadteFileTimer = ref<undefined | number>(undefined)
+    const upadteFileList = () => {
+      if (upadteFileTimer.value) {
+        window.clearTimeout(upadteFileTimer.value)
+        upadteFileTimer.value = undefined
+      }
+      upadteFileTimer.value = window.setTimeout(() => {
+        Bus.emit(UPLOAD_SUCCESS)
+      }, 300)
     }
-    Bus.on(UPLOAD_ADD_FILE, addFile)
-
     // upload
     const upload = (uploadOptions: any) => {
-      const { file } = uploadOptions
+      const {
+        raw,
+        size,
+        url,
+        uid,
+      } = uploadOptions
+      const index = fileList.findIndex((file: any) => file.uid === uid)
+      fileList[index].status = 'on'
+
+      // 大于 16M，就是大文件
+      // if (size > 16777216) {
+      //   console.log('大文件上传')
+      //   return
+      // }
+
+      // 小文件上传
       const formData = new FormData()
 
-      const fileName = file.name
-      const blobFile = new Blob([file])
-      formData.append(fileName, blobFile)
-
+      const fileName = uploadOptions.name
+      formData.append(fileName, raw)
+      let lastSize = 0
+      let lastTime = new Date().getTime()
       uploadObject({
-        url: uploadUrl.value,
+        url,
         data: formData,
         onProgress: (progressEvent: ProgressEvent) => {
+          // console.log(progressEvent)
           const progress = Math.floor(
-            progressEvent.loaded / progressEvent.total,
+            (progressEvent.loaded / progressEvent.total) * 100,
           )
-          // NProgress.set(progress / 100)
+          fileList[index].percentage = progress
+
+          const intervalSize = (progressEvent.loaded - lastSize) / 1024
+          const intervalTime = (new Date().getTime() - lastTime) / 1000
+          let speed: number | string = intervalSize / intervalTime
+          let speedUnit = 'K/S'
+          if (speed * 1 > 1000) {
+            speed /= 1024
+            speedUnit = 'M/S'
+          } else if (speed * 1 > 2000) {
+            speed /= 1024 ** 2
+            speedUnit = 'G/S'
+          }
+          speed = `${speed.toFixed(2)}${speedUnit}`
+          fileList[index].speed = speed
+
+          lastSize = progressEvent.loaded
+          lastTime = new Date().getTime()
         },
       })
         .then(() => {
-          // message.success('file.upload.uploadSuccess')
-          // context.emit('success')
+          fileList[index].status = 'success'
         })
         .catch((err) => {
           console.log(err)
-          // NProgress.done()
-          // message({
-          //   message: 'file.upload.uploadFail',
-          //   type: 'error',
-          // })
+          fileList[index].status = 'fail'
         })
         .finally(() => {
-          // NProgress.done()
+          upadteFileList()
         })
     }
 
@@ -184,6 +248,16 @@ export default defineComponent({
       return false
     }
 
+    const uploadSuccessLength = computed(() => {
+      return fileList.filter((file: any) => file.status === 'success').length
+    })
+
+    // 添加文件
+    const addFile = (file: any) => {
+      fileList.push(file)
+      upload(file)
+    }
+    Bus.on(UPLOAD_ADD_FILE, addFile)
     onUnmounted(() => {
       Bus.off(UPDATE_UPLOAD_URL, setUploadUrl)
       Bus.off(CHANGE_DIALOG_STATUS, changeDialogStatus)
@@ -193,6 +267,9 @@ export default defineComponent({
     return {
       dialogStatus,
       fileList,
+      uploadStatusTextMap,
+      uploadSuccessLength,
+      uploadStatusText,
 
       changeDialogStatus,
       close,
@@ -315,7 +392,7 @@ export default defineComponent({
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 9%;
+  width: 12%;
 
   .el-link {
     display: inline;

@@ -10,7 +10,6 @@ export default {
   lastModified: 'Last Modified',
   options: 'Options',
   download: 'Download',
-  delButton: 'Delete',
   currentPath: 'CurrentPath',
   dialog: {
     cancel: 'Cancel',
@@ -21,6 +20,8 @@ export default {
     delMessage: 'Are you sure delete',
     delSuccess: 'Delete Success',
     delFail: 'Delete Fail',
+    confirm: 'Delete',
+    cancel: 'Cancel',
   },
   label: 'Label',
   addLabel: 'Add Label',

@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="register-container">
     <div class="header">
       <div></div>
       <div class="menu">
@@ -16,24 +16,35 @@
           <p>
             <img src="@/assets/img/login/login-box-bg.svg" alt="">
           </p>
-          <p>{{t('login.desc.title')}}</p>
-          <p class="info">{{t('login.desc.info')}}</p>
+          <p>{{t('register.desc.title')}}</p>
+          <p class="info">{{t('register.desc.info')}}</p>
         </div>
       </div>
       <div class="main">
 
-        <div class="form-title">{{t('login.loginForm.title')}}</div>
+        <div class="form-title">{{t('register.registerForm.title')}}</div>
         <el-form
-          :model="loginForm"
-          :rules="loginRules"
-          ref="loginFormEl"
+          :model="registerForm"
+          :rules="registerRules"
+          ref="registerFromEl"
           class="form"
-          @keyup.enter.prevent="handleLogin"
+          @keyup.enter.prevent="handleRegiste"
           >
+          <el-form-item prop="phone">
+            <el-input
+              v-model="registerForm.phone"
+              :placeholder="t('register.registerForm.phonePlaceholder')"
+              name="phone"
+              type="text"
+              tabindex="1"
+              autocomplete="on"
+              prefix-icon="el-icon-mobile-phone"
+            />
+          </el-form-item>
           <el-form-item prop="username">
             <el-input
-              v-model="loginForm.username"
-              :placeholder="t('login.loginForm.accountPlaceholder')"
+              v-model="registerForm.username"
+              :placeholder="t('register.registerForm.accountPlaceholder')"
               name="username"
               type="text"
               tabindex="1"
@@ -41,17 +52,17 @@
               prefix-icon="el-icon-user-solid"
             />
           </el-form-item>
-          <el-form-item prop="password" style="margin-bottom: 0">
+          <el-form-item prop="password">
             <el-input
               :key="passwordType"
               :type="passwordType"
               ref="passwordEl"
-              v-model="loginForm.password"
-              :placeholder="t('login.loginForm.passwordPlaceholder')"
+              v-model="registerForm.password"
+              :placeholder="t('register.registerForm.passwordPlaceholder')"
               name="password"
               tabindex="2"
               autocomplete="on"
-              prefix-icon="el-icon-s-check"
+              prefix-icon="el-icon-key"
             >
               <template #suffix>
                 <div
@@ -64,25 +75,46 @@
               </template>
             </el-input>
           </el-form-item>
-          <div class="form-tips">
-            <span class="is-link info"></span>
-            <span class="is-link info" @click="goRegister">注册</span>
-          </div>
+          <el-form-item prop="code">
+            <div class="code-container">
+              <el-input
+                v-model="registerForm.code"
+                :placeholder="t('register.registerForm.codePlaceholder')"
+                name="code"
+                type="text"
+                tabindex="3"
+                autocomplete="on"
+                >
+              </el-input>
+              <el-button
+                type="primary"
+                :disabled="codeTime > 0"
+                @click="sendCode"
+                >
+                <span v-if="codeTime > 0">{{codeTime}}s 后重新获取</span>
+                <span v-else>获取短信验证码</span>
+              </el-button>
+            </div>
+          </el-form-item>
 
-          <el-form-item>
+          <el-form-item style="margin-bottom: 0">
             <el-button
               :loading="loading"
-              :disabled="!isCanLogin"
+              :disabled="!isCanRegist"
               type="primary"
               style="
-                margin-bottom: 30px;
                 width: 100%;
               "
-              @click.prevent="handleLogin"
+              @click.prevent="handleRegiste"
             >
-              {{t('login.loginForm.loginButton')}}
+              {{t('register.registerForm.registerButton')}}
             </el-button>
           </el-form-item>
+
+          <div class="form-tips">
+            <span class="info">已有账号，去&nbsp;</span>
+            <span class="is-link primary" @click="goLogin">登录</span>
+          </div>
         </el-form>
 
         <div class="footer">
@@ -123,7 +155,7 @@ import {
 import Lang from '@/components/Lang.vue'
 
 export default defineComponent({
-  name: 'Login',
+  name: 'Register',
   components: {
     ElForm,
     ElFormItem,
@@ -137,34 +169,27 @@ export default defineComponent({
 
     const passwordType = ref('password')
     const passwordEl = ref<HTMLInputElement | null>(null)
-    const loginFormEl = ref<HTMLFormElement | null>(null)
+    const registerFromEl = ref<HTMLFormElement | null>(null)
     const loading = ref(false)
-    const loginForm = reactive({
+    const registerForm = reactive({
       username: '',
       password: '',
+      code: '',
+      phone: '',
     })
-    const store = useStore()
     const router = useRouter()
-    const isLogin = computed(() => store.state.user.isLogin)
-    const handleLogin = () => {
-      (loginFormEl.value as any)
-        .validate(async (valid: boolean) => {
+    const handleRegiste = async () => {
+      (registerFromEl.value as any)
+        .validate((valid: any) => {
           if (valid) {
             if (loading.value) return
             loading.value = true
-            await store.dispatch('user/login', {
-              accessKey: loginForm.username,
-              secretKey: loginForm.password,
-            })
             loading.value = false
-            if (isLogin.value) {
-              message.success(t('login.loginForm.loginSuccessTips'))
-              router.push({ path: '/' })
-            }
+            message.success(t('register.registerForm.registerSuccessTips'))
+            router.push({ path: '/login' })
           }
         })
     }
-
     const showPwd = () => {
       if (passwordType.value === 'password') {
         passwordType.value = ''
@@ -176,36 +201,58 @@ export default defineComponent({
         passwordEl.value.focus()
       })
     }
-    const isCanLogin = computed(() => loginForm.username && loginForm.password)
+    const isCanRegist = computed(() => {
+      return registerForm.username && registerForm.password
+    })
 
-    const goRegister = () => {
-      router.push('/register')
+    // 验证码
+    const codeTimer = ref<number | undefined>(undefined)
+    const codeTime = ref(0)
+    const sendCode = () => {
+      codeTime.value = 60
+      window.setInterval(() => {
+        if (codeTime.value > 0) {
+          codeTime.value -= 1
+        } else {
+          window.clearInterval(codeTimer.value)
+          codeTimer.value = undefined
+          codeTime.value = 60
+        }
+      }, 1000)
+    }
+
+    const goLogin = () => {
+      router.push('/login')
     }
 
     return {
-      loginForm,
-      loginFormEl,
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', message: t('login.loginForm.accountPlaceholder') }],
-        password: [{ required: true, trigger: 'blur', message: t('login.loginForm.passwordPlaceholder') }],
+      registerForm,
+      registerRules: {
+        username: [{ required: true, trigger: 'blur', message: t('register.registerForm.accountPlaceholder') }],
+        password: [{ required: true, trigger: 'blur', message: t('register.registerForm.passwordPlaceholder') }],
+        phone: [{ required: true, trigger: 'blur', message: t('register.registerForm.phonePlaceholder') }],
+        code: [{ required: true, trigger: 'blur', message: t('register.registerForm.codePlaceholder') }],
       },
       passwordType,
       loading,
-      isCanLogin,
+      isCanRegist,
       locale,
+      codeTime,
+      registerFromEl,
       passwordEl,
 
-      handleLogin,
+      handleRegiste,
       showPwd,
       t,
-      goRegister,
+      sendCode,
+      goLogin,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.register-container {
   background: #FFF;
   box-sizing: border-box;
   height: 100vh;
@@ -339,11 +386,21 @@ export default defineComponent({
   }
 }
 
+.code-container {
+  display: flex;
+  align-items: center;
+  button {
+    margin-left: 20px;
+  }
+}
+
 .form-tips {
-  margin: 10px 0 16px;
+  .info {
+    color: #acb3bd;
+  }
+  margin: 10px 0 0;
   font-size: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 </style>

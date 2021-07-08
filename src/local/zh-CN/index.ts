@@ -3,6 +3,7 @@ import globalMessage from './global'
 import menuMessage from './menu'
 import dashboardMessage from './dashboard'
 import fileMessage from './file'
+import registerMessage from './register'
 
 export default {
   login: loginMessage,
@@ -10,4 +11,5 @@ export default {
   menu: menuMessage,
   dashboard: dashboardMessage,
   file: fileMessage,
+  register: registerMessage,
 }

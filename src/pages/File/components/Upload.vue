@@ -49,7 +49,6 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['success'],
   setup(props) {
     const isShowProgress = ref(true)
     const route = useRoute()
