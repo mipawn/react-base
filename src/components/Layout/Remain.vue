@@ -12,7 +12,7 @@
       <div class="remain-info">
         <span>
           <span>{{formatSize(hotBucket.size)}} / </span>
-          <span>{{formatSize(hotBucket.total)}}</span>
+          <span>{{formatSize(hotBucket.total, '无限')}}</span>
         </span>
 
         <span>常温区</span>
@@ -30,7 +30,7 @@
       <div class="remain-info">
         <span>
           {{formatSize(freezerBucket.size)}} /
-          {{formatSize(freezerBucket.total)}}
+          {{formatSize(freezerBucket.total, '无限')}}
         </span>
         <span>冷冻区</span>
       </div>
@@ -59,9 +59,9 @@ export default defineComponent({
     const store = useStore()
     const hotBucket = computed(() => store.state.bucket.hot)
     const freezerBucket = computed(() => store.state.bucket.freezer)
-    const formatSize = (size: string) => {
+    const formatSize = (size: string, defaults?: string) => {
       if (!size) {
-        return '无限'
+        return defaults || 0
       }
       return niceBytes(size)
     }
