@@ -35,3 +35,28 @@ export const hasPermission = (data: unknown): AxiosPromise<any> => http({
   method: 'POST',
   data,
 })
+
+export interface SendCodeParams {
+  env: 'register',
+  phone: string
+}
+export const sendCode = (data: SendCodeParams): AxiosPromise => http({
+  url: 'sms/send',
+  method: 'GET',
+  params: {
+    env: data.env,
+    phone: data.phone,
+  },
+})
+
+export interface RegistData {
+  code: string,
+  phone: string,
+  username: string,
+  password: string
+}
+export const regist = (data: RegistData): AxiosPromise => http({
+  url: 'register',
+  method: 'POST',
+  data,
+})

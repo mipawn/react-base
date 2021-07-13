@@ -88,7 +88,8 @@
               </el-input>
               <el-button
                 type="primary"
-                :disabled="codeTime > 0"
+                :disabled="codeTime > 0 || !registerForm.phone"
+                :loading="codeLoading"
                 @click="sendCode"
                 >
                 <span v-if="codeTime > 0">{{codeTime}}s 后重新获取</span>
@@ -143,6 +144,12 @@ import {
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import {
+  regist,
+  RegistData,
+  sendCode as sendCodeResquest,
+  SendCodeParams,
+} from '@/api/user'
 
 import {
   ElForm,
@@ -153,6 +160,7 @@ import {
   ElMessage as message,
 } from 'element-plus'
 import Lang from '@/components/Lang.vue'
+import { errorAndMessage } from '@/utils/error'
 
 export default defineComponent({
   name: 'Register',
@@ -180,13 +188,19 @@ export default defineComponent({
     const router = useRouter()
     const handleRegiste = async () => {
       (registerFromEl.value as any)
-        .validate((valid: any) => {
+        .validate(async (valid: any) => {
           if (valid) {
             if (loading.value) return
             loading.value = true
+            const res: any = await regist(registerForm).catch((err: any) => {
+              const errMessage = err.data.message || err.statusText
+              message.error(errMessage)
+            })
             loading.value = false
-            message.success(t('register.registerForm.registerSuccessTips'))
-            router.push({ path: '/login' })
+            if (res && res.name) {
+              message.success(t('register.registerForm.registerSuccessTips'))
+              router.push({ path: '/login' })
+            }
           }
         })
     }
@@ -202,23 +216,35 @@ export default defineComponent({
       })
     }
     const isCanRegist = computed(() => {
-      return registerForm.username && registerForm.password
+      return !Object.values(registerForm).includes('')
     })
 
     // 验证码
+    const codeLoading = ref(false)
     const codeTimer = ref<number | undefined>(undefined)
     const codeTime = ref(0)
     const sendCode = () => {
-      codeTime.value = 60
-      window.setInterval(() => {
-        if (codeTime.value > 0) {
-          codeTime.value -= 1
-        } else {
-          window.clearInterval(codeTimer.value)
-          codeTimer.value = undefined
+      codeLoading.value = true
+      sendCodeResquest({
+        env: 'register',
+        phone: registerForm.phone,
+      })
+        .then(() => {
           codeTime.value = 60
-        }
-      }, 1000)
+          window.setInterval(() => {
+            if (codeTime.value > 0) {
+              codeTime.value -= 1
+            } else {
+              window.clearInterval(codeTimer.value)
+              codeTimer.value = undefined
+              codeTime.value = 60
+            }
+          }, 1000)
+        })
+        .catch(errorAndMessage)
+        .finally(() => {
+          codeLoading.value = false
+        })
     }
 
     const goLogin = () => {
@@ -240,6 +266,7 @@ export default defineComponent({
       codeTime,
       registerFromEl,
       passwordEl,
+      codeLoading,
 
       handleRegiste,
       showPwd,

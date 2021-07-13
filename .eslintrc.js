@@ -48,5 +48,12 @@ module.exports = {
     'no-unreachable': 1,
     'arrow-body-style': 0,
     'import/no-extraneous-dependencies': 0,
+    'no-unused-expressions': [2, {
+      allowShortCircuit: true,
+      allowTernary: true,
+    }],
+    'no-plusplus': 0,
+    'no-mixed-operators': 0,
+    '@typescript-eslint/ban-ts-comment': 0,
   },
 }

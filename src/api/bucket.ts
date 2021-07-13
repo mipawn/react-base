@@ -23,8 +23,10 @@ interface delObjectParams {
   selectedObject: string,
   recursive: boolean
 }
-export const delObject = ({ selectedBucket, selectedObject, recursive }: delObjectParams): AxiosPromise<any> => http({
-  url: `buckets/${selectedBucket}/objects?path=${selectedObject}&recursive=${recursive}`,
+export const delObject = (
+  { selectedBucket, selectedObject, recursive }: delObjectParams,
+): AxiosPromise<any> => http({
+  url: `buckets/${window.encodeURIComponent(selectedBucket)}/objects?path=${window.encodeURIComponent(selectedObject)}&recursive=${recursive}`,
   method: 'DELETE',
 })
 
@@ -51,11 +53,67 @@ interface ShareParams {
   file: Record<string, unknown>,
   diffDate: number | string | undefined
 }
-export const shareObject = ({ bucketName, file, diffDate }: ShareParams): AxiosPromise => http({
+export const shareObject = (
+  { bucketName, file, diffDate }: ShareParams,
+): AxiosPromise => http({
   url: `/buckets/${bucketName}/objects/share?prefix=${
     file.name
   }&version_id=${file.version_id}${
     diffDate !== '' ? `&expires=${diffDate}ms` : ''
   }`,
   method: 'GET',
+})
+
+interface uploadPreCreateData {
+  targetPath: string,
+  objectName: string,
+  size: number,
+  preHash?: string,
+  bucketName: string
+}
+export const uploadPreCreate = (
+  data: uploadPreCreateData,
+): AxiosPromise => http({
+  url: `/buckets/${data.bucketName}/objects/upload/precreate`,
+  method: 'POST',
+  data,
+})
+
+interface createUploadChunkParams {
+  url: string,
+  headers: Record<string, unknown>
+  data: FormData,
+  onProgress?: (propgress: any) => void
+  cancelToken?: any
+}
+export const createUploadChunk = (
+  {
+    url, headers, data, onProgress, cancelToken,
+  }: createUploadChunkParams,
+): AxiosPromise => http({
+  url,
+  method: 'PUT',
+  headers,
+  data,
+  timeout: 0,
+  onUploadProgress: onProgress,
+  cancelToken,
+})
+
+export interface uploadMergeData {
+  bucketName: string,
+  uploadID: string,
+  targetPath: string,
+  objectName: string,
+  complMultipartUpload: {
+    ETag: string,
+    partNumber: number
+  }
+}
+export const uploadMerge = (
+  { bucketName, ...data }: uploadMergeData,
+): AxiosPromise => http({
+  url: `/buckets/${bucketName}/objects/upload/complete`,
+  method: 'POST',
+  data,
 })

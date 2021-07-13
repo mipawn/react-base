@@ -48,6 +48,14 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    bucketName: {
+      type: String,
+      default: '',
+    },
+    targetPath: {
+      type: String,
+      default: '',
+    },
   },
   setup(props) {
     const isShowProgress = ref(true)
@@ -57,6 +65,8 @@ export default defineComponent({
       file.url = props.uploadUrl
       file.path = route.path
       file.pathName = props.pathName
+      file.bucketName = props.bucketName
+      file.targetPath = props.targetPath
       Bus.emit(CHANGE_DIALOG_STATUS, 'show')
       Bus.emit(UPLOAD_ADD_FILE, file)
     }

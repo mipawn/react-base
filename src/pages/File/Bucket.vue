@@ -129,9 +129,9 @@ export default defineComponent({
     })
 
     // 获取列表
-    const setBucketsList = () => {
+    const setBucketsList = async () => {
       Bus.emit('setPageLoading', true)
-      getBucketsList()
+      store.dispatch('bucket/updateBucket')
         .then((res) => {
           // eslint-disable-next-line max-len
           const bucketsObj = res.data.buckets.reduce((pre: any, current: any) => {

@@ -17,6 +17,8 @@
                     type="file"
                     :uploadUrl="uploadUrl"
                     :pathName="pathName"
+                    :bucketName="bucketName"
+                    :targetPath="path.slice(1).join('/')"
                     >
                   {{t('file.upload.uploadFile')}}
                   </Upload>
@@ -26,6 +28,8 @@
                     type="dir"
                     :uploadUrl="uploadUrl"
                     :pathName="pathName"
+                    :bucketName="bucketName"
+                    :targetPath="path.slice(1).join('/')"
                     >
                   {{t('file.upload.uploadFolder')}}
                   </Upload>
@@ -52,7 +56,7 @@
           </el-dropdown>
 
           <!-- 其他操作 -->
-          <div class="actions-other">
+          <div class="actions-other" v-if="rowSelected && rowSelected.length">
             <div class="is-link">
               <i class="el-icon-share"></i>
               <span>分享</span>
@@ -61,7 +65,7 @@
               <i class="el-icon-download"></i>
               <span>下载</span>
             </div>
-            <div class="is-link">
+            <div class="is-link" @click="del">
               <i class="el-icon-delete"></i>
               <span>删除</span>
             </div>
@@ -357,6 +361,8 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore()
 
+    const rowSelected = ref<any[]>([])
+
     const account = computed(() => store.state.user.userInfo.account)
     const pathName = computed(() => {
       if (props.path.length === 1) {
@@ -367,8 +373,6 @@ export default defineComponent({
       }
       return props.path[props.path.length - 1]
     })
-
-    const uploadTimer = ref<undefined | number>(undefined)
 
     const uniqurKey = ref('')
     const currentPath = computed(
@@ -465,27 +469,39 @@ export default defineComponent({
       router.push({ path: `/file/${bucketName.value}/${name}` })
     }
 
-    const del = async (object: any, e: Event) => {
+    const del = async (e: Event) => {
+      const selected = rowSelected.value
+      const fileName = selected
+        .map((file: any) => file.name)
+        .join('、')
       e.stopPropagation()
       const action = await messageBox({
         title: t('file.del.delTitle'),
         type: 'warning',
-        message: `${t('file.del.delMessage')} ${object.name}`,
+        message: `${t('file.del.delMessage')} ${fileName}`,
         showCancelButton: true,
-        cancelButtonText: t('file.del,cancel'),
+        cancelButtonText: t('file.del.cancel'),
         confirmButtonText: t('file.del.confirm'),
       }).catch(error)
       if (action !== 'confirm') return
-      delObject({
-        selectedBucket: bucketName.value as string,
-        selectedObject: object.name,
-        recursive: object.type === 'folder',
-      })
-        .then(() => {
-          message.success(t('file.del.delSuccess'))
-          setObjectsList()
+      const delList = selected.map((item: any) => {
+        return delObject({
+          selectedBucket: bucketName.value as string,
+          selectedObject: item.name,
+          recursive: item.type === 'folder',
         })
-        .catch(error)
+      })
+      const res = await Promise.allSettled(delList)
+      if (res.findIndex((item) => item.status !== 'fulfilled') < 0) {
+        message.success('删除成功')
+        setObjectsList()
+      } else {
+        const failName = res
+          .filter((item) => item.status !== 'fulfilled')
+          .map((item: any) => item.name)
+          .join('、')
+        message.error(`${failName}删除失败`)
+      }
     }
 
     const down = (object: any, e: Event) => {
@@ -528,11 +544,9 @@ export default defineComponent({
       Bus.off(UPLOAD_SUCCESS, setObjectsList)
     })
     // 选中行
-    const rowSelected = ref([])
     const handleSelectionChange = (val: any) => {
       rowSelected.value = val
     }
-
     // 分享
     const isShowShare = ref(false)
     const fileDetails = ref({})

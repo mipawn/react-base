@@ -31,6 +31,7 @@ import {
 import { getSession } from '@/api/user'
 import { error } from '@/utils/error'
 import Bus from '@/lib/event-bus'
+import { useStore } from 'vuex'
 
 import {
   ElContainer,
@@ -54,13 +55,12 @@ export default defineComponent({
     Upload,
   },
   setup() {
-    const loading = ref(false)
-    watchEffect(() => {
-      getSession()
-        .then(() => {
+    const store = useStore()
 
-        })
-        .catch(error)
+    const loading = ref(false)
+    watchEffect(async () => {
+      await getSession()
+      await store.dispatch('bucket/updateBucket')
     })
     const setLoading = (status: any): void => {
       loading.value = status

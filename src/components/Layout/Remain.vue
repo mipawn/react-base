@@ -2,21 +2,36 @@
   <div class="remain-container">
     <div class="section">
       <el-progress
-        :percentage="80"
+        :percentage="
+          !hotBucket.total
+            ? 0
+            : hotBucket.total / hotBucket.size
+        "
         :show-text="false"
       />
       <div class="remain-info">
-        <span>2.2G / 2068G</span>
+        <span>
+          <span>{{formatSize(hotBucket.size)}} / </span>
+          <span>{{formatSize(hotBucket.total)}}</span>
+        </span>
+
         <span>常温区</span>
       </div>
     </div>
     <div class="section">
       <el-progress
-        :percentage="100"
+        :percentage="
+          !hotBucket.total
+            ? 0
+            : freezerBucket.total / freezerBucket.size
+        "
         :show-text="false"
       />
       <div class="remain-info">
-        <span>2.2G / 2068G</span>
+        <span>
+          {{formatSize(freezerBucket.size)}} /
+          {{formatSize(freezerBucket.total)}}
+        </span>
         <span>冷冻区</span>
       </div>
     </div>
@@ -24,7 +39,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {
+  defineComponent,
+  computed,
+} from 'vue'
+import { useStore } from 'vuex'
+import { niceBytes } from '@/utils/format'
 
 import {
   ElProgress,
@@ -36,7 +56,21 @@ export default defineComponent({
     ElProgress,
   },
   setup() {
+    const store = useStore()
+    const hotBucket = computed(() => store.state.bucket.hot)
+    const freezerBucket = computed(() => store.state.bucket.freezer)
+    const formatSize = (size: string) => {
+      if (!size) {
+        return '无限'
+      }
+      return niceBytes(size)
+    }
+    return {
+      hotBucket,
+      freezerBucket,
 
+      formatSize,
+    }
   },
 })
 </script>

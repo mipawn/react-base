@@ -12,16 +12,16 @@ module.exports = {
     proxy: {
       // 线上测试
       '/api': {
-        target: 'https://hz.endpoint.byteark.xyz:8000/',
+        target: 'https://hz.endpoint.byteark.xyz/',
         changeOrigin: true,
         ws: false,
       },
       // yeates的测试环境
-      /* '/api': {
-        target: 'http://192.168.131.25:9090/',
-        changeOrigin: true,
-        ws: false,
-      }, */
+      // '/api': {
+      //   target: 'http://192.168.131.25:9090/',
+      //   changeOrigin: true,
+      //   ws: false,
+      // },
     },
   },
   chainWebpack: (config) => {
