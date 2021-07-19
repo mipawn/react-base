@@ -117,3 +117,16 @@ export const uploadMerge = (
   method: 'POST',
   data,
 })
+
+export interface renameData {
+  bucket: string,
+  name: string,
+  path: string
+}
+export const rename = (
+  { bucket, ...data }: renameData,
+): AxiosPromise => http({
+  url: `/buckets/${bucket}/objects/rename`,
+  method: 'POST',
+  data,
+})

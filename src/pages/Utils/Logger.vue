@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-empty :description="t('global.No data')" style="margin-top: 15vh;"></el-empty>
+    <el-empty
+      :description="t('global.No data')"
+      style="margin-top: 15vh;">
+    </el-empty>
   </div>
 </template>
 

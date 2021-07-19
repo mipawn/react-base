@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   watchEffect,
@@ -69,8 +69,10 @@ export default defineComponent({
   },
   setup() {
     const { t, te } = useI18n()
-
-    const breadcrumb = reactive({
+    interface IBreadcrumb {
+      list: any[]
+    }
+    const breadcrumb = reactive<IBreadcrumb>({
       list: [],
     })
     const route = useRoute()
@@ -78,7 +80,7 @@ export default defineComponent({
     const user = computed(() => store.state.user.userInfo)
 
     watchEffect(() => {
-      const ExtraPath = []
+      const ExtraPath: any[] = []
       breadcrumb.list = route.matched.map((routeItem) => {
         let { meta } = routeItem
         const { name } = routeItem
@@ -89,8 +91,9 @@ export default defineComponent({
           const type = path.split('.').slice(-1).join('')
           const menus = dynamicMenusModules.fileChildren(user.value.account)
           const menu = menus.find((menuItem) => menuItem.path.includes(type))
-          meta = menu.meta
+          meta = menu!.meta
           if (route.params.path.length > 1) {
+            if (typeof route.params.path === 'string') return
             route.params.path.slice(1).forEach((item, index) => {
               ExtraPath.push({
                 name: 'fileFolder',
@@ -102,6 +105,7 @@ export default defineComponent({
             })
           }
         }
+        // eslint-disable-next-line consistent-return
         return {
           name,
           meta,
@@ -117,7 +121,7 @@ export default defineComponent({
       }
     })
 
-    const handleUserCommand = (command) => {
+    const handleUserCommand = (command: any) => {
       switch (command) {
         case 'logout':
           store.dispatch('user/logout')

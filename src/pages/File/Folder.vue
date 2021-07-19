@@ -69,9 +69,15 @@
               <i class="el-icon-delete"></i>
               <span>删除</span>
             </div>
-            <div class="is-link" :class="{ disabled: !isCanRename }">重命名</div>
-            <div class="is-link">复制到</div>
-            <div class="is-link">移动到</div>
+            <div
+              class="is-link"
+              :class="{ disabled: !isCanRename }"
+              @click="showRenameEdit"
+              >
+              重命名
+            </div>
+            <div class="is-link" @click="toogleFolderDialog('copy')">复制到</div>
+            <div class="is-link" @click="toogleFolderDialog('move')">移动到</div>
           </div>
         </div>
         <div class="search">
@@ -117,13 +123,23 @@
                   class="icon-type el-icon-tickets"
                   >
                 </i>
+                <el-input
+                  v-if="scope.row.isEditName"
+                  v-model="scope.row.newName"
+                  autofocus
+                  ref="renameInput"
+                  @blur="rename(scope.row)"
+                  >
+                </el-input>
                 <span
+                  v-else
                   class="is-link text-ellipsis-oneline"
                   style="width: auto"
                   @click.prevent="goFolder(scope.row)"
                   >
                   {{formatName(scope.row.name, scope.row.type )}}
                 </span>
+
               </div>
 
               <div class="row-actions">
@@ -281,15 +297,24 @@
         :path="currentPath"
       />
     </template>
+    <!-- 文件详情 -->
     <file-details
       v-else-if="currentType === 'file'"
       :extraPath="currentPath"
       :type="bucketName"
     />
+    <!-- 文件分享 -->
     <file-share
       v-model:show="isShowShare"
       :bucketName="bucketName"
       :file="fileDetails"
+    />
+    <!-- 树状文件夹弹窗 -->
+    <folder-dialog
+      v-model:isShow="isShowFolderDialog"
+      :type="folderDialogType"
+      :info="rowSelected"
+      :path="path"
     />
   </div>
 </template>
@@ -301,10 +326,17 @@ import {
   onUnmounted,
   ref,
   watch,
+  PropType,
+  nextTick,
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { getObjectsList, delObject, getObjectDetails } from '@/api/bucket'
+import {
+  getObjectsList,
+  delObject,
+  getObjectDetails,
+  rename as renameApi,
+} from '@/api/bucket'
 import { error } from '@/utils/error'
 import { niceBytes, dateFormat } from '@/utils/format'
 import { downloadObject } from '@/utils/download'
@@ -331,6 +363,7 @@ import FolderCreate from './components/CreateFolder.vue'
 import FileDetails from './Details.vue'
 import Upload from './components/Upload.vue'
 import FileShare from './components/Share.vue'
+import FolderDialog from './components/FolderDialog.vue' // 树状文件夹ee
 
 export default defineComponent({
   name: 'file-folder',
@@ -348,10 +381,11 @@ export default defineComponent({
     FileDetails,
     Upload,
     FileShare,
+    FolderDialog,
   },
   props: {
     path: {
-      type: Array,
+      type: Array as PropType<string[]>,
       default: () => [''],
     },
   },
@@ -362,6 +396,9 @@ export default defineComponent({
     const store = useStore()
 
     const rowSelected = ref<any[]>([])
+    const isShowFolderDialog = ref(false)
+    const folderDialogType = ref('')
+    const renameInput = ref<HTMLInputElement | null>(null)
 
     const account = computed(() => store.state.user.userInfo.account)
     const pathName = computed(() => {
@@ -378,7 +415,7 @@ export default defineComponent({
     const currentPath = computed(
       () => props.path && props.path.slice(1).join('/'),
     )
-    const bucketName = computed(() => props.path[0])
+    const bucketName = computed<string>(() => props.path[0])
     const uploadUrl = computed(() => {
       let url = `buckets/${bucketName.value}/objects/upload`
       if (currentPath.value !== '') {
@@ -568,13 +605,44 @@ export default defineComponent({
     }
 
     const isCanRename = computed(() => {
-      return !rowSelected
-        .value
-        .find((item: any) => {
-          return item.type === 'folder'
-        })
+      return rowSelected.value.length < 2
     })
+    const showRenameEdit = () => {
+      // 没有id，通过名字找index可能会重复，只能在原对象上处理
+      rowSelected.value[0].isEditName = true
+      rowSelected.value[0].newName = rowSelected.value[0].name
+      nextTick(() => {
+        if (!renameInput.value) return
+        renameInput.value.focus()
+      })
+    }
+    const rename = (target: any) => {
+      let path = `${props.path.slice(1).join('/')}/${target.name}`
+      if (!path.startsWith('/')) {
+        path = `/${path}`
+      }
+      if (target.type === 'folder' && !path.endsWith('/')) {
+        path += '/'
+      }
 
+      renameApi({
+        bucket: `${bucketName.value}`,
+        path,
+        name: target.newName,
+      })
+        .then(() => {
+          setObjectsList()
+        })
+        .catch(error)
+        .finally(() => {
+          rowSelected.value[0].isEditName = false
+        })
+    }
+
+    const toogleFolderDialog = (type: string) => {
+      isShowFolderDialog.value = !isShowFolderDialog.value
+      folderDialogType.value = type
+    }
     return {
       objectsList,
       account,
@@ -591,6 +659,9 @@ export default defineComponent({
       fileDetails,
       isCanRename,
       rowSelected,
+      isShowFolderDialog,
+      folderDialogType,
+      renameInput,
 
       setObjectsList,
       niceBytes,
@@ -605,6 +676,9 @@ export default defineComponent({
       t,
       handleSelectionChange,
       showShare,
+      rename,
+      showRenameEdit,
+      toogleFolderDialog,
     }
   },
 })
