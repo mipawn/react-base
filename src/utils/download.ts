@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ * @since 2021-7-20
+ */
 import { downObjectPath } from '@/api/bucket'
 
 function isNullOrUndefined(target: any) {

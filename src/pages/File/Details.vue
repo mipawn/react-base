@@ -24,9 +24,13 @@ import {
   onMounted,
   ref,
 } from 'vue'
-import { getObjectDetails, delObject } from '@/api/bucket'
+import {
+  getObjectDetails,
+  delObject,
+  getDownUrl,
+} from '@/api/bucket'
 import { error } from '@/utils/error'
-import { downloadObject } from '@/utils/download'
+// import { downloadObject } from '@/utils/download'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -66,11 +70,23 @@ export default defineComponent({
     })
 
     const down = () => {
-      downloadObject(
-        props.type || '',
-        props.extraPath || '',
-        details.value.version_id,
-      )
+      // downloadObject(
+      //   props.type || '',
+      //   props.extraPath || '',
+      //   details.value.version_id,
+      // )
+      getDownUrl({
+        bucket_name: props.type || '',
+        version_id: details.value.version_id,
+        type: 2,
+        files: [
+          props.extraPath || '',
+        ],
+      })
+        .then((res: any) => {
+          console.log(res)
+        })
+        .catch(error)
     }
     const del = () => {
       messageBox({

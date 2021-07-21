@@ -12,7 +12,7 @@ module.exports = {
     proxy: {
       // 线上测试
       '/api': {
-        target: 'https://hz.endpoint.byteark.xyz/',
+        target: 'https://hz01.endpoint.byteark.xyz/',
         changeOrigin: true,
         ws: false,
       },

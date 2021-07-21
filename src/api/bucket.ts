@@ -130,3 +130,17 @@ export const rename = (
   method: 'POST',
   data,
 })
+
+interface GetDownUrlData {
+  // eslint-disable-next-line camelcase
+  version_id: string | null,
+  files: string[],
+  type: 1 | 2, // 1-单文件 2-多文件zip下载
+  // eslint-disable-next-line camelcase
+  bucket_name: string
+}
+export const getDownUrl = (data: GetDownUrlData): AxiosPromise => http({
+  url: `buckets/${data.bucket_name}/objects/download`,
+  method: 'POST',
+  data,
+})
